@@ -93,6 +93,10 @@ It was based on the some programming languages like **C**, **Go**, **Rust**, and
 ```html
 <DiTiLoop> ::= "di" <DiTiLoopInitStatement> "ti" <Expression> "pui" <Declaration> <Block>
 
+<DiTiLoopInitStatement> ::= <Type> <Identifier> '=' <Expression>
+                        | <Identifier> '=' <Expression>
+
+
 <InkuantuLoop> ::= "inkuantu" <Expression> <Block>
 ```
 
