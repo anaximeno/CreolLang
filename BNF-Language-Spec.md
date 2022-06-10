@@ -97,7 +97,7 @@ It was based on the some programming languages like **C**, **Go**, **Rust**, and
                         | <Identifier> '=' <Expression>
 
 
-<InkuantuLoop> ::= "inkuantu" <Expression> <Block>
+<NkuantuLoop> ::= "nkuantu" <Expression> <Block>
 ```
 
 ## If Statements
