@@ -7,7 +7,7 @@ It was based on the some programming languages like **C**, **Go**, **Rust**, and
 ## Variable Declaration
 
 ```html
-<VarDecl> ::= <Type> <Declarations>
+<VariableDeclaration> ::= <Type> <Declarations>
 
 <Declarations> ::= <Declarations> ',' <Declaration>
                 | <Declaration>
