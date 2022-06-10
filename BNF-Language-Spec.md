@@ -1,7 +1,7 @@
 # Creoline BNF Spec
 
 Language specifications for the Creoline programming language.
-  
+
 It was based on the some programming languages like **C**, **Go**, **Rust**, and also, the **Cape Verdian Creole**.
 
 ## Variable Declaration
@@ -13,19 +13,19 @@ It was based on the some programming languages like **C**, **Go**, **Rust**, and
                 | <Declaration>
 
 <Declaration> ::= <Identifier>
-			   | <Identifier> '=' <Expression>
+               | <Identifier> '=' <Expression>
 ```
 
 ## Expressions
 
 ```html
 <Expression> ::= <Expression> <AritmeticOperation> <Expression>
-			  |  <Expression> <ComparativeOperation> <Expression>
-			  |  <Expression> <BooleanOperation> <Expression>
-			  |  <Identifier>
-			  |  <Number>
-			  |  <Identifier> '(' <FunctionArguments> ')'
-			  |  <Identifier> '(' ')'
+              |  <Expression> <ComparativeOperation> <Expression>
+              |  <Expression> <BooleanOperation> <Expression>
+              |  <Identifier>
+              |  <Number>
+              |  <Identifier> '(' <FunctionArguments> ')'
+              |  <Identifier> '(' ')'
 ```
 
 ## Basic Binary Operations
@@ -41,15 +41,15 @@ It was based on the some programming languages like **C**, **Go**, **Rust**, and
 
 ```html
 <FunctionArguments> ::= <FunctionArguments> ',' <Expression>
-					 |  <Expression>
+                     |  <Expression>
 
 <FunctionDeclaration> ::= <Type> <Identifier> '('<FunctionParameters>')' <Block>
-					   |  <Type> <Identifier> '(' <NoFunctionParameters> ')' <Block>
+                       |  <Type> <Identifier> '(' <NoFunctionParameters> ')' <Block>
 
 <NoFunctionParamaters> ::=  | void
 
 <FunctionParameters> ::= <FunctionParameters> ',' <Type> <Identifier>
-					  |  <Type> <Identifier> 
+                      |  <Type> <Identifier> 
 ```
 
 ## Block Statement
@@ -64,7 +64,7 @@ It was based on the some programming languages like **C**, **Go**, **Rust**, and
 ```html
 
 <ReturnStatement> ::= "divolvi" <Expression> ';'
-				   | "divolvi" <NoReturnValue> ';'
+                   | "divolvi" <NoReturnValue> ';'
 
 <NoReturnValue> ::= | void
 
@@ -74,17 +74,17 @@ It was based on the some programming languages like **C**, **Go**, **Rust**, and
 
 ```html
 <Statements> ::= <Statements> <Statement>
-			  | <Statement>
+              | <Statement>
 
 <Statement> ::= <SingleLineStatement> ';'
-			 |  <FunctionDeclaration>
-			 |  <DiTiLoop>
-			 |  <InkuatuLoop>
-			 |  <SiStatement>
+             |  <FunctionDeclaration>
+             |  <DiTiLoop>
+             |  <InkuatuLoop>
+             |  <SiStatement>
 
 <SingleLineStatement> ::= <VariableDeclaration>
-					   |  <Declaration>
-					   |  <Expression>
+                       |  <Declaration>
+                       |  <Expression>
 
 ```
 
@@ -100,8 +100,8 @@ It was based on the some programming languages like **C**, **Go**, **Rust**, and
 
 ```html
 <SiStatement> ::= "si" <Expression> <Block>
-			   |  "si" <Expression> <Block> "sinon" <Block>
-			   |  "si" <Expression> <Block> "sinon" <SiStatement>
+               |  "si" <Expression> <Block> "sinon" <Block>
+               |  "si" <Expression> <Block> "sinon" <SiStatement>
 ```
 
 ### References
