@@ -19,9 +19,9 @@ It was based on the some programming languages like **C**, **Go**, **Rust**, and
 ## Expressions
 
 ```html
-<Expression> ::= <Expression> <AritmeticOperation> <Expression>
-              |  <Expression> <ComparativeOperation> <Expression>
-              |  <Expression> <BooleanOperation> <Expression>
+<Expression> ::= <Expression> <AritmeticOperator> <Expression>
+              |  <Expression> <ComparativeOperator> <Expression>
+              |  <Expression> <BooleanOperator> <Expression>
               |  <Identifier>
               |  <Number>
               |  <Identifier> '(' <FunctionArguments> ')'
@@ -30,11 +30,11 @@ It was based on the some programming languages like **C**, **Go**, **Rust**, and
 
 ## Basic Binary Operations
 ```html
-<AritmeticOperation> ::= '+' | '-' | '*' | '/'
+<AritmeticOperator> ::= '+' | '-' | '*' | '/'
 
-<ComparativeOperation> ::= '<' | '<=' | '>' | '>=' | '==' | '!='
+<ComparativeOperator> ::= '<' | '<=' | '>' | '>=' | '==' | '!='
 
-<BooleanOperation> ::= '&&' | '||' 
+<BooleanOperator> ::= '&&' | '||' 
 ```
 
 ## Function Staments
