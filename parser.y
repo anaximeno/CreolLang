@@ -29,7 +29,6 @@
 %left TPLUS TMINUS
 %left TMUL TDIV
 
-
 %start Program
 %debug
 %verbose
@@ -44,11 +43,9 @@ Type : TYPE_INT
      | TYPE_BOOL
      ;
 
-Number : TINTEGER 
+Literal : TINTEGER
         | TDOUBLE
-        ;
-
-Boolean : TBOOL
+        | TBOOL
         ;
 
 Identifier : TIDENTIFIER
@@ -89,8 +86,7 @@ Expression : Expression AritmeticOperator Expression
            | Identifier
            | Identifier '(' FunctionArguments ')'
            | Identifier '(' ')'
-           | Number
-           | Boolean
+           | Literal
            ;
 
 FunctionArguments : FunctionArguments ',' Expression
@@ -151,7 +147,8 @@ SiStatement : TSI Expression Block
             | TSI Expression TSINON SiStatement
             ;
 
-Program : Statements
+Program : %empty
+        | Statements
         ;
 %%
 
