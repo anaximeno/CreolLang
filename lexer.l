@@ -9,7 +9,7 @@
     #define SAVE_TOKEN yylval.string = new std::string(yytext, yyleng)
     #define SAVE_INTEGER yylval.integer = std::stoll(std::string(yytext, yyleng))
     #define SAVE_NUMBER yylval.number = std::stod(std::string(yytext, yyleng))
-    #define SAVE_BOOLEAN yylval.boolean = std::string(yytext, yyleng) == "true" ? 1 : 0
+    #define SAVE_BOOLEAN yylval.boolean = std::string(yytext, yyleng) == "sim" ? 1 : 0
     #define TOKENIZE(sym) (yylval.token = sym)
     int yyerror(char const*);
 %}
@@ -34,8 +34,8 @@ IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 "double"        return TOKENIZE(TYPE_DOUBLE);
 "void"          return TOKENIZE(TYPE_VOID);
 "bool"          return TOKENIZE(TYPE_BOOL);
-"true"          SAVE_BOOLEAN; return TBOOL;
-"false"         SAVE_BOOLEAN; return TBOOL;
+"sim"           SAVE_BOOLEAN; return TBOOL;
+"nau"           SAVE_BOOLEAN; return TBOOL;
 {INTEGER}       SAVE_INTEGER; return TINTEGER;
 {DOUBLE}        SAVE_NUMBER; return TDOUBLE;
 {IDENTIFIER}    SAVE_TOKEN; return TIDENTIFIER;
