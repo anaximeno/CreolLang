@@ -74,6 +74,47 @@ Value* IntExprAST::codegen() {
     return ConstantInt::get(TheContext, APSInt(Val, false));
 }
 
+class VariableExprAST : public ExprAST {
+    std::string Name;
+
+public:
+    VariableExprAST(const std::string& Name)
+    : Name(Name) {}
+
+    Value* codegen() override;
+};
+
+/// CallExprAST - Expression class for function calls
+class CallExprAST : public ExprAST {
+    std::string Callee;
+    std::vector<std::unique_ptr<ExprAST>> Args;
+
+public:
+    CallExprAST(const std::string& Calle,
+        std::vector<std::unique_ptr<ExprAST>> Args)
+    : Callee(Callee), Args(std::move(Args)) {}
+
+    Value* codegen() override;
+};
+
+/// PrototypeAST - This class represents the "prototype" for a function,
+/// which captures its name, and its arguments names.
+class PrototypeAST : public ExprAST {
+    std::string Name;
+    std::vector<std::string> Args;
+
+public:
+    PrototypeAST(const std::string& Name, std::vector<std::string> Args)
+    : Name(Name), Args((std::move(Args))) {}
+
+    Function* codegen();
+
+    const std::string& getName() const {
+        return Name;
+    }
+};
+
+
 Value* BinaryExprAST::codegen() {
     Value* L = LHS->codegen();
     Value* R = RHS->codegen();
