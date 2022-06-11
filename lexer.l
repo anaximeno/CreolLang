@@ -29,7 +29,7 @@ IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 "di"            return TOKENIZE(TDI);
 "ti"            return TOKENIZE(TTI);
 "pui"           return TOKENIZE(TPUI);
-"nkuantu"       return TOKENIZE(TNKUANTU);
+"inkuantu"       return TOKENIZE(TINKUANTU);
 "int"           return TOKENIZE(TYPE_INT);
 "double"        return TOKENIZE(TYPE_DOUBLE);
 "void"          return TOKENIZE(TYPE_VOID);

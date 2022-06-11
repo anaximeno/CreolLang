@@ -24,7 +24,7 @@
 %token <token>  TAND TOR
 %token <token> TYPE_INT TYPE_DOUBLE TYPE_BOOL TYPE_VOID
 %token <token> TDIVOLVI TDI TTI TPUI
-%token <token> TNKUANTU TSI TSINON
+%token <token> TINKUANTU TSI TSINON
 
 %left TPLUS TMINUS
 %left TMUL TDIV
@@ -123,7 +123,7 @@ Statements : Statements Statement
 Statement : SingleLineStatement ';'
           | FunctionDeclaration
           | DiTiLoop
-          | NkuantuLoop
+          | InkuantuLoop
           | SiStatement
           ;
 
@@ -139,7 +139,7 @@ DiTiLoopInitStatement : Type Identifier '=' Expression
                       | Identifier '=' Expression
                       ;
 
-NkuantuLoop : TNKUANTU Expression Block
+InkuantuLoop : TINKUANTU Expression Block
              ;
 
 SiStatement : TSI Expression Block
