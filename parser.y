@@ -43,9 +43,9 @@ Type : TYPE_INT
      | TYPE_BOOL
      ;
 
-Literal : TINTEGER
-        | TDOUBLE
-        | TBOOL
+Literal : TINTEGER /* TODO: Handle Here */
+        | TDOUBLE /* TODO: Handle Here */
+        | TBOOL /* TODO: Handle Here */
         ;
 
 Identifier : TIDENTIFIER
@@ -69,86 +69,86 @@ ComparativeOperator : TLT
                     | TNE
                     ;
 
-VariableDeclaration : Type Declarations
+VariableDeclaration : Type Declarations /* TODO: Handle Here */
                     ;
 
-Declarations : Declarations ',' Declaration
-             | Declaration
+Declarations : Declarations ',' Declaration /* TODO: Handle Here */
+             | Declaration /* TODO: Handle Here */
              ;
 
-Declaration : Identifier
-            | Identifier '=' Expression
+Declaration : Identifier /* TODO: Handle Here */
+            | Identifier '=' Expression /* TODO: Handle Here */
             ;
 
-Expression : Expression AritmeticOperator Expression
-           | Expression ComparativeOperator Expression
-           | Expression BooleanOperator Expression
-           | Identifier
-           | Identifier '(' FunctionArguments ')'
-           | Identifier '(' ')'
-           | Literal
+Expression : Expression AritmeticOperator Expression /* TODO: Handle Here */
+           | Expression ComparativeOperator Expression /* TODO: Handle Here */
+           | Expression BooleanOperator Expression /* TODO: Handle Here */
+           | Identifier /* TODO: Handle Here */
+           | Identifier '(' FunctionArguments ')' /* TODO: Handle Here */
+           | Identifier '(' ')' /* TODO: Handle Here */
+           | Literal /* TODO: Handle Here */
            ;
 
-FunctionArguments : FunctionArguments ',' Expression
-                  | Expression
+FunctionArguments : FunctionArguments ',' Expression /* TODO: Handle Here */
+                  | Expression /* TODO: Handle Here */
                   ;
 
-FunctionDeclaration : Type Identifier '(' FunctionParameters ')' Block
-                    | Type Identifier '(' NoFunctionParameters ')'
+FunctionDeclaration : Type Identifier '(' FunctionParameters ')' Block /* TODO: Handle Here */
+                    | Type Identifier '(' NoFunctionParameters ')' /* TODO: Handle Here */
                     ;
 
 NoFunctionParameters : %empty
                      | TYPE_VOID
                      ;
 
-FunctionParameters : FunctionParameters ',' Type Identifier
-                   | Type Identifier
+FunctionParameters : FunctionParameters ',' Type Identifier /* TODO: Handle Here */
+                   | Type Identifier /* TODO: Handle Here */
                    ;
 
-Block : '{' Statements '}'
-      | '{' Statements ReturnStatement '}'
+Block : '{' Statements '}' /* TODO: Handle Here */
+      | '{' Statements ReturnStatement '}' /* TODO: Handle Here */
       ;
 
-ReturnStatement : TDIVOLVI Expression ';'
-                | TDIVOLVI NoReturnValue ';'
+ReturnStatement : TDIVOLVI Expression ';' /* TODO: Handle Here */
+                | TDIVOLVI NoReturnValue ';' /* TODO: Handle Here */
                 ;
 
 NoReturnValue : NoFunctionParameters
               ;
 
-Statements : Statements Statement
-           | Statement
+Statements : Statements Statement /* TODO: Handle Here */
+           | Statement /* TODO: Handle Here */
            ;
 
-Statement : SingleLineStatement ';'
-          | FunctionDeclaration
-          | DiTiLoop
-          | InkuantuLoop
-          | SiStatement
+Statement : SingleLineStatement ';' /* TODO: Handle Here */
+          | FunctionDeclaration /* TODO: Handle Here */
+          | DiTiLoop /* TODO: Handle Here */
+          | InkuantuLoop /* TODO: Handle Here */
+          | SiStatement /* TODO: Handle Here */
           ;
 
-SingleLineStatement : VariableDeclaration
-                    | Declaration
-                    | Expression
+SingleLineStatement : VariableDeclaration /* TODO: Handle Here */
+                    | Declaration /* TODO: Handle Here */
+                    | Expression /* TODO: Handle Here */
                     ;
 
-DiTiLoop : TDI DiTiLoopInitStatement TTI Expression TPUI Declaration Block
+DiTiLoop : TDI DiTiLoopInitStatement TTI Expression TPUI Declaration Block /* TODO: Handle Here */
          ;
 
-DiTiLoopInitStatement : Type Identifier '=' Expression
-                      | Identifier '=' Expression
+DiTiLoopInitStatement : Type Identifier '=' Expression /* TODO: Handle Here */
+                      | Identifier '=' Expression /* TODO: Handle Here */
                       ;
 
-InkuantuLoop : TINKUANTU Expression Block
+InkuantuLoop : TINKUANTU Expression Block /* TODO: Handle Here */
              ;
 
-SiStatement : TSI Expression Block
-            | TSI Expression TSINON Block
-            | TSI Expression TSINON SiStatement
+SiStatement : TSI Expression Block /* TODO: Handle Here */
+            | TSI Expression TSINON Block /* TODO: Handle Here */
+            | TSI Expression TSINON SiStatement /* TODO: Handle Here */
             ;
 
-Program : %empty
-        | Statements
+Program : %empty /* TODO: Handle Here */
+        | Statements /* TODO: Handle Here */
         ;
 %%
 
