@@ -4,6 +4,7 @@
     #include <string>
     #include <cstdio>
     #include <iostream>
+    #include "parser.tab.h"
     #define YYERROR_VERBOSE 1
     #define SAVE_TOKEN yylval.string = new std::string(yytext, yyleng)
     #define SAVE_INTEGER yylval.integer = std::stoll(std::string(yytext, yyleng))
@@ -36,12 +37,12 @@ IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 "true"          SAVE_BOOLEAN; return TBOOL;
 "false"         SAVE_BOOLEAN; return TBOOL;
 {INTEGER}       SAVE_INTEGER; return TINTEGER;
-{DOUBLE}        SAVE_NUMBER; return TFLOAT;
+{DOUBLE}        SAVE_NUMBER; return TDOUBLE;
 {IDENTIFIER}    SAVE_TOKEN; return TIDENTIFIER;
-"+"             TOKENIZE_SYMBOL(PLUS); return TPLUS;
-"-"             TOKENIZE_SYMBOL(MINUS); return TMINUS;
-"*"             TOKENIZE_SYMBOL(MUL); return TMUL;
-"/"             TOKENIZE_SYMBOL(DIV); return TDIV;
+"+"             return TOKENIZE(TPLUS);
+"-"             return TOKENIZE(TMINUS);
+"*"             return TOKENIZE(TMUL);
+"/"             return TOKENIZE(TDIV);
 "("             return '(';
 ")"             return ')';
 "."             return '.';
