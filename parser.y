@@ -75,7 +75,7 @@ ComparativeOperator : TLT
 VariableDeclaration : Type Declarations
                     ;
 
-Declarations : Declarations ';' Declaration
+Declarations : Declarations ',' Declaration
              | Declaration
              ;
 
@@ -93,7 +93,7 @@ Expression : Expression AritmeticOperator Expression
            | Boolean
            ;
 
-FunctionArguments : FunctionArguments ';' Expression
+FunctionArguments : FunctionArguments ',' Expression
                   | Expression
                   ;
 
@@ -101,11 +101,11 @@ FunctionDeclaration : Type Identifier '(' FunctionParameters ')' Block
                     | Type Identifier '(' NoFunctionParameters ')'
                     ;
 
-NoFunctionParameters : /* empty */
+NoFunctionParameters : %empty
                      | TYPE_VOID
                      ;
 
-FunctionParameters : FunctionParameters ';' Type Identifier
+FunctionParameters : FunctionParameters ',' Type Identifier
                    | Type Identifier
                    ;
 

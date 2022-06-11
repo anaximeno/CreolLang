@@ -1,4 +1,4 @@
-%option noyywrap yylineno yycolumn
+%option noyywrap yylineno
 
 %{
     #include <string>
@@ -13,9 +13,9 @@
     int yyerror(char const*);
 %}
 
-INTEGER (+|-)?[0-9]+
+INTEGER [+|-]?[0-9]+
 
-DOUBLE (+|-)?[0-9]+\.[0-9]+
+DOUBLE [+|-]?[0-9]+\.[0-9]+
 
 IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 
@@ -59,6 +59,6 @@ IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 %%
 
 int yyerror(const char* s) {
-    printf("ERR %s in '%s' at line %d col %d\n", s, yytext, yylineno, yycolumn);
+    printf("ERR %s in '%s' at line %d\n", s, yytext, yylineno);
     return 1;
 }
