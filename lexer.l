@@ -6,11 +6,11 @@
     #include <iostream>
     #include "parser.tab.h"
     #define YYERROR_VERBOSE 1
-    #define SAVE_TOKEN yylval.string = new std::string(yytext, yyleng)
-    #define SAVE_INTEGER yylval.integer = std::stoll(std::string(yytext, yyleng))
-    #define SAVE_NUMBER yylval.number = std::stod(std::string(yytext, yyleng))
-    #define SAVE_BOOLEAN yylval.boolean = std::string(yytext, yyleng) == "sim" ? 1 : 0
-    #define TOKENIZE(sym) (yylval.token = sym)
+    #define SAVE_TOKEN     yylval.string  = new std::string(yytext, yyleng)
+    #define SAVE_INTEGER   yylval.integer = std::stoll(std::string(yytext, yyleng))
+    #define SAVE_NUMBER    yylval.number  = std::stod(std::string(yytext, yyleng))
+    #define SAVE_BOOLEAN   yylval.boolean = std::string(yytext, yyleng) == "sim" ? 1 : 0
+    #define TOKENIZE(sym) (yylval.token   = sym)
     int yyerror(char const*);
 %}
 
@@ -29,7 +29,7 @@ IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 "di"            return TOKENIZE(TDI);
 "ti"            return TOKENIZE(TTI);
 "pui"           return TOKENIZE(TPUI);
-"inkuantu"       return TOKENIZE(TINKUANTU);
+"inkuantu"      return TOKENIZE(TINKUANTU);
 "int"           return TOKENIZE(TYPE_INT);
 "double"        return TOKENIZE(TYPE_DOUBLE);
 "void"          return TOKENIZE(TYPE_VOID);

@@ -15,9 +15,9 @@
 }
 
 /* terminal symbols */
-%token <string> TIDENTIFIER
+%token <string>  TIDENTIFIER
 %token <integer> TINTEGER
-%token <number> TDOUBLE
+%token <number>  TDOUBLE
 %token <boolean> TBOOL
 %token <token>  TPLUS TMINUS TMUL TDIV
 %token <token>  TEQ  TNE  TLT TLE TGT TGE
