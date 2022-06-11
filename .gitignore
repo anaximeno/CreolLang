@@ -2,3 +2,5 @@
 *.tab.*
 *.out
 *.o
+*.output
+.vscode/*
