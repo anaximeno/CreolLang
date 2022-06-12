@@ -88,6 +88,8 @@ MultipleVariablesDeclaration : Type VariablesList /* TODO: Handle Here */
 
 VariablesList : VariablesList ',' Identifier /* TODO: Handle Here */
               | VariablesList ',' VariableAssignment /* TODO: Handle Here */
+              | VariableAssignment
+              | Identifier
               ;
 
 VariableAssignment : Identifier '=' Expression /* TODO: Handle Here */
