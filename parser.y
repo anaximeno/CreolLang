@@ -124,14 +124,6 @@ FunctionCall : Identifier '(' FunctionArguments ')' /* TODO: Handle Here */
 
 /// General Statements
 
-Block : '{' Statements '}' /* TODO: Handle Here */
-      | '{' Statements ReturnStatement '}' /* TODO: Handle Here */
-      ;
-
-ReturnStatement : TDIVOLVI Expression ';' /* TODO: Handle Here */
-                | TDIVOLVI ';' /* TODO: Handle Here */
-                ;
-
 Statements : Statements Statement /* TODO: Handle Here */
            | Statement /* TODO: Handle Here */
            ;
@@ -146,7 +138,16 @@ Statement : SingleLineStatement ';' /* TODO: Handle Here */
 SingleLineStatement : VariableDeclaration /* TODO: Handle Here */
                     | VariableAssignment /* TODO: Handle Here */
                     | Expression /* TODO: Handle Here */
+                    | ReturnStatement /* TODO: Handle Here */
                     ;
+
+ReturnStatement : TDIVOLVI Expression /* TODO: Handle Here */
+                | TDIVOLVI /* TODO: Handle Here */
+                ;
+
+Block : '{' Statements '}' /* TODO: Handle Here */
+      ;
+
 
 /// Loops
 
