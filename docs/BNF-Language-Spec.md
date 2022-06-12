@@ -130,6 +130,9 @@ ReturnStatement ::= "divolvi" Expression ';'
 * http://gnuu.org/2009/09/18/writing-your-own-toy-compiler/
 * https://github.com/lsegal/my_toy_compiler
 * https://llvm.org
+* https://github.com/xkbeyer/liquid
+* https://kuree.gitbooks.io/the-go-programming-language-report/content/18/text.html
+* https://cs.wmich.edu/~gupta/teaching/cs4850/sumII06/The%20syntax%20of%20C%20in%20Backus-Naur%20form.htm
 
 # License
 
@@ -137,4 +140,4 @@ The BNF of the Creoline programming language is released under the [MIT License]
 
 # Note
 
-***It was used a modified version of the Backus-Naus Form language to describe this language.***
+***A modified version of the Backus-Naus Form language was used to describe this language.***
