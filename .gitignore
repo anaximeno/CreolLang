@@ -3,4 +3,9 @@
 *.out
 *.o
 *.output
+rules/*.yy.*
+rules/*.tab.*
+rules/*.out
+rules/*.o
+rules/*.output
 .vscode/*
