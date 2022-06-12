@@ -114,3 +114,30 @@ llvm::Function* creol::PrototypeAST::codegen(llvm::LLVMContext& TheContext) {
 const std::string& creol::PrototypeAST::getName() const {
     return Name;
 }
+
+llvm::Function* creol::FunctionAST::codegen(llvm::LLVMContext& TheContext) {
+    llvm::Function* TheFunction = creol::TheModule->getFunction(Proto->getName());
+    TheFunction = TheFunction ? TheFunction : Proto->codegen(TheContext);
+
+    if (!TheFunction) {
+        creol::LogErrorV("Function could not be defined");
+        return nullptr;
+    } else if (!TheFunction->empty()) {
+        creol::LogErrorV("Function can not be redefined");
+        return nullptr;
+    }
+
+    llvm::BasicBlock* BasicBlock = llvm::BasicBlock::Create(
+        TheContext, "entry", TheFunction
+    );
+
+    creol::TheBuilder.SetInsertPoint(BasicBlock);
+
+    creol::NamedValues.clear();
+
+    for (auto& arg : TheFunction->args()) {
+        creol::NamedValues[arg.getName()];
+    }
+
+    return TheFunction;
+}
