@@ -11,7 +11,7 @@ C or Golang.
 As noted above, the main inspirations for the syntax of this programming language were C and Go, but other
 languages as Rust and Liquid played a good role when designing it.
 
-For more concrete specifications about the language read the [BNF Language Spec](./BNF-Language-Spec.md).
+For more concrete specifications about the language read the [BNF Language Spec](./docs/BNF-Language-Spec.md).
 
 <!--
 ## Visuals
