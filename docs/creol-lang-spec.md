@@ -1,6 +1,6 @@
-# Creoline Language Specification
+# CreolLang Language Specification
 
-Language specifications for the Creoline programming language.
+Language specifications for the CreolLang programming language.
 
 ## Sections
 
@@ -132,8 +132,8 @@ EmptyOrVoid ::= /* empty */
 
 # License
 
-The BNF of the Creoline programming language is released under the [MIT License](LICENSE).
+The specification of the CreolLang programming language is released under the [MIT License](LICENSE).
 
 # Note
 
-***A modified version of the Backus-Naus Form language was used to describe this language.***
+***A modified version of the Backus-Naus Form language was used for describing this language.***
