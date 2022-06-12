@@ -7,7 +7,7 @@
 // Compile using:
 // $ clang++ `llvm-config --libs core --ldflags --cppflags --system-libs ` -std=c++17 -g test.cpp -o test
 //
-// !NOTE: llvm, clang and its basics modules should be installed first!
+// !NOTE: llvm, clang and its basics modules must be installed first!
 
 int main(int argc, char* argv[]) {
     creol::InitializeModule("Testing Module");
@@ -21,6 +21,7 @@ int main(int argc, char* argv[]) {
     Args.push_back("b");
 
     Proto = std::make_unique<creol::PrototypeAST>("int", "testFunc", Args);
+
     Body = std::unique_ptr<creol::ExprAST>(
         (creol::ExprAST*) new creol::IntLiteralExprAST(9)
     );
