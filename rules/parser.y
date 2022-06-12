@@ -152,7 +152,7 @@ Block : '{' Statements '}' /* TODO: Handle Here */
 /// Loops
 
 DiLoop : TDI SingleVariableDeclaration TINKUANTU Expression TPUI VariableAssignment Block /* TODO: Handle Here */
-         ;
+       ;
 
 InkuantuLoop : TINKUANTU Expression Block /* TODO: Handle Here */
              ;
@@ -175,3 +175,6 @@ void yyerror(const char* err) {
     std::exit(1);
 }
 
+void main(int argc, char** argv) {
+    yyparse();
+}
