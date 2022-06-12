@@ -141,6 +141,10 @@ Value* BinaryExprAST::codegen() {
         return Builder.CreateICmpNE(L, R, "netmp");
     } else if (Op == "==") {
         return Builder.CreateICmpEQ(L, R, "eqtmp");
+    } else if (Op == "&&") {
+        return Builder.CreateAnd(L, R, "andtmp");
+    } else if (Op == "||") {
+        return Builder.CreateOr(L, R, "ortmp");
     } else {
         return LogErrorV("invalid binary operator!");
     }
