@@ -34,6 +34,18 @@ namespace creol {
 
         const std::string& getName() const;
     };
+
+    /// FunctionAST - This class represents a function definition itself.
+    class FunctionAST : public ExprAST {
+        std::unique_ptr<PrototypeAST> Proto;
+        std::unique_ptr<ExprAST> Body;
+    
+    public:
+        FunctionAST(std::unique_ptr<PrototypeAST> Proto, std::unique_ptr<ExprAST> Body)
+        : Proto(std::move(Proto)), Body(std::move(Body)) {}
+
+        llvm::Function* codegen(llvm::LLVMContext& TheContext);
+    };
 };
 
 llvm::Value* creol::CallExprAST::codegen(llvm::LLVMContext& TheContext) {
