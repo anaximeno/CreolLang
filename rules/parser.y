@@ -2,7 +2,6 @@
     #include <cstdio>
     #include <cstdlib>
     #include <iostream>
-    #include "../include/creol.hpp"
     extern int yylex();
     void yyerror(const char* err);
 %}
@@ -11,21 +10,21 @@
     std::string* string;
     long long integer;
     float floatingp;
-    int boolean;
+    unsigned short boolean;
     int token;
 }
 
 /* terminal symbols */
-%token <string>    TIDENTIFIER
-%token <integer>   TINTEGER
-%token <floatingp>  TFLOAT
-%token <boolean>   TBOOL
-%token <token>     TPLUS TMINUS TMUL TDIV
-%token <token>     TEQ  TNE  TLT TLE TGT TGE
-%token <token>     TAND TOR
-%token <token>     TYPE_INT TYPE_FLOAT TYPE_BOOL TYPE_VOID
-%token <token>     TDIVOLVI TDI TPUI
-%token <token>     TINKUANTU TSI TSINON
+%token<string> TIDENTIFIER
+%token<integer>TINTEGER
+%token<floatingp> TFLOAT
+%token<boolean> TBOOL
+%token<token>  TPLUS TMINUS TMUL TDIV
+%token<token>  TEQ  TNE  TLT TLE TGT TGE
+%token<token>  TAND TOR
+%token<string> TYPE_INT TYPE_FLOAT TYPE_BOOL TYPE_VOID
+%token<token>  TDIVOLVI TDI TPUI
+%token<token>  TINKUANTU TSI TSINON
 
 %left TPLUS TMINUS
 %left TMUL TDIV
@@ -38,8 +37,7 @@
 
 %%
 
-Program : %empty /* TODO: Handle Here */
-        | Statements /* TODO: Handle Here */
+Program : Statements /* TODO: Handle Here */
         ;
 
 Type : TYPE_INT
@@ -93,7 +91,7 @@ VariablesList : VariablesList ',' Identifier /* TODO: Handle Here */
               | Identifier
               ;
 
-VariableAssignment : Identifier '=' Expression /* TODO: Handle Here */ { printf("Variable Assignment!\n"); }
+VariableAssignment : Identifier '=' Expression /* TODO: Handle Here */
                    ;
 
 /// Expressions
@@ -129,17 +127,19 @@ Statements : Statements Statement /* TODO: Handle Here */
            | Statement /* TODO: Handle Here */
            ;
 
-Statement : SingleLineStatement ';' /* TODO: Handle Here */
+Statement : SingleLineStatement /* TODO: Handle Here */
           | FunctionDeclaration /* TODO: Handle Here */
           | DiLoop /* TODO: Handle Here */
           | InkuantuLoop /* TODO: Handle Here */
           | SiStatement /* TODO: Handle Here */
           ;
 
-SingleLineStatement : VariableDeclaration /* TODO: Handle Here */
-                    | VariableAssignment /* TODO: Handle Here */
-                    | Expression /* TODO: Handle Here */
-                    | ReturnStatement /* TODO: Handle Here */
+SingleLineStatement : VariableDeclaration ';' /* TODO: Handle Here */
+                    | VariableAssignment ';' /* TODO: Handle Here */
+                    | Expression ';' /* TODO: Handle Here */
+                    | ReturnStatement ';'/* TODO: Handle Here */
+                    | %empty    /* TODO: Handle Here */ 
+                    | ';'
                     ;
 
 ReturnStatement : TDIVOLVI Expression /* TODO: Handle Here */
@@ -152,8 +152,12 @@ Block : '{' Statements '}' /* TODO: Handle Here */
 
 /// Loops
 
-DiLoop : TDI SingleVariableDeclaration TINKUANTU Expression TPUI VariableAssignment Block /* TODO: Handle Here */
+DiLoop : TDI DiLoopStart TINKUANTU Expression TPUI VariableAssignment Block /* TODO: Handle Here */
        ;
+
+DiLoopStart : SingleVariableDeclaration
+            | VariableAssignment
+            ;
 
 InkuantuLoop : TINKUANTU Expression Block /* TODO: Handle Here */
              ;
