@@ -49,6 +49,7 @@ IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 ";"             return ';';
 "{"             return '{';
 "}"             return '}';
+"="             return '=';
 "=="            return TOKENIZE(TEQ);
 "!="            return TOKENIZE(TNE);
 ">"             return TOKENIZE(TGT);
