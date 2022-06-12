@@ -1,0 +1,5 @@
+int adiciona(int a, int b) {
+    divolvi a + b;
+}
+
+int x = adiciona(8, 9);
