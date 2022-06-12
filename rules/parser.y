@@ -9,22 +9,22 @@
 %union {
     std::string* string;
     long long integer;
-    double number;
+    float floating;
     int boolean;
     int token;
 }
 
 /* terminal symbols */
-%token <string>  TIDENTIFIER
-%token <integer> TINTEGER
-%token <number>  TDOUBLE
-%token <boolean> TBOOL
-%token <token>  TPLUS TMINUS TMUL TDIV
-%token <token>  TEQ  TNE  TLT TLE TGT TGE
-%token <token>  TAND TOR
-%token <token> TYPE_INT TYPE_DOUBLE TYPE_BOOL TYPE_VOID
-%token <token> TDIVOLVI TDI TPUI
-%token <token> TINKUANTU TSI TSINON
+%token <string>    TIDENTIFIER
+%token <integer>   TINTEGER
+%token <floating>  TFLOAT
+%token <boolean>   TBOOL
+%token <token>     TPLUS TMINUS TMUL TDIV
+%token <token>     TEQ  TNE  TLT TLE TGT TGE
+%token <token>     TAND TOR
+%token <token>     TYPE_INT TYPE_FLOAT TYPE_BOOL TYPE_VOID
+%token <token>     TDIVOLVI TDI TPUI
+%token <token>     TINKUANTU TSI TSINON
 
 %left TPLUS TMINUS
 %left TMUL TDIV
@@ -42,13 +42,13 @@ Program : %empty /* TODO: Handle Here */
         ;
 
 Type : TYPE_INT
-     | TYPE_DOUBLE
+     | TYPE_FLOAT
      | TYPE_VOID
      | TYPE_BOOL
      ;
 
 Literal : TINTEGER /* TODO: Handle Here */
-        | TDOUBLE /* TODO: Handle Here */
+        | TFLOAT /* TODO: Handle Here */
         | TBOOL /* TODO: Handle Here */
         ;
 

@@ -16,7 +16,7 @@
 
 INTEGER [+|-]?[0-9]+
 
-DOUBLE [+|-]?[0-9]+\.[0-9]+
+FLOAT [+|-]?[0-9]+\.[0-9]+
 
 IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 
@@ -30,13 +30,13 @@ IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 "pui"           return TOKENIZE(TPUI);
 "inkuantu"      return TOKENIZE(TINKUANTU);
 "int"           return TOKENIZE(TYPE_INT);
-"double"        return TOKENIZE(TYPE_DOUBLE);
+"float"         return TOKENIZE(TYPE_FLOAT);
 "void"          return TOKENIZE(TYPE_VOID);
 "bool"          return TOKENIZE(TYPE_BOOL);
 "sim"           SAVE_BOOLEAN; return TBOOL;
 "nau"           SAVE_BOOLEAN; return TBOOL;
 {INTEGER}       SAVE_INTEGER; return TINTEGER;
-{DOUBLE}        SAVE_NUMBER; return TDOUBLE;
+{FLOAT}         SAVE_NUMBER; return TFLOAT;
 {IDENTIFIER}    SAVE_TOKEN; return TIDENTIFIER;
 "+"             return TOKENIZE(TPLUS);
 "-"             return TOKENIZE(TMINUS);
