@@ -27,7 +27,6 @@ IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 "sinon"         return TOKENIZE(TSINON);
 "divolvi"       return TOKENIZE(TDIVOLVI);
 "di"            return TOKENIZE(TDI);
-"ti"            return TOKENIZE(TTI);
 "pui"           return TOKENIZE(TPUI);
 "inkuantu"      return TOKENIZE(TINKUANTU);
 "int"           return TOKENIZE(TYPE_INT);
@@ -59,8 +58,3 @@ IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 .               printf("line %d, len %d Unknown token %s !", yylineno, yyleng, yytext); yyterminate();
 
 %%
-
-int yyerror(const char* s) {
-    printf("ERR %s in '%s' at line %d\n", s, yytext, yylineno);
-    return 1;
-}
