@@ -2,118 +2,139 @@
 
 Language specifications for the Creoline programming language.
 
-It was based on the some programming languages like **C**, **Go**, **Rust**, and also, the **Cape Verdian Creole**.
+## Program
+
+```
+Program ::= /* empty */
+         |  Statements
+```
 
 ## Variable Declaration
 
-```html
-<VariableDeclaration> ::= <Type> <Declarations>
+```
+VariableDeclaration ::= SingleVariableDeclaration
+                     |  MultipleVariablesDeclaration
 
-<Declarations> ::= <Declarations> ',' <Declaration>
-                | <Declaration>
+SingleVariableDeclaration ::= Type Identifier
+                           |  Type VariableAssignment
 
-<Declaration> ::= <Identifier>
-               | <Identifier> '=' <Expression>
+MultipleVariablesDeclaration ::= Type VariablesList
+
+VariablesList ::= VariablesList ',' Identifier
+               |  VariablesList ',' VariableAssignment
+
+VariableAssignment ::= Identifier '=' Expression
 ```
 
 ## Expressions
 
-```html
-<Expression> ::= <Expression> <AritmeticOperator> <Expression>
-              |  <Expression> <ComparativeOperator> <Expression>
-              |  <Expression> <BooleanOperator> <Expression>
-              |  <Identifier>
-              |  <Number>
-              |  <Identifier> '(' <FunctionArguments> ')'
-              |  <Identifier> '(' ')'
+```DiTiLoopInitStatement ::= Type Identifier '=' Expression
+                        | Identifier '=' Expression
+
+Expression ::= Expression AritmeticOperator Expression
+            |  Expression ComparativeOperator Expression
+            |  Expression BooleanOperator Expression
+            |  FunctionCall
+            |  Identifier
+            |  Literal
 ```
 
 ## Basic Binary Operations
-```html
-<AritmeticOperator> ::= '+' | '-' | '*' | '/'
+```
+AritmeticOperator ::= '+'
+                   |  '-'
+                   |  '*'
+                   |  '/'
 
-<ComparativeOperator> ::= '<' | '<=' | '>' | '>=' | '==' | '!='
+ComparativeOperator ::= '<'
+                     |  '<='
+                     |  '>'
+                     |  '>='
+                     |  '==' 
+                     |  '!='
 
-<BooleanOperator> ::= '&&' | '||' 
+BooleanOperator ::= '&&'
+                 |  '||' 
 ```
 
 ## Function Staments
 
-```html
-<FunctionArguments> ::= <FunctionArguments> ',' <Expression>
-                     |  <Expression>
+```
+FunctionArguments ::= FunctionArguments ',' Expression
+                   |  Expression
 
-<FunctionDeclaration> ::= <Type> <Identifier> '('<FunctionParameters>')' <Block>
-                       |  <Type> <Identifier> '(' <NoFunctionParameters> ')' <Block>
+FunctionDeclaration ::= Type Identifier '('FunctionParameters')' Block
+                     |  Type Identifier '(' EmptyOrVoid ')' Block
 
-<NoFunctionParamaters> ::=  | void
+FunctionParameters ::= FunctionParameters ',' Type Identifier
+                    |  Type Identifier
 
-<FunctionParameters> ::= <FunctionParameters> ',' <Type> <Identifier>
-                      |  <Type> <Identifier> 
+FunctionCall ::= Identifier '(' FunctionArguments ')'
+              |  Identifier '(' ')'
 ```
 
 ## Block Statement
-```html
-
-<Block> ::= '{' <Statements> '}' | '{' <Statements> <ReturnStatement> '}'
-
 ```
 
-## Return Statement
-
-```html
-
-<ReturnStatement> ::= "divolvi" <Expression> ';'
-                   | "divolvi" <NoReturnValue> ';'
-
-<NoReturnValue> ::= | void
+Block ::= '{' Statements '}'
+       |  '{' Statements ReturnStatement '}'
 
 ```
 
 ## General Statements
 
-```html
-<Statements> ::= <Statements> <Statement>
-              | <Statement>
+```
+Statements ::= Statements Statement
+            |  Statement
 
-<Statement> ::= <SingleLineStatement> ';'
-             |  <FunctionDeclaration>
-             |  <DiTiLoop>
-             |  <InkuatuLoop>
-             |  <SiStatement>
+Statement ::= SingleLineStatement ';'
+           |  FunctionDeclaration
+           |  DiLoop
+           |  InkuatuLoop
+           |  SiStatement
 
-<SingleLineStatement> ::= <VariableDeclaration>
-                       |  <Declaration>
-                       |  <Expression>
+SingleLineStatement ::= VariableDeclaration
+                     |  Declaration
+                     |  Expression
 
 ```
 
 ## Loop Statements
 
-```html
-<DiTiLoop> ::= "di" <DiTiLoopInitStatement> "ti" <Expression> "pui" <Declaration> <Block>
+```
+DiLoop ::= "di" SingleVariableDeclaration "inkuantu" Expression "pui" VariableAssignment Block
 
-<DiTiLoopInitStatement> ::= <Type> <Identifier> '=' <Expression>
-                        | <Identifier> '=' <Expression>
-
-
-<NkuantuLoop> ::= "nkuantu" <Expression> <Block>
+InkuantuLoop ::= "inkuantu" Expression Block
 ```
 
 ## If Statements
 
-```html
-<SiStatement> ::= "si" <Expression> <Block>
-               |  "si" <Expression> <Block> "sinon" <Block>
-               |  "si" <Expression> <Block> "sinon" <SiStatement>
+```
+SiStatement ::=   "si" Expression Block
+               |  "si" Expression Block "sinon" Block
+               |  "si" Expression Block "sinon" SiStatement
 ```
 
-### References
+## Other
+
+```
+EmptyOrVoid ::= /* empty */
+             | void
+
+ReturnStatement ::= "divolvi" Expression ';'
+                 |  "divolvi" EmptyOrVoid ';'
+```
+
+# References
 
 * http://gnuu.org/2009/09/18/writing-your-own-toy-compiler/
 * https://github.com/lsegal/my_toy_compiler
 * https://llvm.org
 
-## License
+# License
 
 The BNF of the Creoline programming language is released under the [MIT License](LICENSE).
+
+# Note
+
+***It was used a modified version of the Backus-Naus Form language to describe this language.***
