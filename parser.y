@@ -23,7 +23,7 @@
 %token <token>  TEQ  TNE  TLT TLE TGT TGE
 %token <token>  TAND TOR
 %token <token> TYPE_INT TYPE_DOUBLE TYPE_BOOL TYPE_VOID
-%token <token> TDIVOLVI TDI TTI TPUI
+%token <token> TDIVOLVI TDI TPUI
 %token <token> TINKUANTU TSI TSINON
 
 %left TPLUS TMINUS
@@ -36,6 +36,10 @@
 /* non terminal symbols */
 
 %%
+
+Program : %empty /* TODO: Handle Here */
+        | Statements /* TODO: Handle Here */
+        ;
 
 Type : TYPE_INT
      | TYPE_DOUBLE
@@ -69,52 +73,62 @@ ComparativeOperator : TLT
                     | TNE
                     ;
 
-VariableDeclaration : Type Declarations /* TODO: Handle Here */
+/// Variables
+
+VariableDeclaration : SingleVariableDeclaration /* TODO: Handle Here */
+                    | MultipleVariablesDeclaration /* TODO: Handle Here */
                     ;
 
-Declarations : Declarations ',' Declaration /* TODO: Handle Here */
-             | Declaration /* TODO: Handle Here */
-             ;
+SingleVariableDeclaration : Type Identifier /* TODO: Handle Here */
+                          | Type VariableAssignment /* TODO: Handle Here */
+                          ;
 
-Declaration : Identifier /* TODO: Handle Here */
-            | Identifier '=' Expression /* TODO: Handle Here */
-            ;
+MultipleVariablesDeclaration : Type VariablesList /* TODO: Handle Here */
+                             ;
+
+VariablesList : VariablesList ',' Identifier /* TODO: Handle Here */
+              | VariablesList ',' VariableAssignment /* TODO: Handle Here */
+              ;
+
+VariableAssignment : Identifier '=' Expression /* TODO: Handle Here */
+                   ;
+
+/// Expressions
 
 Expression : Expression AritmeticOperator Expression /* TODO: Handle Here */
            | Expression ComparativeOperator Expression /* TODO: Handle Here */
            | Expression BooleanOperator Expression /* TODO: Handle Here */
+           | FunctionCall /* TODO: Handle Here */
            | Identifier /* TODO: Handle Here */
-           | Identifier '(' FunctionArguments ')' /* TODO: Handle Here */
-           | Identifier '(' ')' /* TODO: Handle Here */
            | Literal /* TODO: Handle Here */
            ;
+
+/// Functions
+
+FunctionDeclaration : Type Identifier '(' FunctionParameters ')' Block /* TODO: Handle Here */
+                    | Type Identifier '(' EmptyOrVoid ')' /* TODO: Handle Here */
+                    ;
+
+FunctionParameters : FunctionParameters ',' Type Identifier /* TODO: Handle Here */
+                   | Type Identifier /* TODO: Handle Here */
+                   ;
 
 FunctionArguments : FunctionArguments ',' Expression /* TODO: Handle Here */
                   | Expression /* TODO: Handle Here */
                   ;
 
-FunctionDeclaration : Type Identifier '(' FunctionParameters ')' Block /* TODO: Handle Here */
-                    | Type Identifier '(' NoFunctionParameters ')' /* TODO: Handle Here */
-                    ;
+FunctionCall : Identifier '(' FunctionArguments ')' /* TODO: Handle Here */
+             | Identifier '(' ')' /* TODO: Handle Here */
 
-NoFunctionParameters : %empty
-                     | TYPE_VOID
-                     ;
-
-FunctionParameters : FunctionParameters ',' Type Identifier /* TODO: Handle Here */
-                   | Type Identifier /* TODO: Handle Here */
-                   ;
+/// General Statements
 
 Block : '{' Statements '}' /* TODO: Handle Here */
       | '{' Statements ReturnStatement '}' /* TODO: Handle Here */
       ;
 
 ReturnStatement : TDIVOLVI Expression ';' /* TODO: Handle Here */
-                | TDIVOLVI NoReturnValue ';' /* TODO: Handle Here */
+                | TDIVOLVI ';' /* TODO: Handle Here */
                 ;
-
-NoReturnValue : NoFunctionParameters
-              ;
 
 Statements : Statements Statement /* TODO: Handle Here */
            | Statement /* TODO: Handle Here */
@@ -122,22 +136,20 @@ Statements : Statements Statement /* TODO: Handle Here */
 
 Statement : SingleLineStatement ';' /* TODO: Handle Here */
           | FunctionDeclaration /* TODO: Handle Here */
-          | DiTiLoop /* TODO: Handle Here */
+          | DiLoop /* TODO: Handle Here */
           | InkuantuLoop /* TODO: Handle Here */
           | SiStatement /* TODO: Handle Here */
           ;
 
 SingleLineStatement : VariableDeclaration /* TODO: Handle Here */
-                    | Declaration /* TODO: Handle Here */
+                    | VariableAssignment /* TODO: Handle Here */
                     | Expression /* TODO: Handle Here */
                     ;
 
-DiTiLoop : TDI DiTiLoopInitStatement TTI Expression TPUI Declaration Block /* TODO: Handle Here */
-         ;
+/// Loops
 
-DiTiLoopInitStatement : Type Identifier '=' Expression /* TODO: Handle Here */
-                      | Identifier '=' Expression /* TODO: Handle Here */
-                      ;
+DiLoop : TDI SingleVariableDeclaration TINKUANTU Expression TPUI VariableAssignment Block /* TODO: Handle Here */
+         ;
 
 InkuantuLoop : TINKUANTU Expression Block /* TODO: Handle Here */
              ;
@@ -147,9 +159,12 @@ SiStatement : TSI Expression Block /* TODO: Handle Here */
             | TSI Expression TSINON SiStatement /* TODO: Handle Here */
             ;
 
-Program : %empty /* TODO: Handle Here */
-        | Statements /* TODO: Handle Here */
-        ;
+/// Other
+
+EmptyOrVoid : %empty
+            | TYPE_VOID
+            ;
+
 %%
 
 void yyerror(const char* err) {
