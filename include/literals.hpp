@@ -13,7 +13,7 @@ namespace creol {
     public:
         IntLiteralExprAST(int Val)
         : Val(Val) {}
-        llvm::Value* codegen(llvm::LLVMContext& TheContext) override;
+        llvm::Value* codegen() override;
     };
 
     /// FloatLiteralExprAST - represents a floting point literal value
@@ -23,7 +23,7 @@ namespace creol {
     public:
         FloatLiteralExprAST(double Val)
         : Val(Val) {}
-        llvm::Value* codegen(llvm::LLVMContext& TheContext) override;
+        llvm::Value* codegen() override;
     };
 
     /// BoolLiteralExprAST - represents a boolean literal value
@@ -33,18 +33,18 @@ namespace creol {
     public:
         BoolLiteralExprAST(unsigned short Val)
         : Val(Val) {}
-        llvm::Value* codegen(llvm::LLVMContext& TheContext) override;
+        llvm::Value* codegen() override;
     };
 };
 
-llvm::Value* creol::IntLiteralExprAST::codegen(llvm::LLVMContext& TheContext) {
-    return llvm::ConstantInt::get(TheContext, llvm::APSInt(Val, false));
+llvm::Value* creol::IntLiteralExprAST::codegen() {
+    return llvm::ConstantInt::get(creol::TheContext, llvm::APSInt(Val, false));
 }
 
-llvm::Value* creol::FloatLiteralExprAST::codegen(llvm::LLVMContext& TheContext) {
-    return llvm::ConstantFP::get(TheContext, llvm::APFloat(Val));
+llvm::Value* creol::FloatLiteralExprAST::codegen() {
+    return llvm::ConstantFP::get(creol::TheContext, llvm::APFloat(Val));
 }
 
-llvm::Value* creol::BoolLiteralExprAST::codegen(llvm::LLVMContext& TheContext) {
-    return llvm::ConstantInt::get(TheContext, llvm::APSInt(Val));
+llvm::Value* creol::BoolLiteralExprAST::codegen() {
+    return llvm::ConstantInt::get(creol::TheContext, llvm::APSInt(Val));
 }

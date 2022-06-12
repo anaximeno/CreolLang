@@ -11,7 +11,7 @@ namespace creol {
         VariableExprAST(const std::string& TypeName, const std::string& Name)
         : TypeName(TypeName), Name(Name) {}
 
-        llvm::Value* codegen(llvm::LLVMContext& TheContext) override;
+        llvm::Value* codegen() override;
 
         const std::string& getName() const;
 

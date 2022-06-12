@@ -16,7 +16,7 @@ namespace creol {
         CallExprAST(const std::string& Callee, std::vector<std::unique_ptr<ExprAST>> Args)
         : Callee(Callee), Args(std::move(Args)) {}
 
-        llvm::Value* codegen(llvm::LLVMContext& TheContext) override;
+        llvm::Value* codegen() override;
     };
     
     /// PrototypeAST - This class represents the "prototype" for a function,
@@ -30,7 +30,7 @@ namespace creol {
         PrototypeAST(const std::string& TypeName, const std::string& Name, std::vector<std::string> Args)
         : TypeName(TypeName), Name(Name), Args(std::move(Args)) {}
 
-        llvm::Function* codegen(llvm::LLVMContext& TheContext) override;
+        llvm::Function* codegen() override;
 
         const std::string& getName() const;
     };
@@ -44,11 +44,11 @@ namespace creol {
         FunctionAST(std::unique_ptr<PrototypeAST> Proto, std::unique_ptr<ExprAST> Body)
         : Proto(std::move(Proto)), Body(std::move(Body)) {}
 
-        llvm::Function* codegen(llvm::LLVMContext& TheContext);
+        llvm::Function* codegen();
     };
 };
 
-llvm::Value* creol::CallExprAST::codegen(llvm::LLVMContext& TheContext) {
+llvm::Value* creol::CallExprAST::codegen() {
     llvm::Function* CalleeFun = creol::TheModule->getFunction(Callee);
 
     if (!CalleeFun) {
@@ -59,7 +59,7 @@ llvm::Value* creol::CallExprAST::codegen(llvm::LLVMContext& TheContext) {
         std::vector<llvm::Value*> ArgsValues;
 
         for (unsigned i = 0 ; i < Args.size() ; ++i) {
-            ArgsValues.push_back(Args[i]->codegen(TheContext));
+            ArgsValues.push_back(Args[i]->codegen());
 
             if (!ArgsValues.back()) {
                 return nullptr;
@@ -70,28 +70,30 @@ llvm::Value* creol::CallExprAST::codegen(llvm::LLVMContext& TheContext) {
     }
 }
 
-llvm::Function* creol::PrototypeAST::codegen(llvm::LLVMContext& TheContext) {
+llvm::Function* creol::PrototypeAST::codegen() {
     // info: Currently only integer types arguments are received by the funtions
     // TODO: divesify arguments
-    std::vector<llvm::Type*> Arguments(Args.size(), llvm::Type::getInt32Ty(TheContext));
+    std::vector<llvm::Type*> Arguments(
+        Args.size(), llvm::Type::getInt32Ty(creol::TheContext)
+    );
 
     llvm::FunctionType* FunType = nullptr;
 
     if (TypeName == "int") {
         FunType = llvm::FunctionType::get(
-            llvm::Type::getInt32Ty(TheContext), Arguments, false
+            llvm::Type::getInt32Ty(creol::TheContext), Arguments, false
         );
     } else if (TypeName == "float") {
         FunType = llvm::FunctionType::get(
-            llvm::Type::getFloatTy(TheContext), Arguments, false
+            llvm::Type::getFloatTy(creol::TheContext), Arguments, false
         );
     } else if (TypeName == "bool") {
         FunType = llvm::FunctionType::get(
-            llvm::Type::getInt1Ty(TheContext), Arguments, false
+            llvm::Type::getInt1Ty(creol::TheContext), Arguments, false
         );
     } else if (TypeName == "void") {
         FunType = llvm::FunctionType::get(
-            llvm::Type::getVoidTy(TheContext), Arguments, false
+            llvm::Type::getVoidTy(creol::TheContext), Arguments, false
         );
     } else {
         LogErrorV("Unknown function type!");
@@ -115,9 +117,9 @@ const std::string& creol::PrototypeAST::getName() const {
     return Name;
 }
 
-llvm::Function* creol::FunctionAST::codegen(llvm::LLVMContext& TheContext) {
+llvm::Function* creol::FunctionAST::codegen() {
     llvm::Function* TheFunction = creol::TheModule->getFunction(Proto->getName());
-    TheFunction = TheFunction ? TheFunction : Proto->codegen(TheContext);
+    TheFunction = TheFunction ? TheFunction : Proto->codegen();
 
     if (!TheFunction) {
         creol::LogErrorV("Function could not be defined");

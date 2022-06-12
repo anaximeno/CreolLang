@@ -20,13 +20,13 @@ namespace creol {
         : Op(Op), LHS(std::move(LHS)),
           RHS(std::move(RHS)) {}
         
-        llvm::Value* codegen(llvm::LLVMContext& TheContext) override;
+        llvm::Value* codegen() override;
     };
 };
 
-llvm::Value* creol::BinaryExprAST::codegen(llvm::LLVMContext& TheContext) {    
-    llvm::Value* L = LHS->codegen(TheContext);
-    llvm::Value* R = RHS->codegen(TheContext);
+llvm::Value* creol::BinaryExprAST::codegen() {    
+    llvm::Value* L = LHS->codegen();
+    llvm::Value* R = RHS->codegen();
 
     if (!L || !R) {
         return nullptr;
