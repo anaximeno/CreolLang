@@ -22,15 +22,15 @@ MultipleVariablesDeclaration ::= Type VariablesList
 
 VariablesList ::= VariablesList ',' Identifier
                |  VariablesList ',' VariableAssignment
+               |  VariableAssignment
+               |  Identifier
 
 VariableAssignment ::= Identifier '=' Expression
 ```
 
 ## Expressions
 
-```DiTiLoopInitStatement ::= Type Identifier '=' Expression
-                        | Identifier '=' Expression
-
+```
 Expression ::= Expression AritmeticOperator Expression
             |  Expression ComparativeOperator Expression
             |  Expression BooleanOperator Expression
