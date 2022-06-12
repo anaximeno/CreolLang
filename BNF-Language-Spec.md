@@ -94,7 +94,7 @@ Statement ::= SingleLineStatement ';'
            |  SiStatement
 
 SingleLineStatement ::= VariableDeclaration
-                     |  Declaration
+                     |  VariableAssignment
                      |  Expression
 
 ```
