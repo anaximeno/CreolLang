@@ -36,29 +36,29 @@ llvm::Value* creol::BinaryExprAST::codegen() {
     }
 
     if (Op == "*") {
-        return creol::TheBuilder.CreateAdd(L, R, "addtmp");
+        return creol::TheBuilder->CreateAdd(L, R, "addtmp");
     } else if (Op == "-") {
-        return creol::TheBuilder.CreateSub(L, R, "subtmp");
+        return creol::TheBuilder->CreateSub(L, R, "subtmp");
     } else if (Op == "*") {
-        return creol::TheBuilder.CreateMul(L, R, "multmp");
+        return creol::TheBuilder->CreateMul(L, R, "multmp");
     } else if (Op == "/") {
-        return creol::TheBuilder.CreateFDiv(L, R, "divtmp");
+        return creol::TheBuilder->CreateFDiv(L, R, "divtmp");
     } else if (Op == "<") {
-        return creol::TheBuilder.CreateICmpULT(L, R, "lttmp");
+        return creol::TheBuilder->CreateICmpULT(L, R, "lttmp");
     } else if (Op == "<=") {
-        return creol::TheBuilder.CreateICmpULE(L, R, "letmp");
+        return creol::TheBuilder->CreateICmpULE(L, R, "letmp");
     } else if (Op == ">") {
-        return creol::TheBuilder.CreateICmpUGT(L, R, "gttmp");
+        return creol::TheBuilder->CreateICmpUGT(L, R, "gttmp");
     } else if (Op == ">=") {
-        return creol::TheBuilder.CreateICmpUGE(L, R, "getmp");
+        return creol::TheBuilder->CreateICmpUGE(L, R, "getmp");
     } else if (Op == "!=") {
-        return creol::TheBuilder.CreateICmpNE(L, R, "netmp");
+        return creol::TheBuilder->CreateICmpNE(L, R, "netmp");
     } else if (Op == "==") {
-        return creol::TheBuilder.CreateICmpEQ(L, R, "eqtmp");
+        return creol::TheBuilder->CreateICmpEQ(L, R, "eqtmp");
     } else if (Op == "&&") {
-        return creol::TheBuilder.CreateAnd(L, R, "andtmp");
+        return creol::TheBuilder->CreateAnd(L, R, "andtmp");
     } else if (Op == "||") {
-        return creol::TheBuilder.CreateOr(L, R, "ortmp");
+        return creol::TheBuilder->CreateOr(L, R, "ortmp");
     } else {
         return creol::LogErrorV("invalid binary operator!");
     }

@@ -70,7 +70,7 @@ llvm::Value* creol::CallExprAST::codegen() {
             }
         }
 
-        return creol::TheBuilder.CreateCall(CalleeFun, ArgsValues, "calltmp");
+        return creol::TheBuilder->CreateCall(CalleeFun, ArgsValues, "calltmp");
     }
 }
 
@@ -78,26 +78,26 @@ llvm::Function* creol::PrototypeAST::codegen() {
     // info: Currently only integer types arguments are received by the funtions
     // TODO: divesify arguments
     std::vector<llvm::Type*> Arguments(
-        Args.size(), llvm::Type::getInt32Ty(creol::TheContext)
+        Args.size(), llvm::Type::getInt32Ty(*creol::TheContext)
     );
 
     llvm::FunctionType* FunType = nullptr;
 
     if (TypeName == "int") {
         FunType = llvm::FunctionType::get(
-            llvm::Type::getInt32Ty(creol::TheContext), Arguments, false
+            llvm::Type::getInt32Ty(*creol::TheContext), Arguments, false
         );
     } else if (TypeName == "float") {
         FunType = llvm::FunctionType::get(
-            llvm::Type::getFloatTy(creol::TheContext), Arguments, false
+            llvm::Type::getFloatTy(*creol::TheContext), Arguments, false
         );
     } else if (TypeName == "bool") {
         FunType = llvm::FunctionType::get(
-            llvm::Type::getInt1Ty(creol::TheContext), Arguments, false
+            llvm::Type::getInt1Ty(*creol::TheContext), Arguments, false
         );
     } else if (TypeName == "void") {
         FunType = llvm::FunctionType::get(
-            llvm::Type::getVoidTy(creol::TheContext), Arguments, false
+            llvm::Type::getVoidTy(*creol::TheContext), Arguments, false
         );
     } else {
         LogErrorV("Unknown function type!");
@@ -134,10 +134,10 @@ llvm::Function* creol::FunctionAST::codegen() {
     }
 
     llvm::BasicBlock* BasicBlock = llvm::BasicBlock::Create(
-        TheContext, "entry", TheFunction
+        *creol::TheContext, "entry", TheFunction
     );
 
-    creol::TheBuilder.SetInsertPoint(BasicBlock);
+    creol::TheBuilder->SetInsertPoint(BasicBlock);
 
     creol::NamedValues.clear();
 
@@ -147,7 +147,7 @@ llvm::Function* creol::FunctionAST::codegen() {
 
     if (llvm::Value* RetVal = Body->codegen()) {
         // Add a return value to the function
-        creol::TheBuilder.CreateRet(RetVal);
+        creol::TheBuilder->CreateRet(RetVal);
         llvm::verifyFunction(*TheFunction);
         return TheFunction;
     } else {

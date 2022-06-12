@@ -41,15 +41,15 @@ namespace creol {
 };
 
 llvm::Value* creol::IntLiteralExprAST::codegen() {
-    return llvm::ConstantInt::get(creol::TheContext, llvm::APSInt(Val, false));
+    return llvm::ConstantInt::get(*creol::TheContext, llvm::APSInt(Val, false));
 }
 
 llvm::Value* creol::FloatLiteralExprAST::codegen() {
-    return llvm::ConstantFP::get(creol::TheContext, llvm::APFloat(Val));
+    return llvm::ConstantFP::get(*creol::TheContext, llvm::APFloat(Val));
 }
 
 llvm::Value* creol::BoolLiteralExprAST::codegen() {
-    return llvm::ConstantInt::get(creol::TheContext, llvm::APSInt(Val));
+    return llvm::ConstantInt::get(*creol::TheContext, llvm::APSInt(Val));
 }
 
 #endif
