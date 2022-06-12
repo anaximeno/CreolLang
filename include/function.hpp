@@ -2,6 +2,7 @@
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Type.h>
+#include <llvm/IR/Verifier.h>
 #include "expr.hpp"
 #include "misc.hpp"
 #include "base.hpp"
@@ -141,5 +142,14 @@ llvm::Function* creol::FunctionAST::codegen() {
         creol::NamedValues[arg.getName()] = &arg;
     }
 
-    return TheFunction;
+    if (llvm::Value* RetVal = Body->codegen()) {
+        // Add a return value to the function
+        creol::TheBuilder.CreateRet(RetVal);
+        llvm::verifyFunction(*TheFunction);
+        return TheFunction;
+    } else {
+        TheFunction->eraseFromParent();
+        creol::LogErrorV("Error reading the body of the funtion!");
+        return nullptr;
+    }
 }
