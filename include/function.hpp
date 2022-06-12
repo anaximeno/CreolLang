@@ -136,7 +136,7 @@ llvm::Function* creol::FunctionAST::codegen(llvm::LLVMContext& TheContext) {
     creol::NamedValues.clear();
 
     for (auto& arg : TheFunction->args()) {
-        creol::NamedValues[arg.getName()];
+        creol::NamedValues[arg.getName()] = &arg;
     }
 
     return TheFunction;
