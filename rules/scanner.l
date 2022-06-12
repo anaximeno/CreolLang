@@ -22,22 +22,22 @@ IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 
 %%
 
-[ \t\n\r]       /* ignore */
+[ \t\n]       /* ignore */
 "si"            return TOKENIZE(TSI);
 "sinon"         return TOKENIZE(TSINON);
 "divolvi"       return TOKENIZE(TDIVOLVI);
 "di"            return TOKENIZE(TDI);
 "pui"           return TOKENIZE(TPUI);
 "inkuantu"      return TOKENIZE(TINKUANTU);
-"int"           return TOKENIZE(TYPE_INT);
-"float"         return TOKENIZE(TYPE_FLOAT);
-"void"          return TOKENIZE(TYPE_VOID);
-"bool"          return TOKENIZE(TYPE_BOOL);
+"int"           SAVE_TOKEN;   return TYPE_INT;
+"float"         SAVE_TOKEN;   return TYPE_FLOAT;
+"void"          SAVE_TOKEN;   return TYPE_VOID;
+"bool"          SAVE_TOKEN;   return TYPE_BOOL;
 "sim"           SAVE_BOOLEAN; return TBOOL;
 "nau"           SAVE_BOOLEAN; return TBOOL;
 {INTEGER}       SAVE_INTEGER; return TINTEGER;
-{FLOAT}         SAVE_NUMBER; return TFLOAT;
-{IDENTIFIER}    SAVE_TOKEN; return TIDENTIFIER;
+{FLOAT}         SAVE_NUMBER;  return TFLOAT;
+{IDENTIFIER}    SAVE_TOKEN;   return TIDENTIFIER;
 "+"             return TOKENIZE(TPLUS);
 "-"             return TOKENIZE(TMINUS);
 "*"             return TOKENIZE(TMUL);
