@@ -92,13 +92,13 @@ SingleLineStatement ::= VariableDeclaration
                      |  Expression
                      |  ReturnStatement
 
-ReturnStatement ::= "divolvi" Expression ';'
-                 |  "divolvi" EmptyOrVoid ';'
+ReturnStatement ::= "divolvi" Expression
+                 |  "divolvi" EmptyOrVoid
 
 Block ::= '{' Statements '}'
 ```
 
-### Loop Statements
+### Loop Statem';'ents
 
 ```
 DiLoop ::= "di" SingleVariableDeclaration "inkuantu" Expression "pui" VariableAssignment Block
