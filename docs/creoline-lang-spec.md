@@ -1,15 +1,17 @@
-# Creoline BNF Spec
+# Creoline Language Specification
 
 Language specifications for the Creoline programming language.
 
-## Program
+## Sections
+
+### Program
 
 ```
 Program ::= /* empty */
          |  Statements
 ```
 
-## Variable Declaration
+### Variable Declaration
 
 ```
 VariableDeclaration ::= SingleVariableDeclaration
@@ -28,7 +30,7 @@ VariablesList ::= VariablesList ',' Identifier
 VariableAssignment ::= Identifier '=' Expression
 ```
 
-## Expressions
+### Expressions
 
 ```
 Expression ::= Expression AritmeticOperator Expression
@@ -39,7 +41,7 @@ Expression ::= Expression AritmeticOperator Expression
             |  Literal
 ```
 
-## Basic Binary Operations
+### Basic Binary Operations
 ```
 AritmeticOperator ::= '+'
                    |  '-'
@@ -57,7 +59,7 @@ BooleanOperator ::= '&&'
                  |  '||' 
 ```
 
-## Function Staments
+### Function Staments
 
 ```
 FunctionArguments ::= FunctionArguments ',' Expression
@@ -73,7 +75,7 @@ FunctionCall ::= Identifier '(' FunctionArguments ')'
               |  Identifier '(' ')'
 ```
 
-## Block Statement
+### Block Statement
 ```
 
 Block ::= '{' Statements '}'
@@ -81,7 +83,7 @@ Block ::= '{' Statements '}'
 
 ```
 
-## General Statements
+### General Statements
 
 ```
 Statements ::= Statements Statement
@@ -99,7 +101,7 @@ SingleLineStatement ::= VariableDeclaration
 
 ```
 
-## Loop Statements
+### Loop Statements
 
 ```
 DiLoop ::= "di" SingleVariableDeclaration "inkuantu" Expression "pui" VariableAssignment Block
@@ -107,7 +109,7 @@ DiLoop ::= "di" SingleVariableDeclaration "inkuantu" Expression "pui" VariableAs
 InkuantuLoop ::= "inkuantu" Expression Block
 ```
 
-## If Statements
+### If Statements
 
 ```
 SiStatement ::=   "si" Expression Block
@@ -115,7 +117,7 @@ SiStatement ::=   "si" Expression Block
                |  "si" Expression Block "sinon" SiStatement
 ```
 
-## Other
+### Other
 
 ```
 EmptyOrVoid ::= /* empty */
@@ -125,11 +127,11 @@ ReturnStatement ::= "divolvi" Expression ';'
                  |  "divolvi" EmptyOrVoid ';'
 ```
 
-# References
+# Main References
 
 * http://gnuu.org/2009/09/18/writing-your-own-toy-compiler/
 * https://github.com/lsegal/my_toy_compiler
-* https://llvm.org
+* https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/index.html
 * https://github.com/xkbeyer/liquid
 * https://kuree.gitbooks.io/the-go-programming-language-report/content/18/text.html
 * https://cs.wmich.edu/~gupta/teaching/cs4850/sumII06/The%20syntax%20of%20C%20in%20Backus-Naur%20form.htm
