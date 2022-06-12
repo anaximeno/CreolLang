@@ -35,7 +35,7 @@ llvm::Value* creol::BinaryExprAST::codegen() {
         return nullptr;
     }
 
-    if (Op == "*") {
+    if (Op == "+") {
         return creol::TheBuilder->CreateAdd(L, R, "addtmp");
     } else if (Op == "-") {
         return creol::TheBuilder->CreateSub(L, R, "subtmp");
