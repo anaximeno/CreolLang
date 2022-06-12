@@ -8,6 +8,10 @@ The syntax of this programming language was initially based on C, Go and Rust, b
 
 For more concrete specifications about the language, you are recommended to read the [CreolLang Language Specification](./docs/creol-lang-spec.md).
 
+### More:
+
+The file extension of the CreolLang programming language is **.crl** and the compiler's name is **creol**.
+
 <!--
 ## Visuals
 
@@ -29,7 +33,7 @@ TODO...
 
 ## License
 
-[MIT](./LICENSE)
+All the code and specifications of the CreolLang programming language are currently under the [MIT License](./LICENSE).
 
 ## Project status
 
