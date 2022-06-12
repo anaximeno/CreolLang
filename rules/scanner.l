@@ -4,11 +4,11 @@
     #include <string>
     #include <cstdio>
     #include <iostream>
-    #include "parser.tab.h"
+    #include "parser.hh"
     #define YYERROR_VERBOSE 1
     #define SAVE_TOKEN     yylval.string  = new std::string(yytext, yyleng)
     #define SAVE_INTEGER   yylval.integer = std::stoll(std::string(yytext, yyleng))
-    #define SAVE_NUMBER    yylval.number  = std::stod(std::string(yytext, yyleng))
+    #define SAVE_NUMBER    yylval.floatingp  = std::stod(std::string(yytext, yyleng))
     #define SAVE_BOOLEAN   yylval.boolean = std::string(yytext, yyleng) == "sim" ? 1 : 0
     #define TOKENIZE(sym) (yylval.token   = sym)
     int yyerror(char const*);

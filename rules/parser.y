@@ -2,6 +2,7 @@
     #include <cstdio>
     #include <cstdlib>
     #include <iostream>
+    #include "../include/creol.hpp"
     extern int yylex();
     void yyerror(const char* err);
 %}
@@ -9,7 +10,7 @@
 %union {
     std::string* string;
     long long integer;
-    float floating;
+    float floatingp;
     int boolean;
     int token;
 }
@@ -17,7 +18,7 @@
 /* terminal symbols */
 %token <string>    TIDENTIFIER
 %token <integer>   TINTEGER
-%token <floating>  TFLOAT
+%token <floatingp>  TFLOAT
 %token <boolean>   TBOOL
 %token <token>     TPLUS TMINUS TMUL TDIV
 %token <token>     TEQ  TNE  TLT TLE TGT TGE
@@ -92,7 +93,7 @@ VariablesList : VariablesList ',' Identifier /* TODO: Handle Here */
               | Identifier
               ;
 
-VariableAssignment : Identifier '=' Expression /* TODO: Handle Here */
+VariableAssignment : Identifier '=' Expression /* TODO: Handle Here */ { printf("Variable Assignment!\n"); }
                    ;
 
 /// Expressions
@@ -175,6 +176,7 @@ void yyerror(const char* err) {
     std::exit(1);
 }
 
-void main(int argc, char** argv) {
+int main(int argc, char** argv) {
     yyparse();
+    return 0;
 }
