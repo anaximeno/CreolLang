@@ -75,14 +75,6 @@ FunctionCall ::= Identifier '(' FunctionArguments ')'
               |  Identifier '(' ')'
 ```
 
-### Block Statement
-```
-
-Block ::= '{' Statements '}'
-       |  '{' Statements ReturnStatement '}'
-
-```
-
 ### General Statements
 
 ```
@@ -91,14 +83,19 @@ Statements ::= Statements Statement
 
 Statement ::= SingleLineStatement ';'
            |  FunctionDeclaration
-           |  DiLoop
            |  InkuatuLoop
            |  SiStatement
+           |  DiLoop
 
 SingleLineStatement ::= VariableDeclaration
                      |  VariableAssignment
                      |  Expression
+                     |  ReturnStatement
 
+ReturnStatement ::= "divolvi" Expression ';'
+                 |  "divolvi" EmptyOrVoid ';'
+
+Block ::= '{' Statements '}'
 ```
 
 ### Loop Statements
@@ -121,10 +118,7 @@ SiStatement ::=   "si" Expression Block
 
 ```
 EmptyOrVoid ::= /* empty */
-             | void
-
-ReturnStatement ::= "divolvi" Expression ';'
-                 |  "divolvi" EmptyOrVoid ';'
+             |  void
 ```
 
 # Main References
