@@ -6,6 +6,9 @@
 #include "base.hpp"
 #include "misc.hpp"
 
+#ifndef _CREOL_BINEXPR
+#define _CREOL_BINEXPR
+
 namespace creol {
     /// BinaryExprAST - Represents the binary operations and expressions
     // for the creoline lang.
@@ -60,3 +63,5 @@ llvm::Value* creol::BinaryExprAST::codegen() {
         return creol::LogErrorV("invalid binary operator!");
     }
 }
+
+#endif

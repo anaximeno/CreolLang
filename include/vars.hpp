@@ -2,6 +2,9 @@
 #include <llvm/IR/LLVMContext.h>
 #include "expr.hpp"
 
+#ifndef _CREOL_VARS
+#define _CREOL_VARS
+
 namespace creol {
     class VariableExprAST : public ExprAST {
         std::string TypeName;
@@ -26,3 +29,5 @@ const std::string& creol::VariableExprAST::getName() const {
 const std::string& creol::VariableExprAST::getTypeName() const {
     return TypeName;
 }
+
+#endif

@@ -5,6 +5,9 @@
 #include <llvm/IR/Constants.h>
 #include "expr.hpp"
 
+#ifndef _CREOL_LITERALS
+#define _CREOL_LITERALS
+
 namespace creol {
     /// IntLiteralExprAST - represents an integer literal value
     class IntLiteralExprAST : public ExprAST {
@@ -48,3 +51,5 @@ llvm::Value* creol::FloatLiteralExprAST::codegen() {
 llvm::Value* creol::BoolLiteralExprAST::codegen() {
     return llvm::ConstantInt::get(creol::TheContext, llvm::APSInt(Val));
 }
+
+#endif

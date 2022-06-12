@@ -7,6 +7,9 @@
 #include "misc.hpp"
 #include "base.hpp"
 
+#ifndef _CREOL_FUNCTION
+#define _CREOL_FUNCTION
+
 namespace creol {
     /// CallExprAST - represents the function call
     class CallExprAST : public ExprAST {
@@ -153,3 +156,5 @@ llvm::Function* creol::FunctionAST::codegen() {
         return nullptr;
     }
 }
+
+#endif
