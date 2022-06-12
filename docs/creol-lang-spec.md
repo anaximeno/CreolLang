@@ -7,8 +7,7 @@ Language specifications for the CreolLang programming language.
 ### Program
 
 ```
-Program ::= /* empty */
-         |  Statements
+Program ::= Statements
 ```
 
 ### Variable Declaration
@@ -81,16 +80,18 @@ FunctionCall ::= Identifier '(' FunctionArguments ')'
 Statements ::= Statements Statement
             |  Statement
 
-Statement ::= SingleLineStatement ';'
+Statement ::= SingleLineStatement
            |  FunctionDeclaration
            |  InkuatuLoop
            |  SiStatement
            |  DiLoop
 
-SingleLineStatement ::= VariableDeclaration
-                     |  VariableAssignment
-                     |  Expression
-                     |  ReturnStatement
+SingleLineStatement ::= VariableDeclaration ';'
+                     |  VariableAssignment ';'
+                     |  Expression ';'
+                     |  ReturnStatement ';'
+                     | /* empty */
+                     | ';'
 
 ReturnStatement ::= "divolvi" Expression
                  |  "divolvi" EmptyOrVoid
@@ -98,10 +99,13 @@ ReturnStatement ::= "divolvi" Expression
 Block ::= '{' Statements '}'
 ```
 
-### Loop Statem';'ents
+### Loop Statements
 
 ```
-DiLoop ::= "di" SingleVariableDeclaration "inkuantu" Expression "pui" VariableAssignment Block
+DiLoop ::= "di" DiLoopStart "inkuantu" Expression "pui" VariableAssignment Block
+
+DiLoopStart ::= SingleVariableDeclaration
+             |  VariableAssignment
 
 InkuantuLoop ::= "inkuantu" Expression Block
 ```
@@ -109,9 +113,9 @@ InkuantuLoop ::= "inkuantu" Expression Block
 ### If Statements
 
 ```
-SiStatement ::=   "si" Expression Block
-               |  "si" Expression Block "sinon" Block
-               |  "si" Expression Block "sinon" SiStatement
+SiStatement ::= "si" Expression Block
+             |  "si" Expression Block "sinon" Block
+             |  "si" Expression Block "sinon" SiStatement
 ```
 
 ### Other
