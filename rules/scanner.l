@@ -14,15 +14,16 @@
     int yyerror(char const*);
 %}
 
-INTEGER [+|-]?[0-9]+
+INT [+|-]?[0-9]+
 
-FLOAT [+|-]?[0-9]+\.[0-9]+
+FLOAT {INT}\.[0-9]+
 
-IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
+    /* Identifier RegEx */
+IDF [a-zA-Z_][a-zA-Z0-9_]*
 
 %%
 
-[ \t\n]       /* ignore */
+[ \t\n]         /* ignore */;
 "si"            return TOKENIZE(TSI);
 "sinon"         return TOKENIZE(TSINON);
 "divolvi"       return TOKENIZE(TDIVOLVI);
@@ -35,9 +36,9 @@ IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 "bool"          SAVE_TOKEN;   return TYPE_BOOL;
 "sim"           SAVE_BOOLEAN; return TBOOL;
 "nau"           SAVE_BOOLEAN; return TBOOL;
-{INTEGER}       SAVE_INTEGER; return TINTEGER;
+{INT}           SAVE_INTEGER; return TINTEGER;
 {FLOAT}         SAVE_NUMBER;  return TFLOAT;
-{IDENTIFIER}    SAVE_TOKEN;   return TIDENTIFIER;
+{IDF}           SAVE_TOKEN;   return TIDENTIFIER;
 "+"             return TOKENIZE(TPLUS);
 "-"             return TOKENIZE(TMINUS);
 "*"             return TOKENIZE(TMUL);
@@ -56,6 +57,6 @@ IDENTIFIER [a-zA-Z_][a-zA-Z0-9_]*
 ">="            return TOKENIZE(TGE);
 "<"             return TOKENIZE(TLT);
 "<="            return TOKENIZE(TLE);
-.               printf("line %d, len %d Unknown token %s !", yylineno, yyleng, yytext); yyterminate();
+.               printf("line %d, Unknown token %s !\n", yylineno, yytext); yyterminate();
 
 %%
