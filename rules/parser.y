@@ -16,7 +16,7 @@
 
 /* terminal symbols */
 %token<string> TIDENTIFIER
-%token<integer>TINTEGER
+%token<integer> TINTEGER
 %token<floatingp> TFLOAT
 %token<boolean> TBOOL
 %token<token>  TPLUS TMINUS TMUL TDIV
@@ -26,8 +26,10 @@
 %token<token>  TDIVOLVI TDI TPUI
 %token<token>  TINKUANTU TSI TSINON
 
+%right '='
 %left TPLUS TMINUS
 %left TMUL TDIV
+%nonassoc UMINUS
 
 %start Program
 %debug
