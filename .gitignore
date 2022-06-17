@@ -11,3 +11,6 @@
 # binary files
 rules/parser
 *.out
+
+# VSCode config files
+.vscode/*
