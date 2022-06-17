@@ -25,6 +25,7 @@
 %token<string> TYPE_INT TYPE_FLOAT TYPE_BOOL TYPE_VOID
 %token<token>  TDIVOLVI TDI TPUI
 %token<token>  TINKUANTU TSI TSINON
+%token<token> TPARA TCONTINUA
 
 %right '='
 %left TPLUS TMINUS
@@ -56,29 +57,16 @@ constant : INTEGER /* TODO: Handle Here */
 identifier : TIDENTIFIER
            ;
 
+// note: declator may be extended later
+declarator : identifier ;
 
+declaration : type_specifier init_declarator ;
 
-variable_declaration : single_variable_declaration /* TODO: Handle Here */
-                     | multiple_variables_declaration /* TODO: Handle Here */
-                     ;
+init_declarator : declarator
+                | declarator '=' initializer;
 
-single_variable_declaration : type_specifier identifier /* TODO: Handle Here */
-                            | type_specifier variable_assignment /* TODO: Handle Here */
-                            ;
-
-multiple_variables_declaration : type_specifier variables_list /* TODO: Handle Here */
-                               ;
-
-variables_list : variables_list ',' identifier /* TODO: Handle Here */
-               | variables_list ',' variable_assignment /* TODO: Handle Here */
-               | variable_assignment
-               | identifier
-               ;
-
-variable_assignment : identifier '=' expression /* TODO: Handle Here */
-                    ;
-
-/// Expressions
+// note: may be extended later
+initializer : expression ;
 
 expression : constant_expression
            | function_call
@@ -120,75 +108,60 @@ primary_expression : identifier
                    | '(' expression ')'
                    ;
 
-/// Functions
-
-function_declaration : type_specifier identifier '(' function_parameters ')' block /* TODO: Handle Here */
-                     | type_specifier identifier '(' empty_or_void ')' /* TODO: Handle Here */
+function_declaration : type_specifier declarator '(' parameter_optional_list ')' compound_statement
                      ;
 
-function_parameters : function_parameters ',' type_specifier identifier /* TODO: Handle Here */
-                    | type_specifier identifier /* TODO: Handle Here */
-                    ;
+parameter_optional_list : parameter_list
+                        | %empty
+                        ;
 
-function_arguments : function_arguments ',' expression /* TODO: Handle Here */
-                   | expression /* TODO: Handle Here */
-                   ;
+parameter_list : parameter_declaration
+               | parameter_list ',' parameter_declaration
+               ;
 
-function_call : identifier '(' function_arguments ')' /* TODO: Handle Here */
-              | identifier '(' ')' /* TODO: Handle Here */
-
-/// General Statements
-
-statements : statements Statement /* TODO: Handle Here */
-           | Statement /* TODO: Handle Here */
-           ;
-
-Statement : single_line_statement /* TODO: Handle Here */
-          | function_declaration /* TODO: Handle Here */
-          | di_loop /* TODO: Handle Here */
-          | inkuantu_loop /* TODO: Handle Here */
-          | si_statement /* TODO: Handle Here */
-          ;
-
-single_line_statement : variable_declaration ';' /* TODO: Handle Here */
-                      | variable_assignment ';' /* TODO: Handle Here */
-                      | expression ';' /* TODO: Handle Here */
-                      | ReturnStatement ';'/* TODO: Handle Here */
-                      | %empty    /* TODO: Handle Here */ 
-                      | ';'
+parameter_declaration : type_specifier declarator
                       ;
 
-ReturnStatement : TDIVOLVI expression /* TODO: Handle Here */
-                | TDIVOLVI /* TODO: Handle Here */
-                ;
-
-block : '{' statements '}' /* TODO: Handle Here */
-      ;
-
-
-/// Loops
-
-di_loop : TDI di_loop_start TINKUANTU expression TPUI variable_assignment block /* TODO: Handle Here */
-        ;
-
-di_loop_start : single_variable_declaration
-              | variable_assignment
+argument_list : argument_list ',' expression /* TODO: Handle Here */
+              | expression /* TODO: Handle Here */
               ;
 
-inkuantu_loop : TINKUANTU expression block /* TODO: Handle Here */
-              ;
+function_call : identifier '(' argument_list ')' /* TODO: Handle Here */
+              | identifier '(' ')' /* TODO: Handle Here */
 
-si_statement : TSI expression block /* TODO: Handle Here */
-             | TSI expression TSINON block /* TODO: Handle Here */
-             | TSI expression TSINON si_statement /* TODO: Handle Here */
-             ;
+statements : statements statement /* TODO: Handle Here */
+           | statement /* TODO: Handle Here */
+           ;
 
-/// Other
+// note: analyze the situation of functions declared inside other functions.
+statement : expression_statement
+          | compound_statement
+          | selection_statement
+          | iteration_statement
+          | jump_statement
+          | function_declaration
+          ;
 
-empty_or_void : %empty
-              | TYPE_VOID
-              ;
+expression_statement : expression ';'
+                     | ';'
+                     ;
 
+compound_statement : '{' declaration statement '}';
+                   | '{' statement '}'
+                   ;
+
+selection_statement : TSI expression compound_statement
+                    | TSI expression compound_statement TSINON compound_statement
+                    ; // TODO: Add else if
+
+iteration_statement : TINKUANTU expression compound_statement
+                    | TDI expression TINKUANTU expression TPUI expression compound_statement;
+
+jump_statement : TPARA ';'
+               | TCONTINUA ';'
+               | TDIVOLVI expression ';'
+               | TDIVOLVI ';'
+               ;
 %%
 
 void yyerror(const char* err) {
