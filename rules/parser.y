@@ -98,12 +98,16 @@ variable_assignment : identifier '=' expression /* TODO: Handle Here */
 
 /// Expressions
 
+primary_expression : identifier
+                   | constant
+                   | '(' expression ')'
+                   ;
+
 expression : expression aritmetic_operator expression /* TODO: Handle Here */
            | expression comparative_operator expression /* TODO: Handle Here */
            | expression boolean_operator expression /* TODO: Handle Here */
            | function_call /* TODO: Handle Here */
-           | identifier /* TODO: Handle Here */
-           | constant /* TODO: Handle Here */
+           | primary_expression
            ;
 
 /// Functions
