@@ -133,13 +133,17 @@ statements : statements statement /* TODO: Handle Here */
            | statement /* TODO: Handle Here */
            ;
 
-// note: analyze the situation of functions declared inside other functions.
+// todo: analyze the situation of
+// functions declared inside other functions
+// and the use of declarations in the global
+// scope.
 statement : expression_statement
           | compound_statement
           | selection_statement
           | iteration_statement
           | jump_statement
           | function_declaration
+          | declaration
           ;
 
 expression_statement : expression ';'
