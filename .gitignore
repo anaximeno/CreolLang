@@ -1,17 +1,13 @@
+# parser files
 *.yy.*
 *.tab.*
-*.out
+
+# C/C++ object files
 *.o
+
+# bison debug file
 *.output
-parser.cc
-parser.hh
-scanner.cpp
-rules/parser.cc
-rules/parser.hh
-rules/scanner.cpp
-rules/*.yy.*
-rules/*.tab.*
-rules/*.out
-rules/*.o
-rules/*.output
-.vscode/*
+
+# binary files
+rules/parser
+*.out
