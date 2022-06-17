@@ -110,10 +110,14 @@ additive_expression : multiplicative_expression
                     | additive_expression TMINUS multiplicative_expression
                     ;
 
-multiplicative_expression : primary_expression
+multiplicative_expression : unary_expression
                           | multiplicative_expression TMUL primary_expression
                           | multiplicative_expression TDIV primary_expression
                           ;
+
+unary_expression : primary_expression
+                 | TMINUS primary_expression %prec UMINUS
+                 ;
 
 primary_expression : identifier
                    | constant
