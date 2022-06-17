@@ -16,9 +16,9 @@
 
 /* terminal symbols */
 %token<string> TIDENTIFIER
-%token<integer> TINTEGER
-%token<floatingp> TFLOAT
-%token<boolean> TBOOL
+%token<integer> INTEGER
+%token<floatingp> FLOAT
+%token<boolean> BOOL
 %token<token>  TPLUS TMINUS TMUL TDIV
 %token<token>  TEQ  TNE  TLT TLE TGT TGE
 %token<token>  TAND TOR
@@ -48,10 +48,10 @@ type_specifier : TYPE_INT
                | TYPE_BOOL
                ;
 
-literal : TINTEGER /* TODO: Handle Here */
-        | TFLOAT /* TODO: Handle Here */
-        | TBOOL /* TODO: Handle Here */
-        ;
+constant : INTEGER /* TODO: Handle Here */
+         | FLOAT /* TODO: Handle Here */
+         | BOOL /* TODO: Handle Here */
+         ;
 
 identifier : TIDENTIFIER
            ;
@@ -103,7 +103,7 @@ expression : expression aritmetic_operator expression /* TODO: Handle Here */
            | expression boolean_operator expression /* TODO: Handle Here */
            | function_call /* TODO: Handle Here */
            | identifier /* TODO: Handle Here */
-           | literal /* TODO: Handle Here */
+           | constant /* TODO: Handle Here */
            ;
 
 /// Functions
