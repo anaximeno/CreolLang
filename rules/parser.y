@@ -39,8 +39,7 @@
 %left TLT TGT TLE TGE TEQ TNE '='
 %left TPLUS TMINUS
 %left TMUL TDIV
-
-%nonassoc UMINUS
+%left UMINUS
 
 %start program
 
