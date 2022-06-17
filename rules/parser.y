@@ -31,7 +31,7 @@
 %left TMUL TDIV
 %nonassoc UMINUS
 
-%start Program
+%start program
 %debug
 %verbose
 
