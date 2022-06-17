@@ -150,8 +150,10 @@ expression_statement : expression ';'
                      | ';'
                      ;
 
-compound_statement : '{' declaration statement '}';
+compound_statement : '{' declaration statement '}'
                    | '{' statement '}'
+                   | '{' declaration '}'
+                   | '{' '}'
                    ;
 
 selection_statement : TSI expression compound_statement
