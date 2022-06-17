@@ -56,9 +56,6 @@ constant : INTEGER /* TODO: Handle Here */
 identifier : TIDENTIFIER
            ;
 
-boolean_operator : TAND
-                 | TOR
-                 ;
 
 /// Variables
 
@@ -84,20 +81,16 @@ variable_assignment : identifier '=' expression /* TODO: Handle Here */
 
 /// Expressions
 
-primary_expression : identifier
-                   | constant
-                   | '(' expression ')'
-                   ;
+expression : logical_or_expressions
+           | function_call
+           ;
 
-additive_expression : multiplicative_expression
-                    | additive_expression TPLUS multiplicative_expression
-                    | additive_expression TMINUS multiplicative_expression
-                    ;
+logical_or_expressions : logical_and_expressions
+                       | logical_or_expressions TOR logical_and_expressions;
 
-multiplicative_expression : primary_expression
-                          | multiplicative_expression TMUL primary_expression
-                          | multiplicative_expression TDIV primary_expression
-                          ;
+logical_and_expressions : equality_expression
+                        | logical_and_expressions TAND equality_expression
+                        ;
 
 equality_expression : relational_expression
                     | equality_expression TEQ relational_expression
@@ -111,12 +104,20 @@ relational_expression : additive_expression
                       | relational_expression TGE additive_expression
                       ;
 
-expression : additive_expression 
-           | equality_expression
-           | expression boolean_operator expression /* TODO: Handle Here */
-           | function_call /* TODO: Handle Here */
-           | primary_expression
-           ;
+additive_expression : multiplicative_expression
+                    | additive_expression TPLUS multiplicative_expression
+                    | additive_expression TMINUS multiplicative_expression
+                    ;
+
+multiplicative_expression : primary_expression
+                          | multiplicative_expression TMUL primary_expression
+                          | multiplicative_expression TDIV primary_expression
+                          ;
+
+primary_expression : identifier
+                   | constant
+                   | '(' expression ')'
+                   ;
 
 /// Functions
 
