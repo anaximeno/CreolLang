@@ -57,44 +57,44 @@ identifier : TIDENTIFIER
            ;
 
 boolean_operator : TAND
-                | TOR
-                ;
+                 | TOR
+                 ;
 
 aritmetic_operator : TPLUS
-                  | TMINUS
-                  | TMUL
-                  | TDIV
-                  ;
+                   | TMINUS
+                   | TMUL
+                   | TDIV
+                   ;
 
 comparative_operator : TLT
-                    | TLE
-                    | TGT
-                    | TGE
-                    | TEQ
-                    | TNE
-                    ;
+                     | TLE
+                     | TGT
+                     | TGE
+                     | TEQ
+                     | TNE
+                     ;
 
 /// Variables
 
 variable_declaration : single_variable_declaration /* TODO: Handle Here */
-                    | multiple_variables_declaration /* TODO: Handle Here */
-                    ;
+                     | multiple_variables_declaration /* TODO: Handle Here */
+                     ;
 
 single_variable_declaration : type_specifier identifier /* TODO: Handle Here */
-                          | type_specifier variable_assignment /* TODO: Handle Here */
-                          ;
+                            | type_specifier variable_assignment /* TODO: Handle Here */
+                            ;
 
 multiple_variables_declaration : type_specifier variables_list /* TODO: Handle Here */
-                             ;
+                               ;
 
 variables_list : variables_list ',' identifier /* TODO: Handle Here */
-              | variables_list ',' variable_assignment /* TODO: Handle Here */
-              | variable_assignment
-              | identifier
-              ;
+               | variables_list ',' variable_assignment /* TODO: Handle Here */
+               | variable_assignment
+               | identifier
+               ;
 
 variable_assignment : identifier '=' expression /* TODO: Handle Here */
-                   ;
+                    ;
 
 /// Expressions
 
@@ -109,19 +109,19 @@ expression : expression aritmetic_operator expression /* TODO: Handle Here */
 /// Functions
 
 function_declaration : type_specifier identifier '(' function_parameters ')' block /* TODO: Handle Here */
-                    | type_specifier identifier '(' empty_or_void ')' /* TODO: Handle Here */
-                    ;
+                     | type_specifier identifier '(' empty_or_void ')' /* TODO: Handle Here */
+                     ;
 
 function_parameters : function_parameters ',' type_specifier identifier /* TODO: Handle Here */
-                   | type_specifier identifier /* TODO: Handle Here */
-                   ;
+                    | type_specifier identifier /* TODO: Handle Here */
+                    ;
 
 function_arguments : function_arguments ',' expression /* TODO: Handle Here */
-                  | expression /* TODO: Handle Here */
-                  ;
+                   | expression /* TODO: Handle Here */
+                   ;
 
 function_call : identifier '(' function_arguments ')' /* TODO: Handle Here */
-             | identifier '(' ')' /* TODO: Handle Here */
+              | identifier '(' ')' /* TODO: Handle Here */
 
 /// General Statements
 
@@ -137,12 +137,12 @@ Statement : single_line_statement /* TODO: Handle Here */
           ;
 
 single_line_statement : variable_declaration ';' /* TODO: Handle Here */
-                    | variable_assignment ';' /* TODO: Handle Here */
-                    | expression ';' /* TODO: Handle Here */
-                    | ReturnStatement ';'/* TODO: Handle Here */
-                    | %empty    /* TODO: Handle Here */ 
-                    | ';'
-                    ;
+                      | variable_assignment ';' /* TODO: Handle Here */
+                      | expression ';' /* TODO: Handle Here */
+                      | ReturnStatement ';'/* TODO: Handle Here */
+                      | %empty    /* TODO: Handle Here */ 
+                      | ';'
+                      ;
 
 ReturnStatement : TDIVOLVI expression /* TODO: Handle Here */
                 | TDIVOLVI /* TODO: Handle Here */
@@ -155,25 +155,25 @@ block : '{' statements '}' /* TODO: Handle Here */
 /// Loops
 
 di_loop : TDI di_loop_start TINKUANTU expression TPUI variable_assignment block /* TODO: Handle Here */
-       ;
+        ;
 
 di_loop_start : single_variable_declaration
-            | variable_assignment
-            ;
+              | variable_assignment
+              ;
 
 inkuantu_loop : TINKUANTU expression block /* TODO: Handle Here */
-             ;
+              ;
 
 si_statement : TSI expression block /* TODO: Handle Here */
-            | TSI expression TSINON block /* TODO: Handle Here */
-            | TSI expression TSINON si_statement /* TODO: Handle Here */
-            ;
+             | TSI expression TSINON block /* TODO: Handle Here */
+             | TSI expression TSINON si_statement /* TODO: Handle Here */
+             ;
 
 /// Other
 
 empty_or_void : %empty
-            | TYPE_VOID
-            ;
+              | TYPE_VOID
+              ;
 
 %%
 
