@@ -68,7 +68,7 @@ init_declarator : declarator
 // note: may be extended later
 initializer : expression ;
 
-expression : constant_expression
+expression : assignment_expression
            | function_call
            ;
 
@@ -107,6 +107,13 @@ primary_expression : identifier
                    | constant
                    | '(' expression ')'
                    ;
+
+// todo: correct anomalies using semantic analysis
+assignment_expression : constant_expression
+                      | primary_expression assignment_operator assignment_expression;
+
+// note: this may be extended later to support op assign
+assignment_operator : '=' ;
 
 function_declaration : type_specifier declarator '(' parameter_optional_list ')' compound_statement
                      ;
