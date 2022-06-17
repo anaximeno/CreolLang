@@ -8,9 +8,9 @@ namespace creol {
         // TODO
     };
 
-    class Node {
+    class NodeAST {
         public:
-            virtual ~Node() = default;
+            virtual ~NodeAST() = default;
 
             virtual llvm::Value* codeGen() = 0;
     };
