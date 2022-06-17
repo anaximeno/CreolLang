@@ -60,14 +60,6 @@ boolean_operator : TAND
                  | TOR
                  ;
 
-comparative_operator : TLT
-                     | TLE
-                     | TGT
-                     | TGE
-                     | TEQ
-                     | TNE
-                     ;
-
 /// Variables
 
 variable_declaration : single_variable_declaration /* TODO: Handle Here */
@@ -107,8 +99,20 @@ multiplicative_expression : primary_expression
                           | multiplicative_expression TDIV primary_expression
                           ;
 
+equality_expression : relational_expression
+                    | equality_expression TEQ relational_expression
+                    | equality_expression TNE relational_expression
+                    ;
+
+relational_expression : additive_expression
+                      | relational_expression TLT additive_expression
+                      | relational_expression TGT additive_expression
+                      | relational_expression TLE additive_expression
+                      | relational_expression TGE additive_expression
+                      ;
+
 expression : additive_expression 
-           | expression comparative_operator expression /* TODO: Handle Here */
+           | equality_expression
            | expression boolean_operator expression /* TODO: Handle Here */
            | function_call /* TODO: Handle Here */
            | primary_expression
