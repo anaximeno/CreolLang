@@ -39,34 +39,34 @@
 
 %%
 
-Program : Statements /* TODO: Handle Here */
+program : statements /* TODO: Handle Here */
         ;
 
-Type : TYPE_INT
+type : TYPE_INT
      | TYPE_FLOAT
      | TYPE_VOID
      | TYPE_BOOL
      ;
 
-Literal : TINTEGER /* TODO: Handle Here */
+literal : TINTEGER /* TODO: Handle Here */
         | TFLOAT /* TODO: Handle Here */
         | TBOOL /* TODO: Handle Here */
         ;
 
-Identifier : TIDENTIFIER
+identifier : TIDENTIFIER
            ;
 
-BooleanOperator : TAND
+boolean_operator : TAND
                 | TOR
                 ;
 
-AritmeticOperator : TPLUS
+aritmetic_operator : TPLUS
                   | TMINUS
                   | TMUL
                   | TDIV
                   ;
 
-ComparativeOperator : TLT
+comparative_operator : TLT
                     | TLE
                     | TGT
                     | TGE
@@ -76,102 +76,102 @@ ComparativeOperator : TLT
 
 /// Variables
 
-VariableDeclaration : SingleVariableDeclaration /* TODO: Handle Here */
-                    | MultipleVariablesDeclaration /* TODO: Handle Here */
+variable_declaration : single_variable_declaration /* TODO: Handle Here */
+                    | multiple_variables_declaration /* TODO: Handle Here */
                     ;
 
-SingleVariableDeclaration : Type Identifier /* TODO: Handle Here */
-                          | Type VariableAssignment /* TODO: Handle Here */
+single_variable_declaration : type identifier /* TODO: Handle Here */
+                          | type variable_assignment /* TODO: Handle Here */
                           ;
 
-MultipleVariablesDeclaration : Type VariablesList /* TODO: Handle Here */
+multiple_variables_declaration : type variables_list /* TODO: Handle Here */
                              ;
 
-VariablesList : VariablesList ',' Identifier /* TODO: Handle Here */
-              | VariablesList ',' VariableAssignment /* TODO: Handle Here */
-              | VariableAssignment
-              | Identifier
+variables_list : variables_list ',' identifier /* TODO: Handle Here */
+              | variables_list ',' variable_assignment /* TODO: Handle Here */
+              | variable_assignment
+              | identifier
               ;
 
-VariableAssignment : Identifier '=' Expression /* TODO: Handle Here */
+variable_assignment : identifier '=' expression /* TODO: Handle Here */
                    ;
 
 /// Expressions
 
-Expression : Expression AritmeticOperator Expression /* TODO: Handle Here */
-           | Expression ComparativeOperator Expression /* TODO: Handle Here */
-           | Expression BooleanOperator Expression /* TODO: Handle Here */
-           | FunctionCall /* TODO: Handle Here */
-           | Identifier /* TODO: Handle Here */
-           | Literal /* TODO: Handle Here */
+expression : expression aritmetic_operator expression /* TODO: Handle Here */
+           | expression comparative_operator expression /* TODO: Handle Here */
+           | expression boolean_operator expression /* TODO: Handle Here */
+           | function_call /* TODO: Handle Here */
+           | identifier /* TODO: Handle Here */
+           | literal /* TODO: Handle Here */
            ;
 
 /// Functions
 
-FunctionDeclaration : Type Identifier '(' FunctionParameters ')' Block /* TODO: Handle Here */
-                    | Type Identifier '(' EmptyOrVoid ')' /* TODO: Handle Here */
+function_declaration : type identifier '(' function_parameters ')' block /* TODO: Handle Here */
+                    | type identifier '(' empty_or_void ')' /* TODO: Handle Here */
                     ;
 
-FunctionParameters : FunctionParameters ',' Type Identifier /* TODO: Handle Here */
-                   | Type Identifier /* TODO: Handle Here */
+function_parameters : function_parameters ',' type identifier /* TODO: Handle Here */
+                   | type identifier /* TODO: Handle Here */
                    ;
 
-FunctionArguments : FunctionArguments ',' Expression /* TODO: Handle Here */
-                  | Expression /* TODO: Handle Here */
+function_arguments : function_arguments ',' expression /* TODO: Handle Here */
+                  | expression /* TODO: Handle Here */
                   ;
 
-FunctionCall : Identifier '(' FunctionArguments ')' /* TODO: Handle Here */
-             | Identifier '(' ')' /* TODO: Handle Here */
+function_call : identifier '(' function_arguments ')' /* TODO: Handle Here */
+             | identifier '(' ')' /* TODO: Handle Here */
 
 /// General Statements
 
-Statements : Statements Statement /* TODO: Handle Here */
+statements : statements Statement /* TODO: Handle Here */
            | Statement /* TODO: Handle Here */
            ;
 
-Statement : SingleLineStatement /* TODO: Handle Here */
-          | FunctionDeclaration /* TODO: Handle Here */
-          | DiLoop /* TODO: Handle Here */
-          | InkuantuLoop /* TODO: Handle Here */
-          | SiStatement /* TODO: Handle Here */
+Statement : single_line_statement /* TODO: Handle Here */
+          | function_declaration /* TODO: Handle Here */
+          | di_loop /* TODO: Handle Here */
+          | inkuantu_loop /* TODO: Handle Here */
+          | si_statement /* TODO: Handle Here */
           ;
 
-SingleLineStatement : VariableDeclaration ';' /* TODO: Handle Here */
-                    | VariableAssignment ';' /* TODO: Handle Here */
-                    | Expression ';' /* TODO: Handle Here */
+single_line_statement : variable_declaration ';' /* TODO: Handle Here */
+                    | variable_assignment ';' /* TODO: Handle Here */
+                    | expression ';' /* TODO: Handle Here */
                     | ReturnStatement ';'/* TODO: Handle Here */
                     | %empty    /* TODO: Handle Here */ 
                     | ';'
                     ;
 
-ReturnStatement : TDIVOLVI Expression /* TODO: Handle Here */
+ReturnStatement : TDIVOLVI expression /* TODO: Handle Here */
                 | TDIVOLVI /* TODO: Handle Here */
                 ;
 
-Block : '{' Statements '}' /* TODO: Handle Here */
+block : '{' statements '}' /* TODO: Handle Here */
       ;
 
 
 /// Loops
 
-DiLoop : TDI DiLoopStart TINKUANTU Expression TPUI VariableAssignment Block /* TODO: Handle Here */
+di_loop : TDI di_loop_start TINKUANTU expression TPUI variable_assignment block /* TODO: Handle Here */
        ;
 
-DiLoopStart : SingleVariableDeclaration
-            | VariableAssignment
+di_loop_start : single_variable_declaration
+            | variable_assignment
             ;
 
-InkuantuLoop : TINKUANTU Expression Block /* TODO: Handle Here */
+inkuantu_loop : TINKUANTU expression block /* TODO: Handle Here */
              ;
 
-SiStatement : TSI Expression Block /* TODO: Handle Here */
-            | TSI Expression TSINON Block /* TODO: Handle Here */
-            | TSI Expression TSINON SiStatement /* TODO: Handle Here */
+si_statement : TSI expression block /* TODO: Handle Here */
+            | TSI expression TSINON block /* TODO: Handle Here */
+            | TSI expression TSINON si_statement /* TODO: Handle Here */
             ;
 
 /// Other
 
-EmptyOrVoid : %empty
+empty_or_void : %empty
             | TYPE_VOID
             ;
 
