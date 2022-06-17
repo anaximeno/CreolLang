@@ -57,7 +57,6 @@ identifier : TIDENTIFIER
            ;
 
 
-/// Variables
 
 variable_declaration : single_variable_declaration /* TODO: Handle Here */
                      | multiple_variables_declaration /* TODO: Handle Here */
@@ -81,9 +80,11 @@ variable_assignment : identifier '=' expression /* TODO: Handle Here */
 
 /// Expressions
 
-expression : logical_or_expressions
+expression : constant_expression
            | function_call
            ;
+
+constant_expression : logical_or_expressions ;
 
 logical_or_expressions : logical_and_expressions
                        | logical_or_expressions TOR logical_and_expressions;
