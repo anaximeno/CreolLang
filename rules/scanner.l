@@ -18,7 +18,7 @@ INT [+|-]?[0-9]+
 
 FLOAT {INT}\.[0-9]+
 
-    /* Identifier RegEx */
+/* Identifier RegEx */
 IDF [a-zA-Z_][a-zA-Z0-9_]*
 
 %%
@@ -34,10 +34,12 @@ IDF [a-zA-Z_][a-zA-Z0-9_]*
 "float"         SAVE_TOKEN;   return TYPE_FLOAT;
 "void"          SAVE_TOKEN;   return TYPE_VOID;
 "bool"          SAVE_TOKEN;   return TYPE_BOOL;
-"sim"           SAVE_BOOLEAN; return TBOOL;
-"nau"           SAVE_BOOLEAN; return TBOOL;
-{INT}           SAVE_INTEGER; return TINTEGER;
-{FLOAT}         SAVE_NUMBER;  return TFLOAT;
+"sim"           SAVE_BOOLEAN; return BOOL;
+"nau"           SAVE_BOOLEAN; return BOOL;
+"para"          return TOKENIZE(TPARA);
+"continua"      return TOKENIZE(TCONTINUA);
+{INT}           SAVE_INTEGER; return INTEGER;
+{FLOAT}         SAVE_NUMBER;  return FLOAT;
 {IDF}           SAVE_TOKEN;   return TIDENTIFIER;
 "+"             return TOKENIZE(TPLUS);
 "-"             return TOKENIZE(TMINUS);
