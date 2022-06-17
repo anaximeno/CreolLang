@@ -60,12 +60,6 @@ boolean_operator : TAND
                  | TOR
                  ;
 
-aritmetic_operator : TPLUS
-                   | TMINUS
-                   | TMUL
-                   | TDIV
-                   ;
-
 comparative_operator : TLT
                      | TLE
                      | TGT
@@ -103,7 +97,17 @@ primary_expression : identifier
                    | '(' expression ')'
                    ;
 
-expression : expression aritmetic_operator expression /* TODO: Handle Here */
+additive_expression : multiplicative_expression
+                    | additive_expression TPLUS multiplicative_expression
+                    | additive_expression TMINUS multiplicative_expression
+                    ;
+
+multiplicative_expression : primary_expression
+                          | multiplicative_expression TMUL primary_expression
+                          | multiplicative_expression TDIV primary_expression
+                          ;
+
+expression : additive_expression 
            | expression comparative_operator expression /* TODO: Handle Here */
            | expression boolean_operator expression /* TODO: Handle Here */
            | function_call /* TODO: Handle Here */
