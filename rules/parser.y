@@ -42,11 +42,11 @@
 program : statements /* TODO: Handle Here */
         ;
 
-type : TYPE_INT
-     | TYPE_FLOAT
-     | TYPE_VOID
-     | TYPE_BOOL
-     ;
+type_specifier : TYPE_INT
+               | TYPE_FLOAT
+               | TYPE_VOID
+               | TYPE_BOOL
+               ;
 
 literal : TINTEGER /* TODO: Handle Here */
         | TFLOAT /* TODO: Handle Here */
@@ -80,11 +80,11 @@ variable_declaration : single_variable_declaration /* TODO: Handle Here */
                     | multiple_variables_declaration /* TODO: Handle Here */
                     ;
 
-single_variable_declaration : type identifier /* TODO: Handle Here */
-                          | type variable_assignment /* TODO: Handle Here */
+single_variable_declaration : type_specifier identifier /* TODO: Handle Here */
+                          | type_specifier variable_assignment /* TODO: Handle Here */
                           ;
 
-multiple_variables_declaration : type variables_list /* TODO: Handle Here */
+multiple_variables_declaration : type_specifier variables_list /* TODO: Handle Here */
                              ;
 
 variables_list : variables_list ',' identifier /* TODO: Handle Here */
@@ -108,12 +108,12 @@ expression : expression aritmetic_operator expression /* TODO: Handle Here */
 
 /// Functions
 
-function_declaration : type identifier '(' function_parameters ')' block /* TODO: Handle Here */
-                    | type identifier '(' empty_or_void ')' /* TODO: Handle Here */
+function_declaration : type_specifier identifier '(' function_parameters ')' block /* TODO: Handle Here */
+                    | type_specifier identifier '(' empty_or_void ')' /* TODO: Handle Here */
                     ;
 
-function_parameters : function_parameters ',' type identifier /* TODO: Handle Here */
-                   | type identifier /* TODO: Handle Here */
+function_parameters : function_parameters ',' type_specifier identifier /* TODO: Handle Here */
+                   | type_specifier identifier /* TODO: Handle Here */
                    ;
 
 function_arguments : function_arguments ',' expression /* TODO: Handle Here */
