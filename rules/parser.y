@@ -15,30 +15,42 @@
 }
 
 /* terminal symbols */
+
 %token<string> TIDENTIFIER
 %token<integer> INTEGER
 %token<floatingp> FLOAT
 %token<boolean> BOOL
+
 %token<token>  TPLUS TMINUS TMUL TDIV
+
 %token<token>  TEQ  TNE  TLT TLE TGT TGE
+
 %token<token>  TAND TOR
-%token<string> TYPE_INT TYPE_FLOAT TYPE_BOOL TYPE_VOID
+
+%token<string> TYPE_INT 
+               TYPE_FLOAT
+               TYPE_BOOL
+               TYPE_VOID
+
 %token<token>  TDIVOLVI TDI TPUI
 %token<token>  TINKUANTU TSI TSINON
 %token<token> TPARA TCONTINUA
 
-%right '='
+%left TLT TGT TLE TGE TEQ TNE '='
 %left TPLUS TMINUS
 %left TMUL TDIV
+
 %nonassoc UMINUS
 
 %start program
+
 %debug
 %verbose
 
-/* non terminal symbols */
 
 %%
+
+/* non terminals */
 
 program : statements /* TODO: Handle Here */
         ;
