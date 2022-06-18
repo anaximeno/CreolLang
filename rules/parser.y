@@ -69,12 +69,15 @@ identifier : TIDENTIFIER
            ;
 
 // note: declator may be extended later
-declarator : identifier ;
+declarator : identifier
+           ;
 
-declaration : type_specifier init_declarator ;
+declaration : type_specifier init_declarator
+            ;
 
 init_declarator : declarator
-                | declarator '=' initializer;
+                | declarator '=' initializer
+                ;
 
 // note: may be extended later
 initializer : expression ;
@@ -83,10 +86,12 @@ expression : assignment_expression
            | function_call
            ;
 
-constant_expression : logical_or_expressions ;
+constant_expression : logical_or_expressions
+                    ;
 
 logical_or_expressions : logical_and_expressions
-                       | logical_or_expressions TOR logical_and_expressions;
+                       | logical_or_expressions TOR logical_and_expressions
+                       ;
 
 logical_and_expressions : equality_expression
                         | logical_and_expressions TAND equality_expression
@@ -125,10 +130,12 @@ primary_expression : identifier
 
 // todo: correct anomalies using semantic analysis
 assignment_expression : constant_expression
-                      | primary_expression assignment_operator assignment_expression;
+                      | primary_expression assignment_operator assignment_expression
+                      ;
 
 // note: this may be extended later to support op assign
-assignment_operator : '=' ;
+assignment_operator : '='
+                    ;
 
 function_declaration : type_specifier declarator '(' parameter_optional_list ')' compound_statement
                      ;
@@ -197,7 +204,7 @@ void yyerror(const char* err) {
     std::exit(1);
 }
 
-int main(int argc, char** argv) {
+int main(const int argc, const char* const* argv) {
     yyparse();
     return 0;
 }
