@@ -1,5 +1,9 @@
-int adiciona(int a, int b) {
-    divolvi a + b;
+int min(int a, int b) {
+    si a < b {
+        divolvi a;
+    } sinon {
+        divolvi b;
+    }	
 }
 
-int x = adiciona(8, 9);
+int m = min(12, 20);
