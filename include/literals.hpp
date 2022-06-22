@@ -1,12 +1,12 @@
+#ifndef _CREOL_LITERALS
+#define _CREOL_LITERALS
+
 #include <llvm/IR/Value.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/ADT/APFloat.h>
 #include <llvm/ADT/APSInt.h>
 #include <llvm/IR/Constants.h>
 #include "expr.hpp"
-
-#ifndef _CREOL_LITERALS
-#define _CREOL_LITERALS
 
 namespace creol {
     /// IntLiteralExprAST - represents an integer literal value
@@ -41,15 +41,15 @@ namespace creol {
 };
 
 llvm::Value* creol::IntLiteralExprAST::codegen() {
-    return llvm::ConstantInt::get(*creol::TheContext, llvm::APSInt(Val, false));
+    return llvm::ConstantInt::get(*creol::Context, llvm::APSInt(Val, false));
 }
 
 llvm::Value* creol::FloatLiteralExprAST::codegen() {
-    return llvm::ConstantFP::get(*creol::TheContext, llvm::APFloat(Val));
+    return llvm::ConstantFP::get(*creol::Context, llvm::APFloat(Val));
 }
 
 llvm::Value* creol::BoolLiteralExprAST::codegen() {
-    return llvm::ConstantInt::get(*creol::TheContext, llvm::APSInt(Val));
+    return llvm::ConstantInt::get(*creol::Context, llvm::APSInt(Val));
 }
 
 #endif

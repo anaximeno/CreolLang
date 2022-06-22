@@ -1,4 +1,5 @@
 #include "../creol.hpp"
+#include "../base.hpp"
 #include <llvm/IR/BasicBlock.h>
 #include <iostream>
 #include <memory>
@@ -14,7 +15,6 @@ int main(int argc, char* argv[]) {
     
     std::unique_ptr<creol::PrototypeAST> Proto;
     std::unique_ptr<creol::ExprAST> Body;
-
     std::vector<std::string> Args;
 
     Args.push_back("a");
@@ -31,10 +31,10 @@ int main(int argc, char* argv[]) {
     );
 
     llvm::BasicBlock* Block =llvm::BasicBlock::Create(
-        *creol::TheContext, "test", testFun->codegen()
+        *creol::Context, "test", testFun->codegen()
     );
 
-    creol::TheBuilder->SetInsertPoint(Block);
+    creol::Builder->SetInsertPoint(Block);
 
-    creol::TheModule->print(llvm::dbgs(), nullptr);
+    creol::Module->print(llvm::dbgs(), nullptr);
 }

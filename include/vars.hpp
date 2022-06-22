@@ -31,7 +31,7 @@ const std::string& creol::VariableExprAST::getTypeName() const {
 }
 
 llvm::Value* creol::VariableExprAST::codegen() {
-    llvm::Value* Value = NamedValues[Name];
+    llvm::Value* Value = creol::NamedValues[Name];
     if (!Value)
         return creol::LogErrorV("Unknown variable name '" + Name + "'");
     return Value;

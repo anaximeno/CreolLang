@@ -1,7 +1,7 @@
-#include <llvm/IR/Value.h>
-
 #ifndef _CREOL_EXPR
 #define _CREOL_EXPR
+
+#include <llvm/IR/Value.h>
 
 namespace creol {
     class ExprAST {

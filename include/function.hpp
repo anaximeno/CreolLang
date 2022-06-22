@@ -1,3 +1,6 @@
+#ifndef _CREOL_FUNCTION
+#define _CREOL_FUNCTION
+
 #include <llvm/IR/Value.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Function.h>
@@ -6,9 +9,6 @@
 #include "expr.hpp"
 #include "misc.hpp"
 #include "base.hpp"
-
-#ifndef _CREOL_FUNCTION
-#define _CREOL_FUNCTION
 
 namespace creol {
     /// CallExprAST - represents the function call
@@ -53,7 +53,7 @@ namespace creol {
 };
 
 llvm::Value* creol::CallExprAST::codegen() {
-    llvm::Function* CalleeFun = creol::TheModule->getFunction(Callee);
+    llvm::Function* CalleeFun = creol::Module->getFunction(Callee);
 
     if (!CalleeFun) {
         return creol::LogErrorV("Unknown function referenced!");
@@ -70,7 +70,7 @@ llvm::Value* creol::CallExprAST::codegen() {
             }
         }
 
-        return creol::TheBuilder->CreateCall(CalleeFun, ArgsValues, "calltmp");
+        return creol::Builder->CreateCall(CalleeFun, ArgsValues, "calltmp");
     }
 }
 
@@ -78,26 +78,26 @@ llvm::Function* creol::PrototypeAST::codegen() {
     // info: Currently only integer types arguments are received by the funtions
     // TODO: divesify arguments
     std::vector<llvm::Type*> Arguments(
-        Args.size(), llvm::Type::getInt32Ty(*creol::TheContext)
+        Args.size(), llvm::Type::getInt32Ty(*creol::Context)
     );
 
     llvm::FunctionType* FunType = nullptr;
 
     if (TypeName == "int") {
         FunType = llvm::FunctionType::get(
-            llvm::Type::getInt32Ty(*creol::TheContext), Arguments, false
+            llvm::Type::getInt32Ty(*creol::Context), Arguments, false
         );
     } else if (TypeName == "float") {
         FunType = llvm::FunctionType::get(
-            llvm::Type::getFloatTy(*creol::TheContext), Arguments, false
+            llvm::Type::getFloatTy(*creol::Context), Arguments, false
         );
     } else if (TypeName == "bool") {
         FunType = llvm::FunctionType::get(
-            llvm::Type::getInt1Ty(*creol::TheContext), Arguments, false
+            llvm::Type::getInt1Ty(*creol::Context), Arguments, false
         );
     } else if (TypeName == "void") {
         FunType = llvm::FunctionType::get(
-            llvm::Type::getVoidTy(*creol::TheContext), Arguments, false
+            llvm::Type::getVoidTy(*creol::Context), Arguments, false
         );
     } else {
         LogErrorV("Unknown function type!");
@@ -105,7 +105,7 @@ llvm::Function* creol::PrototypeAST::codegen() {
     }
 
     llvm::Function* Fun = llvm::Function::Create(
-        FunType, llvm::Function::ExternalLinkage, Name, creol::TheModule.get()
+        FunType, llvm::Function::ExternalLinkage, Name, creol::Module.get()
     );
 
     unsigned idx = 0;
@@ -122,7 +122,8 @@ const std::string& creol::PrototypeAST::getName() const {
 }
 
 llvm::Function* creol::FunctionAST::codegen() {
-    llvm::Function* TheFunction = creol::TheModule->getFunction(Proto->getName());
+    llvm::Function* TheFunction = creol::Module->getFunction(Proto->getName());
+
     TheFunction = TheFunction ? TheFunction : Proto->codegen();
 
     if (!TheFunction) {
@@ -134,20 +135,20 @@ llvm::Function* creol::FunctionAST::codegen() {
     }
 
     llvm::BasicBlock* BasicBlock = llvm::BasicBlock::Create(
-        *creol::TheContext, "entry", TheFunction
+        *creol::Context, "entry", TheFunction
     );
 
-    creol::TheBuilder->SetInsertPoint(BasicBlock);
+    creol::Builder->SetInsertPoint(BasicBlock);
 
-    creol::NamedValues.clear();
+    NamedValues.clear();
 
     for (auto& arg : TheFunction->args()) {
-        creol::NamedValues[arg.getName()] = &arg;
+        NamedValues[arg.getName()] = &arg;
     }
 
     if (llvm::Value* RetVal = Body->codegen()) {
         // Add a return value to the function
-        creol::TheBuilder->CreateRet(RetVal);
+        creol::Builder->CreateRet(RetVal);
         llvm::verifyFunction(*TheFunction);
         return TheFunction;
     } else {
