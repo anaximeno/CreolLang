@@ -11,7 +11,7 @@ namespace creol {
         fprintf(stderr, "Error: %s\n", Str.c_str());
         return nullptr;
     }
-    
+
     llvm::Value* LogErrorV(const std::string& Str) {
         LogError(Str);
         return nullptr;

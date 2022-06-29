@@ -9,6 +9,7 @@ namespace creol {
     class StmtAST : public NodeAST {
         public:
             virtual ~StmtAST() = default;
+            virtual llvm::Value* codegen() = 0;
     };
 };
 

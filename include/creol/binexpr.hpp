@@ -15,7 +15,7 @@ namespace creol {
         PLUS, MINUS, TIMES, DIV, LT,
         LE, GT, GE, NE, EQ, AND, OR
     };
-    
+
     /// BinaryExprAST - Represents the binary operations and expressions
     /// for the creoline lang.
     class BinaryExprAST : public ExprAST {
@@ -28,22 +28,22 @@ namespace creol {
             std::unique_ptr<ExprAST> RHS)
         : Op(Op), LHS(std::move(LHS)),
           RHS(std::move(RHS)) {}
-        
+
         llvm::Value* codegen() override;
     };
 };
 
 
-llvm::Value* creol::BinaryExprAST::codegen() {    
+llvm::Value* creol::BinaryExprAST::codegen() {
     llvm::Value* L = LHS->codegen();
     llvm::Value* R = RHS->codegen();
-    
+
     if (!L || !R) { return nullptr; }
 
     switch (Op)
     {
     case PLUS:
-        return creol::Builder->CreateAdd(L, R, "addtmp");    
+        return creol::Builder->CreateAdd(L, R, "addtmp");
     case MINUS:
         return creol::Builder->CreateSub(L, R, "subtmp");
     case TIMES:
@@ -66,7 +66,7 @@ llvm::Value* creol::BinaryExprAST::codegen() {
         return creol::Builder->CreateAnd(L, R, "andtmp");
     case OR:
         return creol::Builder->CreateOr(L, R, "ortmp");
-        
+
     default:
         return creol::LogErrorV("invalid binary operator!");
     }

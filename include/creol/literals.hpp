@@ -32,7 +32,7 @@ namespace creol {
     /// BoolLiteralExprAST - represents a boolean literal value
     class BoolLiteralExprAST : public ExprAST {
         unsigned short Val;
-    
+
     public:
         BoolLiteralExprAST(unsigned short Val)
         : Val(Val) {}
