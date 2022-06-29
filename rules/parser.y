@@ -27,7 +27,7 @@
 
 %token<token>  TAND TOR
 
-%token<string> TYPE_INT 
+%token<string> TYPE_INT
                TYPE_FLOAT
                TYPE_BOOL
                TYPE_VOID
