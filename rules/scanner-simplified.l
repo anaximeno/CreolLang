@@ -6,8 +6,8 @@
     #include <iostream>
     #include "parser-simplified.hh"
     #define YYERROR_VERBOSE 1
-    #define SAVE_TOKEN     yylval.string  = new std::string(yytext, yyleng)
-    #define SAVE_NUMBER    yylval.floatingp  = std::stod(std::string(yytext, yyleng))
+    #define SAVE_TOKEN (yylval.string  = new std::string(yytext, yyleng))
+    #define SAVE_NUMBER (yylval.floatingpoint = std::stod(std::string(yytext, yyleng)))
     #define TOKENIZE(sym) (yylval.token   = sym)
     int yyerror(char const*);
 %}

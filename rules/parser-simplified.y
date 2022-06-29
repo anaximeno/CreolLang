@@ -8,16 +8,15 @@
 
 %union {
     std::string* string;
-    long long integer;
-    float floatingp;
-    unsigned short boolean;
+    float floatingpoint;
     int token;
 }
 
 /* terminal symbols */
 
 %token<string> TIDENTIFIER
-%token<floatingp> FLOAT
+
+%token<floatingpoint> FLOAT
 
 %token<token>  TPLUS TMINUS TMUL TDIV
 
