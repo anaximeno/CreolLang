@@ -11,8 +11,7 @@ namespace creol {
     class NodeAST {
         public:
             virtual ~NodeAST() = default;
-
-            virtual llvm::Value* codeGen() = 0;
+            virtual llvm::Value* codegen() = 0;
     };
 };
 
