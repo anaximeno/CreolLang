@@ -11,7 +11,7 @@
 
 int main(int argc, char* argv[]) {
     creol::InitializeModule("Testing Module");
-    
+
     std::unique_ptr<creol::PrototypeAST> Proto;
     std::unique_ptr<creol::ExprAST> Body;
     std::vector<std::string> Args;
@@ -29,9 +29,7 @@ int main(int argc, char* argv[]) {
         std::move(Proto), std::move(Body)
     );
 
-    llvm::BasicBlock* Block =llvm::BasicBlock::Create(
-        *creol::Context, "test", testFun->codegen()
-    );
+    llvm::BasicBlock* Block = llvm::BasicBlock::Create(*creol::Context, "test", testFun->codegen());
 
     creol::Builder->SetInsertPoint(Block);
 
