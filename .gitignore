@@ -14,3 +14,6 @@ rules/parser
 
 # VSCode config files
 .vscode/*
+
+# Compiled headers
+*.gch
