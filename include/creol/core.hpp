@@ -1,5 +1,5 @@
-#ifndef _CREOL_CREOL
-#define _CREOL_CREOL
+#ifndef _CORE_CREOL
+#define _CORE_CREOL
 
 #include "base.hpp"
 #include "binexpr.hpp"
