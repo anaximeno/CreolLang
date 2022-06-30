@@ -3,7 +3,10 @@ int min(int a, int b) {
         divolvi a;
     } sinon {
         divolvi b;
-    }	
+    }
 }
 
-int m = min(12, 20);
+int main() {
+    int m = min(12, 20);
+}
+
