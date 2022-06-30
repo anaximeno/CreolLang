@@ -13,7 +13,7 @@ then
 
     if [[ $? -eq 0 ]]
     then
-        $COMPILER -g -o $OUTFILE parser.cc scanner.cc
+        $COMPILER -g -o $OUTFILE parser.cc scanner.cc ../creol.o
         if [[ $? -eq 0 ]]
         then
             echo -e "\nParser sucessfully compiled!\n"
