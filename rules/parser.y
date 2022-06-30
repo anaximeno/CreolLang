@@ -218,7 +218,7 @@ jump_statement : TPARA ';' { $$ = new JumpSttmt("break"); }
 %%
 
 void yyerror(const char* err) {
-    std::cerr << "Error: " << err << std::endl;
+    fprintf(stderr, "Creol: Error: %s\n", err);
     std::exit(1);
 }
 

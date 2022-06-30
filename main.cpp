@@ -41,6 +41,8 @@ int main(int argc, const char* const* argv) {
 
     if (!fs::exists(filename)) {
         printErrorMessage(("File '" + filename + "' does not exits!").c_str());
+    } else if (fs::is_directory(filename)) {
+        printErrorMessage(("Directory '" + filename + "' is an invalid filename!").c_str());
     }
 
     FILE* file = fopen(filename.c_str(), "r");
@@ -51,8 +53,16 @@ int main(int argc, const char* const* argv) {
 
     yyin = file; yyparse();
 
-    std::cout << "Generated Code:\n" << std::endl;
-    std::cout << Program->CodeGen() << std::endl;
+    std::string code;
+
+    try {
+        code = Program->CodeGen();
+    } catch(const std::exception& e) {
+        std::cerr << e.what() << '\n';
+    }
+
+    std::cout << code << std::endl;
+    return 0;
 }
 
 std::unique_ptr<ap::ArgumentParser> parseArguments(const int argc, const char* const* argv) {
