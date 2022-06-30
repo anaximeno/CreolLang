@@ -10,36 +10,40 @@
 
     using namespace creol;
 
-    static creol::BlockAST* ProgramBlock;
+    static creol::BlockAST* ProgramBlock = nullptr;
 %}
 
 %union {
     int token;
     std::string* string;
-    float floatingpoint;
+    double floatingpoint;
     creol::BlockAST* block;
     creol::ExprAST* expr;
+    creol::BinaryExprAST* binexpr;
+    creol::StmtAST* stmt;
+    // std::vector<std::unique_ptr<ExprAST>> exprvec;
 }
 
 /* terminal symbols */
 
 %token<string> TIDENTIFIER
-
 %token<floatingpoint> FLOAT
-
 %token<token>  TPLUS TMINUS TMUL TDIV
-
 %token<token>  TEQ  TNE  TLT TLE TGT TGE
-
 %token<token>  TAND TOR
-
 %token<string> TYPE_FLOAT
-
 %token<token>  TDIVOLVI TDI TPUI
-
 %token<token>  TINKUANTU TSI TSINON
-
 %token<token> TPARA TCONTINUA
+
+%type<expr> assignment_expression /* function_call */ constant_expression primary_expression
+            expression constant logical_and_expressions logical_or_expressions equality_expression
+            relational_expression additive_expression multiplicative_expression unary_expression
+%type<stmt> expression_statement selection_statement statement
+            iteration_statement jump_statement function_declaration declaration
+%type<string> identifier type_specifier
+/* %type<exprvec> argument_list assignment_operator */
+%type<block> statements compound_statement
 
 %left TLT TGT TLE TGE TEQ TNE '='
 %left TPLUS TMINUS
@@ -56,13 +60,13 @@
 
 /* non terminals */
 
-program : statements /* TODO: Handle Here */
+program : statements { ProgramBlock = $1; }
         ;
 
 type_specifier : TYPE_FLOAT
                ;
 
-constant : FLOAT /* TODO: Handle Here */
+constant : FLOAT { $$ = (ExprAST*) new FloatLiteralExprAST($1); }
          ;
 
 identifier : TIDENTIFIER
@@ -80,57 +84,58 @@ init_declarator : declarator
                 ;
 
 // note: may be extended later
-initializer : expression ;
+initializer : expression
+            ;
 
-expression : assignment_expression
-           | function_call
+expression : assignment_expression { $$ = $1; }
+           /* | function_call { $$ = $1; } */
            ;
 
-constant_expression : logical_or_expressions
+constant_expression : logical_or_expressions { $$ = $1; }
                     ;
 
-logical_or_expressions : logical_and_expressions
-                       | logical_or_expressions TOR logical_and_expressions
+logical_or_expressions : logical_and_expressions { $$ = $1; }
+                       | logical_or_expressions TOR logical_and_expressions { $$ = (ExprAST*) new BinaryExprAST(OpSymbol::OR, std::unique_ptr<ExprAST>($1), std::unique_ptr<ExprAST>($3)); }
                        ;
 
-logical_and_expressions : equality_expression
-                        | logical_and_expressions TAND equality_expression
+logical_and_expressions : equality_expression { $$ = $1; }
+                        | logical_and_expressions TAND equality_expression { $$ = (ExprAST*) new BinaryExprAST(OpSymbol::AND, std::unique_ptr<ExprAST>($1), std::unique_ptr<ExprAST>($3)); }
                         ;
 
-equality_expression : relational_expression
-                    | equality_expression TEQ relational_expression
-                    | equality_expression TNE relational_expression
+equality_expression : relational_expression { $$ = $1; }
+                    | equality_expression TEQ relational_expression { $$ = (ExprAST*) new BinaryExprAST(OpSymbol::EQ, std::unique_ptr<ExprAST>($1), std::unique_ptr<ExprAST>($3)); }
+                    | equality_expression TNE relational_expression { $$ = (ExprAST*) new BinaryExprAST(OpSymbol::NE, std::unique_ptr<ExprAST>($1), std::unique_ptr<ExprAST>($3)); }
                     ;
 
-relational_expression : additive_expression
-                      | relational_expression TLT additive_expression
-                      | relational_expression TGT additive_expression
-                      | relational_expression TLE additive_expression
-                      | relational_expression TGE additive_expression
+relational_expression : additive_expression { $$ = $1; }
+                      | relational_expression TLT additive_expression { $$ = (ExprAST*) new BinaryExprAST(OpSymbol::LT, std::unique_ptr<ExprAST>($1), std::unique_ptr<ExprAST>($3)); }
+                      | relational_expression TGT additive_expression { $$ = (ExprAST*) new BinaryExprAST(OpSymbol::GT, std::unique_ptr<ExprAST>($1), std::unique_ptr<ExprAST>($3)); }
+                      | relational_expression TLE additive_expression { $$ = (ExprAST*) new BinaryExprAST(OpSymbol::LE, std::unique_ptr<ExprAST>($1), std::unique_ptr<ExprAST>($3)); }
+                      | relational_expression TGE additive_expression { $$ = (ExprAST*) new BinaryExprAST(OpSymbol::GE, std::unique_ptr<ExprAST>($1), std::unique_ptr<ExprAST>($3)); }
                       ;
 
-additive_expression : multiplicative_expression
-                    | additive_expression TPLUS multiplicative_expression
-                    | additive_expression TMINUS multiplicative_expression
+additive_expression : multiplicative_expression { $$ = $1; }
+                    | additive_expression TPLUS multiplicative_expression { $$ = (ExprAST*) new BinaryExprAST(OpSymbol::PLUS, std::unique_ptr<ExprAST>($1), std::unique_ptr<ExprAST>($3)); }
+                    | additive_expression TMINUS multiplicative_expression { $$ = (ExprAST*) new BinaryExprAST(OpSymbol::MINUS, std::unique_ptr<ExprAST>($1), std::unique_ptr<ExprAST>($3)); }
                     ;
 
-multiplicative_expression : unary_expression
-                          | multiplicative_expression TMUL primary_expression
-                          | multiplicative_expression TDIV primary_expression
+multiplicative_expression : unary_expression { $$ = $1; }
+                          | multiplicative_expression TMUL primary_expression { $$ = (ExprAST*) new BinaryExprAST(OpSymbol::TIMES, std::unique_ptr<ExprAST>($1), std::unique_ptr<ExprAST>($3)); }
+                          | multiplicative_expression TDIV primary_expression { $$ = (ExprAST*) new BinaryExprAST(OpSymbol::DIV, std::unique_ptr<ExprAST>($1), std::unique_ptr<ExprAST>($3)); }
                           ;
 
-unary_expression : primary_expression
-                 | TMINUS primary_expression %prec UMINUS
+unary_expression : primary_expression { $$ = $1; }
+                 | TMINUS primary_expression %prec UMINUS // TODO: Handle here!
                  ;
 
-primary_expression : identifier
-                   | constant
-                   | '(' expression ')'
+primary_expression : identifier // TODO: Handle here!
+                   | constant { $$ = $1; }
+                   | '(' expression ')' { $$ = $2; }
                    ;
 
 // todo: correct anomalies using semantic analysis
-assignment_expression : constant_expression
-                      | primary_expression assignment_operator assignment_expression
+assignment_expression : constant_expression { $$ = $1; }
+                      | primary_expression assignment_operator assignment_expression { $$ = nullptr; } // TODO: Implement here!
                       ;
 
 // note: this may be extended later to support op assign
@@ -155,40 +160,41 @@ argument_list : argument_list ',' expression /* TODO: Handle Here */
               | expression /* TODO: Handle Here */
               ;
 
-function_call : identifier '(' argument_list ')' /* TODO: Handle Here */
-              | identifier '(' ')' /* TODO: Handle Here */
+/* function_call : identifier '(' argument_list ')' { $$ = new CallExprAST($1, $3); }
+              | identifier '(' ')' { std::vector<std::unique_ptr<ExprAST>> emptyVec; $$ = new CallExprAST($1, std::move(emptyVec)); } */
 
-statements : statements statement /* TODO: Handle Here */
-           | statement /* TODO: Handle Here */
+statements : statements statement { $1->AddStatement($2); }
+           | statement { $$ = new BlockAST(); $$->AddStatement($1); }
            ;
 
 // todo: analyze the situation of
 // functions declared inside other functions
 // and the use of declarations in the global
 // scope.
-statement : expression_statement
-          | compound_statement
-          | selection_statement
-          | iteration_statement
-          | jump_statement
-          | function_declaration
-          | declaration
+statement : expression_statement { $$ = $1; }
+          | compound_statement { $$ = (StmtAST*) $1; }
+          | selection_statement { $$ = $1; }
+          | iteration_statement { $$ = $1; }
+          | jump_statement { $$ = $1; }
+          | function_declaration { $$ = $1; }
+          | declaration { $$ = $1; }
           ;
 
-expression_statement : expression ';'
+expression_statement : expression ';' { $$ = (StmtAST*) $1; }
                      | ';'
                      ;
 
-compound_statement : '{' statement '}'
+compound_statement : '{' statements '}' { $$ = $2; }
                    | '{' '}'
                    ;
 
-selection_statement : TSI expression compound_statement
-                    | TSI expression compound_statement TSINON compound_statement
+selection_statement : TSI expression compound_statement { $$ = (StmtAST*) new IfExprAST(std::unique_ptr<ExprAST>($2), std::unique_ptr<BlockAST>($3), std::make_unique<BlockAST>()); }
+                    | TSI expression compound_statement TSINON compound_statement { $$ = (StmtAST*) new IfExprAST(std::unique_ptr<ExprAST>($2), std::unique_ptr<BlockAST>($3), std::unique_ptr<BlockAST>($5)); }
                     ; // TODO: Add else if
 
-iteration_statement : TINKUANTU expression compound_statement
-                    | TDI expression TINKUANTU expression TPUI expression compound_statement;
+iteration_statement : TINKUANTU expression compound_statement /// TODO: Handle here
+                    | TDI expression TINKUANTU expression TPUI expression compound_statement /// TODO: Handle here
+                    ;
 
 jump_statement : TPARA ';'
                | TCONTINUA ';'
@@ -204,5 +210,7 @@ void yyerror(const char* err) {
 
 int main(const int argc, const char* const* argv) {
     yyparse();
+    if (ProgramBlock != nullptr)
+        std::cout << "Not NULL!" << std::endl;
     return 0;
 }
