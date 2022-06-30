@@ -9,9 +9,8 @@
     #include "parser.hh"
 
     #define YYERROR_VERBOSE 1
+
     #define SAVE_TOKEN     yylval.string  = new std::string(yytext, yyleng)
-    #define SAVE_INTEGER   yylval.integer = new std::string(yytext, yyleng)
-    #define SAVE_NUMBER    yylval.floatingpoint  = new std::string(yytext, yyleng)
     #define SAVE_BOOLEAN   yylval.boolean = new std::string(yytext == "sim" ? "1" : "0", 2);
     #define TOKENIZE(sym) (yylval.token   = sym)
 
@@ -42,8 +41,8 @@ IDF [a-zA-Z_][a-zA-Z0-9_]*
 "nau"           SAVE_BOOLEAN; return BOOL;
 "para"          return TOKENIZE(TPARA);
 "continua"      return TOKENIZE(TCONTINUA);
-{INT}           SAVE_INTEGER; return INTEGER;
-{FLOAT}         SAVE_NUMBER;  return FLOAT;
+{INT}           SAVE_TOKEN;   return INTEGER;
+{FLOAT}         SAVE_TOKEN;   return FLOAT;
 {IDF}           SAVE_TOKEN;   return TIDENTIFIER;
 "+"             return TOKENIZE(TPLUS);
 "-"             return TOKENIZE(TMINUS);
