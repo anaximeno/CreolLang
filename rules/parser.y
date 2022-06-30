@@ -40,7 +40,7 @@
 %token<token>  TAND TOR
 %token<string> TYPE_INT TYPE_FLOAT TYPE_BOOL TYPE_VOID
 %token<token>  TDIVOLVI TDI TPUI
-%token<token>  TINKUANTU TSI TSINON
+%token<token>  TINKUANTU TSI TSINON TIMPRISTAN
 %token<token> TPARA TCONTINUA
 
 %type<expr> expression assignment_expression function_call primary_expression
@@ -48,9 +48,9 @@
             equality_expression relational_expression additive_expression multiplicative_expression
             unary_expression initializer mostra_func_call
 %type<sttmt> expression_statement selection_statement iteration_statement jump_statement
-             function_declaration declaration statement
+             function_declaration declaration statement import_statement
 %type<block> compound_statement statements else_then
-%type<string> declarator identifier type_specifier assignment_operator
+%type<string> declarator identifier type_specifier assignment_operator single_import
 %type<vardecl> init_declarator parameter_declaration
 %type<params> parameter_list parameter_optional_list
 %type<args> argument_list
@@ -200,7 +200,14 @@ statement : expression_statement
           | jump_statement
           | function_declaration
           | declaration
+          | import_statement { $$ = $1; }
           ;
+
+import_statement : TIMPRISTAN single_import { $$ = new ImportSttmt(*$2); }
+                 ;
+
+single_import : STR
+              ;
 
 expression_statement : expression ';' { $$ = new ExprSttmt($1); }
                      | ';' { $$ = new ExprSttmt(nullptr); }

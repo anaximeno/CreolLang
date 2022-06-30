@@ -143,3 +143,7 @@ std::string creol::ForSttmt::CodeGen() {
     auto T = Then ? Then->CodeGen() : "";
     return "for (" + S + " ; " + C + " ; " + A + " ) " + T;
 }
+
+std::string creol::ImportSttmt::CodeGen() {
+    return "#include " + Import + "\n";
+}

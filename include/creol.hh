@@ -211,5 +211,15 @@ public:
     MostraFunCallExpr(FuncCallArgs* Args)
     : FunCallExpr("printf", Args) {}
 };
+
+/// Represents a library importation
+class ImportSttmt : public Sttmt {
+protected:
+    std::string Import;
+public:
+    ImportSttmt(std::string Import)
+    : Import(Import) {}
+    virtual std::string CodeGen() override;
+};
 };
 #endif // _CREOL_MAIN_TRANPILER_HEADER

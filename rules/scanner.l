@@ -28,6 +28,7 @@ STRING ["]([^"\\\n]|\\.|\\\n)*["]
 %%
 
 "mostra"        return TOKENIZE(TMOSTRA);
+"impristan"     return TOKENIZE(TIMPRISTAN);
 
 
 [ \t\n]         /* ignore */;
