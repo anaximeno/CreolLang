@@ -1,5 +1,7 @@
-#include "../creol/core.hpp"
+#include "../include/creol.hh"
+
 #include <llvm/IR/BasicBlock.h>
+
 #include <iostream>
 #include <memory>
 #include <string>
@@ -10,7 +12,13 @@
 // !NOTE: llvm, clang and its basics modules must be installed first!
 
 int main(int argc, char* argv[]) {
-    creol::InitializeModule("Testing Module");
+    static std::unique_ptr<llvm::LLVMContext> Context;
+    static std::unique_ptr<llvm::Module> Module;
+    static std::map<std::string, llvm::Value*> NamedValues;
+    static std::unique_ptr<llvm::IRBuilder<>> Builder;
+    Context = std::unique_ptr<llvm::LLVMContext>(new llvm::LLVMContext());
+    Module = std::make_unique<llvm::Module>("Test", *Context);
+    Builder = std::make_unique<llvm::IRBuilder<>>(*Context);
 
     std::unique_ptr<creol::PrototypeAST> Proto;
     std::unique_ptr<creol::ExprAST> Body;
@@ -29,9 +37,11 @@ int main(int argc, char* argv[]) {
         std::move(Proto), std::move(Body)
     );
 
-    llvm::BasicBlock* Block = llvm::BasicBlock::Create(*creol::Context, "test", testFun->codegen());
+    auto out = testFun->codegen(Context, Module, NamedValues, Builder);
 
-    creol::Builder->SetInsertPoint(Block);
+    llvm::BasicBlock* Block = llvm::BasicBlock::Create(*Context, "test", out);
 
-    creol::Module->print(llvm::dbgs(), nullptr);
+    Builder->SetInsertPoint(Block);
+
+    Module->print(llvm::dbgs(), nullptr);
 }
