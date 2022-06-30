@@ -21,8 +21,9 @@ INT [+|-]?[0-9]+
 
 FLOAT {INT}\.[0-9]+
 
-/* Identifier RegEx */
-IDF [a-zA-Z_][a-zA-Z0-9_]*
+IDENT [a-zA-Z_][a-zA-Z0-9_]*
+
+STRING ["]([^"\\\n]|\\.|\\\n)*["]
 
 %%
 
@@ -43,7 +44,8 @@ IDF [a-zA-Z_][a-zA-Z0-9_]*
 "continua"      return TOKENIZE(TCONTINUA);
 {INT}           SAVE_TOKEN;   return INTEGER;
 {FLOAT}         SAVE_TOKEN;   return FLOAT;
-{IDF}           SAVE_TOKEN;   return TIDENTIFIER;
+{IDENT}         SAVE_TOKEN;   return TIDENTIFIER;
+{STRING}        SAVE_TOKEN;   return STR;
 "+"             return TOKENIZE(TPLUS);
 "-"             return TOKENIZE(TMINUS);
 "*"             return TOKENIZE(TMUL);
@@ -62,6 +64,6 @@ IDF [a-zA-Z_][a-zA-Z0-9_]*
 ">="            return TOKENIZE(TGE);
 "<"             return TOKENIZE(TLT);
 "<="            return TOKENIZE(TLE);
-.               printf("line %d, Unknown token %s !\n", yylineno, yytext); yyterminate();
+.               printf("Creol: Error: line %d, Unknown token '%s'\n", yylineno, yytext); /* yyterminate(); */
 
 %%
