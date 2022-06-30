@@ -17,10 +17,10 @@ namespace fs = std::filesystem;
 
 namespace ap = argparse;
 
-#define COMPILER_NAME "creol"
-#define VERSION_OF_THE_COMPILER "Creol Programming Language V1.1.5"
-#define TYPE_OF_THE_COMPILER "traspiler"
-#define TARGET_LANGUAGE "c"
+#define COMPILER_NAME "Creol"
+#define VERSION_OF_THE_COMPILER "Creol V1.1.5"
+#define TYPE_OF_THE_COMPILER "Traspiler"
+#define TARGET_LANGUAGE "C"
 
 /// Parses the arguments from the command line and then returns the parser object.
 std::unique_ptr<ap::ArgumentParser> parseArguments(const int, const char* const*);
