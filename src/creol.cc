@@ -61,7 +61,8 @@ std::string creol::FuncDeclSttmt::CodeGen() {
 }
 
 std::string creol::IfSttmt::CodeGen() {
-    return "if ( " + Cond->CodeGen() + " ) " + Then->CodeGen() + " else " + Else->CodeGen();
+    auto E = Else ? " else " + Else->CodeGen() : "";
+    return "if ( " + Cond->CodeGen() + " ) " + Then->CodeGen() + E;
 }
 
 std::string creol::WhileSttmt::CodeGen() {
