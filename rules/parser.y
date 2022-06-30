@@ -46,9 +46,9 @@
             constant_expression constant logical_or_expressions logical_and_expressions
             equality_expression relational_expression additive_expression multiplicative_expression
             unary_expression initializer
-%type<sttmt> expression_statement selection_statement iteration_statement
-             jump_statement function_declaration declaration statement
-%type<block> compound_statement statements
+%type<sttmt> expression_statement selection_statement iteration_statement jump_statement
+             function_declaration declaration statement
+%type<block> compound_statement statements else_then
 %type<string> declarator identifier type_specifier assignment_operator
 %type<vardecl> init_declarator parameter_declaration
 %type<params> parameter_list parameter_optional_list
@@ -203,8 +203,13 @@ compound_statement : '{' statements '}' { $$ = $2; $$->UseBrackets(); }
                    ;
 
 selection_statement : TSI expression compound_statement { $$ = new IfSttmt($2, $3, nullptr); }
-                    | TSI expression compound_statement TSINON compound_statement { $$ = new IfSttmt($2, $3, $5); }
-                    ; // TODO: Add else if
+                    /* | TSI expression compound_statement TSINON compound_statement { $$ = new IfSttmt($2, $3, $5); } */
+                    | TSI expression compound_statement TSINON else_then { $$ = new IfSttmt($2, $3, $5); }
+                    ;
+
+else_then : compound_statement
+          | selection_statement { $$ = new BlockSttmt(); $$->AddSttmt($1); }
+          ;
 
 iteration_statement : TINKUANTU expression compound_statement { $$ = new WhileSttmt($2, $3); }
                     | TDI expression TINKUANTU expression TPUI expression compound_statement { $$ = new ForSttmt($2, $4, $6, $7); }
