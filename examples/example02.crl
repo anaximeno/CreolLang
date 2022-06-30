@@ -1,0 +1,16 @@
+impristan "stdio.h"
+
+int soma(int n) {
+    int i = 0;
+    int acc = 0;
+
+    di i = 0 inkuantu i < n pui i = i + 1 {
+        acc = acc + i;
+    }
+
+    divolvi acc;
+}
+
+int main() {
+    mostra("Soma ti 10 é igual a %d\n", soma(10));
+}
