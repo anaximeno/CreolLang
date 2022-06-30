@@ -2,14 +2,23 @@
     #include <cstdio>
     #include <cstdlib>
     #include <iostream>
+    #include <memory>
+    #include <algorithm>
+    #include "../include/creol.hh"
     extern int yylex();
     void yyerror(const char* err);
+
+    using namespace creol;
+
+    static creol::BlockAST* ProgramBlock;
 %}
 
 %union {
+    int token;
     std::string* string;
     float floatingpoint;
-    int token;
+    creol::BlockAST* block;
+    creol::ExprAST* expr;
 }
 
 /* terminal symbols */
@@ -27,7 +36,9 @@
 %token<string> TYPE_FLOAT
 
 %token<token>  TDIVOLVI TDI TPUI
+
 %token<token>  TINKUANTU TSI TSINON
+
 %token<token> TPARA TCONTINUA
 
 %left TLT TGT TLE TGE TEQ TNE '='

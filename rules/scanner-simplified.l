@@ -4,6 +4,7 @@
     #include <string>
     #include <cstdio>
     #include <iostream>
+    #include "../include/creol.hh"
     #include "parser-simplified.hh"
     #define YYERROR_VERBOSE 1
     #define SAVE_TOKEN (yylval.string  = new std::string(yytext, yyleng))

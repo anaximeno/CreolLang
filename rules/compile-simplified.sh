@@ -1,8 +1,8 @@
 #!/bin/bash
 
-COMPILER=g++
+COMPILER=clang++
 OUTFILE=parser-simplified
-
+COMPIL_ARGS="../creol.o -std=c++17 `llvm-config --libs core --ldflags --cppflags --system-libs`"
 # Compile the scanner-simplified
 flex -o scanner-simplified.cc scanner-simplified.l
 
@@ -13,7 +13,7 @@ then
 
     if [[ $? -eq 0 ]]
     then
-        $COMPILER -g -o $OUTFILE parser-simplified.cc scanner-simplified.cc
+        $COMPILER -g -o $OUTFILE parser-simplified.cc scanner-simplified.cc $COMPIL_ARGS
         if [[ $? -eq 0 ]]
         then
             echo -e "\nParser-simplified sucessfully compiled!\n"
