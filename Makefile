@@ -26,4 +26,4 @@ scanner.cc:
 	flex -o scanner.cc rules/scanner.l
 
 clean:
-	rm *.o parser.cc parser.hh scanner.cc parser.output creoline
+	rm *.o parser.cc parser.hh scanner.cc parser.output creol
