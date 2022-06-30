@@ -1,21 +1,26 @@
-.DEFAULT_GOAL := build
+.DEFAULT_GOAL := creoline
 
-.PHONY: compile-libs generate-parser generate-scanner build
+.PHONY: creoline creol.o parser.o scanner.o parser.cc parser.hh scanner.cc
 
 OBJS=creol.o
 
-compile-libs:
-	g++ src/creol.cc -g -Wall -c
+creoline: creol.o parser.o scanner.o
+	g++ creol.o parser.o scanner.o -g -o creoline
 
-generate-parser: compile-libs
+creol.o:
+	g++ src/creol.cc -g -c
+
+parser.o: parser.cc parser.hh scanner.cc creol.o
+	g++ parser.cc scanner.cc creol.o -g -c
+
+scanner.o: scanner.cc parser.cc creol.o
+	g++ scanner.cc parser.cc creol.o -g -c
+
+parser.cc parser.hh:
 	bison -dt rules/parser.y -o parser.cc
 
-generate-scanner: generate-parser
+scanner.cc:
 	flex -o scanner.cc rules/scanner.l
 
-build: generate-parser generate-scanner
-	g++ parser.cc scanner.cc $(OBJS) -o creoline
-
 clean:
-	rm *.o parser.cc parser.hh scanner.cc
-	rm parser.output creoline
+	rm *.o parser.cc parser.hh scanner.cc parser.output creoline
