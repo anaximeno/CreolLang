@@ -49,7 +49,7 @@ std::string creol::FuncArgs::CodeGen() {
     for (int i = 0 ; i < (int) Args.size() ; ++i) {
         Arguments += Args[i] ? Args[i]->CodeGen() : "";
         if (Args[i] && i < (int) Args.size() - 1) {
-            Arguments += ',';
+            Arguments += ' , ';
         }
     }
 
@@ -88,7 +88,7 @@ std::string creol::FuncCallArgs::CodeGen() {
     for (int i = 0 ; i < (int) Args.size() ; ++i) {
         Arguments += Args[i] ? Args[i]->CodeGen() : "";
         if (Args[i] && i < (int) Args.size() - 1) {
-            Arguments += ',';
+            Arguments += ' , ';
         }
     }
 
