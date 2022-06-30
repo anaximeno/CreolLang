@@ -207,7 +207,7 @@ selection_statement : TSI expression compound_statement { $$ = new IfSttmt($2, $
                     ; // TODO: Add else if
 
 iteration_statement : TINKUANTU expression compound_statement { $$ = new WhileSttmt($2, $3); }
-                    /* | TDI expression TINKUANTU expression TPUI expression compound_statement */
+                    | TDI expression TINKUANTU expression TPUI expression compound_statement { $$ = new ForSttmt($2, $4, $6, $7); }
                     ;
 
 jump_statement : TPARA ';' { $$ = new JumpSttmt("break"); }

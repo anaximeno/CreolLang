@@ -125,3 +125,11 @@ std::string creol::ParExpr::CodeGen() {
 std::string creol::AssignExpr::CodeGen() {
     return Assignee->CodeGen() + " = " + Assigned->CodeGen();
 }
+
+std::string creol::ForSttmt::CodeGen() {
+    auto S = Start ? Start->CodeGen() : "";
+    auto C = Cond ? Cond->CodeGen() : "";
+    auto A = After ? After->CodeGen() : "";
+    auto T = Then ? Then->CodeGen() : "";
+    return "for (" + S + " ; " + C + " ; " + A + " ) " + T;
+}

@@ -189,6 +189,18 @@ public:
     : AssignOp(AssignOp), Assignee(Assignee), Assigned(Assigned) {}
     virtual std::string CodeGen() override;
 };
+
+class ForSttmt : public Sttmt {
+protected:
+    Expr* Start;
+    Expr* Cond;
+    Expr* After;
+    BlockSttmt* Then;
+public:
+    ForSttmt(Expr* Start, Expr* Cond, Expr* After, BlockSttmt* Then)
+    : Start(Start), Cond(Cond), After(After), Then(Then) {}
+    virtual std::string CodeGen() override;
+};
 }
 
 #endif // _CREOL_MAIN_TRANPILER_HEADER
