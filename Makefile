@@ -1,20 +1,23 @@
-.DEFAULT_GOAL := creoline
+.DEFAULT_GOAL := creol
 
-.PHONY: creoline creol.o parser.o scanner.o parser.cc parser.hh scanner.cc
+.PHONY: creol main.o creol.o parser.o scanner.o parser.cc parser.hh scanner.cc
 
-OBJS=creol.o
+CPP_VERSION = -std=c++17
 
-creoline: creol.o parser.o scanner.o
-	g++ creol.o parser.o scanner.o -g -o creoline
+creol: main.o creol.o parser.o scanner.o
+	g++ $(CPP_VERSION) creol.o parser.o scanner.o main.o -g -o creol
+
+main.o: main.cpp parser.o scanner.o creol.o
+	g++ $(CPP_VERSION) main.cpp parser.o scanner.o creol.o -c -g -c
 
 creol.o:
-	g++ src/creol.cc -g -c
+	g++ $(CPP_VERSION) src/creol.cc -g -c
 
 parser.o: parser.cc parser.hh scanner.cc creol.o
-	g++ parser.cc scanner.cc creol.o -g -c
+	g++ $(CPP_VERSION) parser.cc scanner.cc creol.o -g -c
 
 scanner.o: scanner.cc parser.cc creol.o
-	g++ scanner.cc parser.cc creol.o -g -c
+	g++ $(CPP_VERSION) scanner.cc parser.cc creol.o -g -c
 
 parser.cc parser.hh:
 	bison -dt rules/parser.y -o parser.cc
