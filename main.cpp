@@ -58,7 +58,7 @@ int main(int argc, const char* const* argv) {
     try {
         code = Program->CodeGen();
     } catch(const std::exception& e) {
-        std::cerr << e.what() << '\n';
+       printErrorMessage(e.what());
     }
 
     std::cout << code << std::endl;
