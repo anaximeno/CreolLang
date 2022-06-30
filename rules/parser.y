@@ -1,5 +1,5 @@
 %{
-    #include "../include/creol.hh"
+    #include "include/creol.hh"
 
     #include <cstdio>
     #include <cstdlib>
