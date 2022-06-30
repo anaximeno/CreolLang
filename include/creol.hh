@@ -144,10 +144,13 @@ class LiteralExpr : public Expr {
 protected:
     std::string Type;
     std::string Value;
+    bool AutoCast = true;
 public:
     LiteralExpr(std::string Type, std::string Value)
     : Type(Type), Value(Value) {}
     virtual std::string CodeGen() override;
+    void DeactivateAutoCast(void);
+    void ActivateAutoCast(void);
 };
 
 /// An expression statement is an expression ending by a semicolon
@@ -201,6 +204,5 @@ public:
     : Start(Start), Cond(Cond), After(After), Then(Then) {}
     virtual std::string CodeGen() override;
 };
-}
-
+};
 #endif // _CREOL_MAIN_TRANPILER_HEADER

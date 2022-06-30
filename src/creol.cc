@@ -107,7 +107,16 @@ std::string creol::BinExpr::CodeGen() {
 }
 
 std::string creol::LiteralExpr::CodeGen() {
-    return "(" + Type + ")" + " " + Value;
+    auto Prefix = AutoCast ? "(" + Type + ") " : "";
+    return Prefix + Value;
+}
+
+void creol::LiteralExpr::ActivateAutoCast() {
+    AutoCast = true;
+}
+
+void creol::LiteralExpr::DeactivateAutoCast() {
+    AutoCast = false;
 }
 
 std::string creol::ExprSttmt::CodeGen() {
