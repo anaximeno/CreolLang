@@ -1,6 +1,9 @@
 # parser files
 *.yy.*
 *.tab.*
+parser.hh
+parser.cc
+scanner.cc
 
 # C/C++ object files
 *.o
@@ -14,3 +17,6 @@ rules/parser
 
 # VSCode config files
 .vscode/*
+
+# Compiled cpp headers
+*.gch
