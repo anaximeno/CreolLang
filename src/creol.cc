@@ -96,7 +96,8 @@ std::string creol::FuncCallArgs::CodeGen() {
 }
 
 std::string creol::FunCallExpr::CodeGen() {
-    return Name + "( " + Args->CodeGen() + " )";
+    auto A = Args ? Args->CodeGen() : "";
+    return Name + "( " + A + " )";
 }
 
 std::string creol::BinExpr::CodeGen() {
