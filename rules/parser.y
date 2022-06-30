@@ -176,6 +176,7 @@ argument_list : argument_list ',' expression { $1->AddArg($3); }
 
 function_call : identifier '(' argument_list ')' { $$ = new FunCallExpr(*$1, $3); }
               | identifier '(' ')' { $$ = new FunCallExpr(*$1, nullptr); }
+              ;
 
 statements : statements statement { $1->AddSttmt($2); }
            | statement { $$ = new BlockSttmt(); $$->AddSttmt($1); }
