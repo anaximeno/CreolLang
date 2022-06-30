@@ -26,11 +26,12 @@
     creol::VarDeclSttmt* vardecl;
     creol::FuncArgs* params;
     creol::FuncCallArgs* args;
+    creol::LiteralExpr* litexpr;
 }
 
 /* terminal symbols */
 
-%token<string> TIDENTIFIER
+%token<string> TIDENTIFIER STR
 %token<integer> INTEGER
 %token<floatingpoint> FLOAT
 %token<boolean> BOOL
@@ -78,9 +79,10 @@ type_specifier : TYPE_INT
                | TYPE_BOOL
                ;
 
-constant : INTEGER { $$ = new LiteralExpr("int", *$1); }
-         | FLOAT { $$ = new LiteralExpr("float", *$1); }
-         | BOOL { $$ = new LiteralExpr("int", *$1); }
+constant : INTEGER { $$ = new LiteralExpr("int", *$1); $<litexpr>$->ActivateAutoCast(); }
+         | FLOAT { $$ = new LiteralExpr("float", *$1); $<litexpr>$->ActivateAutoCast(); }
+         | BOOL { $$ = new LiteralExpr("int", *$1); $<litexpr>$->ActivateAutoCast(); }
+         | STR { $$ = new LiteralExpr("char*", *$1); $<litexpr>$->DeactivateAutoCast(); }
          ;
 
 identifier : TIDENTIFIER
