@@ -4,6 +4,7 @@
     #include <cstdio>
     #include <cstdlib>
     #include <iostream>
+    #include <typeinfo>
 
     extern int yylex();
     void yyerror(const char* err);
@@ -155,7 +156,7 @@ assignment_expression : constant_expression
 assignment_operator : '=' { $$ = new std::string("=", 2); }
                     ;
 
-function_declaration : type_specifier declarator '(' parameter_optional_list ')' compound_statement { $$ = (Sttmt*) new FuncDeclSttmt(*$1, *$2, $4, $<block>5); }
+function_declaration : type_specifier declarator '(' parameter_optional_list ')' compound_statement { $$ = (Sttmt*) new FuncDeclSttmt(*$1, *$2, $4, $6); }
                      ;
 
 parameter_optional_list : parameter_list
@@ -224,7 +225,8 @@ void yyerror(const char* err) {
 int main(const int argc, const char* const* argv) {
     yyparse();
 
-    std::cout << Program->CodeGen() << std::endl;
+    if (Program)
+        std::cout << Program->CodeGen() << std::endl;
 
     return 0;
 }
