@@ -74,7 +74,7 @@ namespace creol {
     class BlockAST : public ExprAST {
         std::vector<std::unique_ptr<StmtAST>> StatementList;
     public:
-        void AddStatement(StmtAST* stmt);
+        void AddStatement(StmtAST* stmt); /// TODO: Implement
         llvm::Value* codegen(std::unique_ptr<llvm::LLVMContext>& Context,
             std::unique_ptr<llvm::Module>& Module, std::map<std::string, llvm::Value*>& NamedValues,
             std::unique_ptr<llvm::IRBuilder<>>& Builder) override;
@@ -166,11 +166,12 @@ namespace creol {
     };
 
      class IfExprAST : public ExprAST {
-        std::unique_ptr<ExprAST> Cond, Then, Else;
+        std::unique_ptr<ExprAST> Cond;
+        std::unique_ptr<BlockAST> Then, Else;
 
     public:
-        IfExprAST(std::unique_ptr<ExprAST> Cond, std::unique_ptr<ExprAST> Then,
-            std::unique_ptr<ExprAST> Else)
+        IfExprAST(std::unique_ptr<ExprAST> Cond, std::unique_ptr<BlockAST> Then,
+            std::unique_ptr<BlockAST> Else)
         : Cond(std::move(Cond)), Then(std::move(Then)), Else(std::move(Else)) {}
         llvm::Value* codegen(std::unique_ptr<llvm::LLVMContext>& Context,
             std::unique_ptr<llvm::Module>& Module, std::map<std::string, llvm::Value*>& NamedValues,
