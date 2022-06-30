@@ -31,7 +31,7 @@
 
 /* terminal symbols */
 
-%token<string> TIDENTIFIER STR
+%token<string> TIDENTIFIER STR TMOSTRA
 %token<integer> INTEGER
 %token<floatingpoint> FLOAT
 %token<boolean> BOOL
@@ -46,7 +46,7 @@
 %type<expr> expression assignment_expression function_call primary_expression
             constant_expression constant logical_or_expressions logical_and_expressions
             equality_expression relational_expression additive_expression multiplicative_expression
-            unary_expression initializer
+            unary_expression initializer mostra_func_call
 %type<sttmt> expression_statement selection_statement iteration_statement jump_statement
              function_declaration declaration statement
 %type<block> compound_statement statements else_then
@@ -178,7 +178,12 @@ argument_list : argument_list ',' expression { $1->AddArg($3); }
 
 function_call : identifier '(' argument_list ')' { $$ = new FunCallExpr(*$1, $3); }
               | identifier '(' ')' { $$ = new FunCallExpr(*$1, nullptr); }
+              | mostra_func_call
               ;
+
+mostra_func_call : TMOSTRA '(' argument_list ')' { $$ = new MostraFunCallExpr($3); }
+                 | TMOSTRA '(' ')' { $$ = new MostraFunCallExpr(nullptr); }
+                 ;
 
 statements : statements statement { $1->AddSttmt($2); }
            | statement { $$ = new BlockSttmt(); $$->AddSttmt($1); }

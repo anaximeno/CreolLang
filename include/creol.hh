@@ -204,5 +204,12 @@ public:
     : Start(Start), Cond(Cond), After(After), Then(Then) {}
     virtual std::string CodeGen() override;
 };
+
+/// Maps the 'mostra' keyword to printf in C
+class MostraFunCallExpr : public FunCallExpr {
+public:
+    MostraFunCallExpr(FuncCallArgs* Args)
+    : FunCallExpr("printf", Args) {}
+};
 };
 #endif // _CREOL_MAIN_TRANPILER_HEADER

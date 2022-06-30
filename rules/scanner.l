@@ -27,6 +27,9 @@ STRING ["]([^"\\\n]|\\.|\\\n)*["]
 
 %%
 
+"mostra"        return TOKENIZE(TMOSTRA);
+
+
 [ \t\n]         /* ignore */;
 "si"            return TOKENIZE(TSI);
 "sinon"         return TOKENIZE(TSINON);
