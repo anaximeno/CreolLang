@@ -1,6 +1,6 @@
 # .DEFAULT_GOAL := creol
 
-# .PHONY: creol main.o creol.o parser.o scanner.o parser.cc parser.hh scanner.cc
+.PHONY: creol main.o creol.o parser.o scanner.o parser.cc parser.hh scanner.cc
 
 CPP_VERSION = -std=c++17
 
