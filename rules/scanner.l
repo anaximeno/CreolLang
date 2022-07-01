@@ -46,10 +46,6 @@ STRING ["]([^"\\\n]|\\.|\\\n)*["]
 "nau"           SAVE_BOOLEAN; return BOOL;
 "para"          return TOKENIZE(TPARA);
 "continua"      return TOKENIZE(TCONTINUA);
-{INT}           SAVE_TOKEN;   return INTEGER;
-{FLOAT}         SAVE_TOKEN;   return FLOAT;
-{IDENT}         SAVE_TOKEN;   return TIDENTIFIER;
-{STRING}        SAVE_TOKEN;   return STR;
 "+"             return TOKENIZE(TPLUS);
 "-"             return TOKENIZE(TMINUS);
 "*"             return TOKENIZE(TMUL);
@@ -68,6 +64,12 @@ STRING ["]([^"\\\n]|\\.|\\\n)*["]
 ">="            return TOKENIZE(TGE);
 "<"             return TOKENIZE(TLT);
 "<="            return TOKENIZE(TLE);
+"ii"            return TOKENIZE(TAND);
+"ou"            return TOKENIZE(TOR);
+{INT}           SAVE_TOKEN;   return INTEGER;
+{FLOAT}         SAVE_TOKEN;   return FLOAT;
+{IDENT}         SAVE_TOKEN;   return TIDENTIFIER;
+{STRING}        SAVE_TOKEN;   return STR;
 .               printf("Creol: Error: line %d, Unknown token '%s'\n", yylineno, yytext); /* yyterminate(); */
 
 %%
