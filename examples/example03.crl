@@ -1,0 +1,35 @@
+impristan "stdio.h"
+impristan "stdbool.h"
+
+void drawLine(int len, bool newLineAtEnd) {
+    int i;
+    di i = 0 inkuantu i < len pui i = i + 1 {
+        mostra("-");
+    }
+
+    si newLineAtEnd {
+        mostra("\n");
+    }
+}
+
+void printMessage() {
+    int i = 1;
+
+    inkuantu i < 10 {
+        drawLine(i, sim);
+        i = i + 1;
+    }
+
+    drawLine(i, nau);
+    mostra("  Hello, Creol!\n");
+    i = i - 1;
+
+    inkuantu i > 0 {
+        drawLine(i, sim);
+        i = i - 1;
+    }
+}
+
+int main() {
+    printMessage();
+}
