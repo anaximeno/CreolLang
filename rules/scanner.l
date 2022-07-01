@@ -6,12 +6,13 @@
     #include <string>
     #include <cstdio>
     #include <iostream>
+    #include <cstring>
     #include "parser.hh"
 
     #define YYERROR_VERBOSE 1
 
     #define SAVE_TOKEN     yylval.string  = new std::string(yytext, yyleng)
-    #define SAVE_BOOLEAN   yylval.boolean = new std::string(yytext == "sim" ? "1" : "0", 2);
+    #define SAVE_BOOLEAN   yylval.boolean = new std::string(strcmp(yytext, "sim") == 0 ? "1" : "0");
     #define TOKENIZE(sym) (yylval.token   = sym)
 
     int yyerror(char const*);
