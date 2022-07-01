@@ -76,12 +76,12 @@ program : statements { Program = $1; }
 type_specifier : TYPE_INT
                | TYPE_FLOAT
                | TYPE_VOID
-               | TYPE_BOOL
+               | TYPE_BOOL { $$ = new std::string("unsigned short int"); }
                ;
 
 constant : INTEGER { $$ = new LiteralExpr("int", *$1); $<litexpr>$->ActivateAutoCast(); }
          | FLOAT { $$ = new LiteralExpr("float", *$1); $<litexpr>$->ActivateAutoCast(); }
-         | BOOL { $$ = new LiteralExpr("int", *$1); $<litexpr>$->ActivateAutoCast(); }
+         | BOOL { $$ = new LiteralExpr("unsigned short int", *$1); $<litexpr>$->ActivateAutoCast(); }
          | STR { $$ = new LiteralExpr("char*", *$1); $<litexpr>$->DeactivateAutoCast(); }
          ;
 
