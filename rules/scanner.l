@@ -37,7 +37,6 @@ STRING ["]([^"\\\n]|\\.|\\\n)*["]
 "sinon"         return TOKENIZE(TSINON);
 "divolvi"       return TOKENIZE(TDIVOLVI);
 "di"            return TOKENIZE(TDI);
-"pui"           return TOKENIZE(TPUI);
 "inkuantu"      return TOKENIZE(TINKUANTU);
 "int"           SAVE_TOKEN;   return TYPE_INT;
 "float"         SAVE_TOKEN;   return TYPE_FLOAT;

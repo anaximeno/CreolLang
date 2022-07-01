@@ -39,9 +39,11 @@
 %token<token>  TEQ  TNE  TLT TLE TGT TGE
 %token<token>  TAND TOR
 %token<string> TYPE_INT TYPE_FLOAT TYPE_BOOL TYPE_VOID
-%token<token>  TDIVOLVI TDI TPUI
+%token<token>  TDIVOLVI TDI TSTRUT
 %token<token>  TINKUANTU TSI TSINON TIMPRISTAN
 %token<token> TPARA TCONTINUA
+
+/* non terminal symbols */
 
 %type<expr> expression assignment_expression function_call primary_expression
             constant_expression constant logical_or_expressions logical_and_expressions
@@ -227,7 +229,7 @@ else_then : compound_statement
           ;
 
 iteration_statement : TINKUANTU expression compound_statement { $$ = new WhileSttmt($2, $3); }
-                    | TDI expression TINKUANTU expression TPUI expression compound_statement { $$ = new ForSttmt($2, $4, $6, $7); }
+                    | TDI expression ';' expression ';' expression compound_statement { $$ = new ForSttmt($2, $4, $6, $7); }
                     ;
 
 jump_statement : TPARA ';' { $$ = new JumpSttmt("break"); }
