@@ -1,9 +1,9 @@
 impristan "stdio.h"
 
 int soma(int n) {
-    int i = 0;
     int acc = 0;
 
+    int i;
     di i = 0 inkuantu i < n pui i = i + 1 {
         acc = acc + i;
     }
