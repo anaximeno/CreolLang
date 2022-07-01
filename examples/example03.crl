@@ -3,7 +3,8 @@ impristan "stdbool.h"
 
 void drawLine(int len, bool newLineAtEnd) {
     int i;
-    di i = 0 inkuantu i < len pui i = i + 1 {
+
+    di i = 0 ; i < len ; i = i + 1 {
         mostra("-");
     }
 

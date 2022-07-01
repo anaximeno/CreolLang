@@ -4,7 +4,7 @@ int soma(int n) {
     int acc = 0;
 
     int i;
-    di i = 0 inkuantu i < n pui i = i + 1 {
+    di i = 0 ; i < n ; i = i + 1 {
         acc = acc + i;
     }
 
