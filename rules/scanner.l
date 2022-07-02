@@ -1,7 +1,7 @@
 %option noyywrap yylineno
 
 %{
-    #include "include/creol.hh"
+    #include "include/creol/ast.hh"
 
     #include <string>
     #include <cstdio>

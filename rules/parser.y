@@ -1,5 +1,5 @@
 %{
-    #include "include/creol.hh"
+    #include "include/creol/ast.hh"
 
     #include <cstdio>
     #include <cstdlib>
@@ -10,8 +10,9 @@
     void yyerror(const char* err);
 
     using namespace creol;
+    using namespace creol::ast;
 
-    creol::BlockSttmt* Program;
+    creol::ast::BlockSttmt* Program;
 %}
 
 %union {
@@ -20,13 +21,13 @@
     std::string* floatingpoint;
     std::string* boolean;
     std::string* string;
-    creol::Expr* expr;
-    creol::Sttmt* sttmt;
-    creol::BlockSttmt* block;
-    creol::VarDeclSttmt* vardecl;
-    creol::FuncArgs* params;
-    creol::FuncCallArgs* args;
-    creol::LiteralExpr* litexpr;
+    creol::ast::Expr* expr;
+    creol::ast::Sttmt* sttmt;
+    creol::ast::BlockSttmt* block;
+    creol::ast::VarDeclSttmt* vardecl;
+    creol::ast::FuncArgs* params;
+    creol::ast::FuncCallArgs* args;
+    creol::ast::LiteralExpr* litexpr;
 }
 
 /* terminal symbols */
