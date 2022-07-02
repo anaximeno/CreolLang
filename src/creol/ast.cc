@@ -1,24 +1,26 @@
-#include "../include/creol.hh"
+#include "../../include/creol/ast.hh"
 
-std::string creol::Expr::CodeGen() {
+using namespace creol;
+
+std::string ast::Expr::CodeGen() {
     return "";
 }
 
-std::string creol::VarDeclSttmt::CodeGen() {
+std::string ast::VarDeclSttmt::CodeGen() {
     std::string VarVal = Value ? " = " + Value->CodeGen() : "";
     return Type + ' ' + Name + VarVal;
 }
 
-void creol::VarDeclSttmt::SetType(std::string Type) {
+void ast::VarDeclSttmt::SetType(std::string Type) {
     this->Type = Type;
 }
 
 
-void creol::BlockSttmt::AddSttmt(creol::Sttmt* sttmt) {
+void ast::BlockSttmt::AddSttmt(ast::Sttmt* sttmt) {
     SttmtList.push_back(sttmt);
 }
 
-std::string creol::BlockSttmt::CodeGen() {
+std::string ast::BlockSttmt::CodeGen() {
     std::string block = "";
 
     for (auto& S : SttmtList) {
@@ -31,19 +33,19 @@ std::string creol::BlockSttmt::CodeGen() {
     return block;
 }
 
-void creol::BlockSttmt::UseBrackets() {
+void ast::BlockSttmt::UseBrackets() {
     BracketsOn = true;
 }
 
-void creol::BlockSttmt::DontUseBrackets() {
+void ast::BlockSttmt::DontUseBrackets() {
     BracketsOn = false;
 }
 
-void creol::FuncArgs::AddArg(creol::VarDeclSttmt* Arg) {
+void ast::FuncArgs::AddArg(ast::VarDeclSttmt* Arg) {
     Args.push_back(Arg);
 }
 
-std::string creol::FuncArgs::CodeGen() {
+std::string ast::FuncArgs::CodeGen() {
     std::string Arguments = "";
 
     for (int i = 0 ; i < (int) Args.size() ; ++i) {
@@ -56,33 +58,33 @@ std::string creol::FuncArgs::CodeGen() {
     return Arguments;
 }
 
-std::string creol::FuncDeclSttmt::CodeGen() {
+std::string ast::FuncDeclSttmt::CodeGen() {
     return Type + " " + Name + " ( " + Args->CodeGen() + " ) " + Body->CodeGen();
 }
 
-std::string creol::IfSttmt::CodeGen() {
+std::string ast::IfSttmt::CodeGen() {
     auto E = Else ? " else " + Else->CodeGen() : "";
     return "if ( " + Cond->CodeGen() + " ) " + Then->CodeGen() + E;
 }
 
-std::string creol::WhileSttmt::CodeGen() {
+std::string ast::WhileSttmt::CodeGen() {
     return "while ( " + Cond->CodeGen() + " )" + Do->CodeGen();
 }
 
-std::string creol::JumpSttmt::CodeGen() {
+std::string ast::JumpSttmt::CodeGen() {
     return Name + ";";
 }
 
-std::string creol::ReturnSttmt::CodeGen() {
+std::string ast::ReturnSttmt::CodeGen() {
     auto R = ReturnValue ? ReturnValue->CodeGen() : "";
     return "return " + R + ";";
 }
 
-void creol::FuncCallArgs::AddArg(Expr* Arg) {
+void ast::FuncCallArgs::AddArg(Expr* Arg) {
     Args.push_back(Arg);
 }
 
-std::string creol::FuncCallArgs::CodeGen() {
+std::string ast::FuncCallArgs::CodeGen() {
     std::string Arguments = "";
 
     for (int i = 0 ; i < (int) Args.size() ; ++i) {
@@ -95,48 +97,48 @@ std::string creol::FuncCallArgs::CodeGen() {
     return Arguments;
 }
 
-std::string creol::FunCallExpr::CodeGen() {
+std::string ast::FunCallExpr::CodeGen() {
     auto A = Args ? Args->CodeGen() : "";
     return Name + "( " + A + " )";
 }
 
-std::string creol::BinExpr::CodeGen() {
+std::string ast::BinExpr::CodeGen() {
     auto L = LHS ? LHS->CodeGen() : "";
     auto R = RHS ? RHS->CodeGen() : "";
     return L + " " + Op + " " + R;
 }
 
-std::string creol::LiteralExpr::CodeGen() {
+std::string ast::LiteralExpr::CodeGen() {
     auto Prefix = AutoCast ? "(" + Type + ") " : "";
     return Prefix + Value;
 }
 
-void creol::LiteralExpr::ActivateAutoCast() {
+void ast::LiteralExpr::ActivateAutoCast() {
     AutoCast = true;
 }
 
-void creol::LiteralExpr::DeactivateAutoCast() {
+void ast::LiteralExpr::DeactivateAutoCast() {
     AutoCast = false;
 }
 
-std::string creol::ExprSttmt::CodeGen() {
+std::string ast::ExprSttmt::CodeGen() {
     return Expression ? Expression->CodeGen() + ";" : ";";
 }
 
-std::string creol::IdentExpr::CodeGen() {
+std::string ast::IdentExpr::CodeGen() {
     return Name;
 }
 
-std::string creol::ParExpr::CodeGen() {
+std::string ast::ParExpr::CodeGen() {
     auto C = Content ? Content->CodeGen() : "";
     return "( " + C + " )";
 }
 
-std::string creol::AssignExpr::CodeGen() {
+std::string ast::AssignExpr::CodeGen() {
     return Assignee->CodeGen() + " = " + Assigned->CodeGen();
 }
 
-std::string creol::ForSttmt::CodeGen() {
+std::string ast::ForSttmt::CodeGen() {
     auto S = Start ? Start->CodeGen() : "";
     auto C = Cond ? Cond->CodeGen() : "";
     auto A = After ? After->CodeGen() : "";
@@ -144,6 +146,6 @@ std::string creol::ForSttmt::CodeGen() {
     return "for (" + S + " ; " + C + " ; " + A + " ) " + T;
 }
 
-std::string creol::ImportSttmt::CodeGen() {
+std::string ast::ImportSttmt::CodeGen() {
     return "#include " + Import + "\n";
 }
