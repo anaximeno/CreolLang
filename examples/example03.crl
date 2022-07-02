@@ -16,7 +16,7 @@ void drawLine(int len, bool newLineAtEnd) {
 void printMessage() {
     int i = 1;
 
-    inkuantu i < 10 {
+    nkuantu i < 10 {
         drawLine(i, sim);
         i = i + 1;
     }
@@ -25,7 +25,7 @@ void printMessage() {
     mostra("  Hello, Creol!\n");
     i = i - 1;
 
-    inkuantu i > 0 {
+    nkuantu i > 0 {
         drawLine(i, sim);
         i = i - 1;
     }
