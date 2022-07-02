@@ -69,7 +69,7 @@ Then execute the compiled code with:
 ./a.out
 ```
 
-The CreolLang compiler has only few usage options currently and it may be extended to futher tooling and improvements on future releases.
+The CreolLang compiler currently has only a few usage options and may be extended to additional tooling and improvements on future releases.
 <!--
 ## Visuals
 
