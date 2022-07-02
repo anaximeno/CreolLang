@@ -2,9 +2,9 @@
 
 .PHONY: creol
 
-CC = g++
+CC = clang++
 
-FLAGS = -std=c++17 -g -O -fPIC -Wall
+FLAGS = -std=c++17 -g -O -fPIC
 
 OBJS = main.o ast.o cli.o parser.o scanner.o
 
