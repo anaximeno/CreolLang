@@ -28,48 +28,54 @@ STRING ["]([^"\\\n]|\\.|\\\n)*["]
 
 %%
 
-"mostra"        return TOKENIZE(TMOSTRA);
-"impristan"     return TOKENIZE(TIMPRISTAN);
-
-
 [ \t\n]         /* ignore */;
-"si"            return TOKENIZE(TSI);
-"sinon"         return TOKENIZE(TSINON);
-"divolvi"       return TOKENIZE(TDIVOLVI);
-"di"            return TOKENIZE(TDI);
-"inkuantu"      return TOKENIZE(TINKUANTU);
-"int"           SAVE_TOKEN;   return TYPE_INT;
-"float"         SAVE_TOKEN;   return TYPE_FLOAT;
-"void"          SAVE_TOKEN;   return TYPE_VOID;
-"bool"          SAVE_TOKEN;   return TYPE_BOOL;
-"sim"           SAVE_BOOLEAN; return BOOL;
-"nau"           SAVE_BOOLEAN; return BOOL;
-"para"          return TOKENIZE(TPARA);
-"continua"      return TOKENIZE(TCONTINUA);
-"+"             return TOKENIZE(TPLUS);
-"-"             return TOKENIZE(TMINUS);
-"*"             return TOKENIZE(TMUL);
-"/"             return TOKENIZE(TDIV);
-"("             return '(';
-")"             return ')';
-"."             return '.';
-","             return ',';
-";"             return ';';
-"{"             return '{';
-"}"             return '}';
-"="             return '=';
-"=="            return TOKENIZE(TEQ);
-"!="            return TOKENIZE(TNE);
-">"             return TOKENIZE(TGT);
-">="            return TOKENIZE(TGE);
-"<"             return TOKENIZE(TLT);
-"<="            return TOKENIZE(TLE);
-"ii"            return TOKENIZE(TAND);
-"ou"            return TOKENIZE(TOR);
-{INT}           SAVE_TOKEN;   return INTEGER;
-{FLOAT}         SAVE_TOKEN;   return FLOAT;
-{IDENT}         SAVE_TOKEN;   return TIDENTIFIER;
-{STRING}        SAVE_TOKEN;   return STR;
-.               printf("Creol: Error: line %d, Unknown token '%s'\n", yylineno, yytext); /* yyterminate(); */
+
+"mostra"        return TOKENIZE(T_MOSTRA);
+"impristan"     return TOKENIZE(T_IMPRISTAN);
+"si"            return TOKENIZE(T_SI);
+"sinon"         return TOKENIZE(T_SINON);
+"divolvi"       return TOKENIZE(T_DIVOLVI);
+"di"            return TOKENIZE(T_DI);
+"nkuantu"       return TOKENIZE(T_NKUANTU);
+"int"           SAVE_TOKEN;   return T_TYPE_INT;
+"float"         SAVE_TOKEN;   return T_TYPE_FLOAT;
+"void"          SAVE_TOKEN;   return T_TYPE_VOID;
+"bool"          SAVE_TOKEN;   return T_TYPE_BOOL;
+"sim"           SAVE_BOOLEAN; return T_BOOL_LIT;
+"nau"           SAVE_BOOLEAN; return T_BOOL_LIT;
+"para"          return TOKENIZE(T_PARA);
+"continua"      return TOKENIZE(T_CONTINUA);
+"+"             return TOKENIZE(T_PLUS);
+"-"             return TOKENIZE(T_MINUS);
+"*"             return TOKENIZE(T_MUL);
+"/"             return TOKENIZE(T_DIV);
+"("             return TOKENIZE(T_LPAR);
+")"             return TOKENIZE(T_RPAR);
+"."             return TOKENIZE(T_DOT);
+","             return TOKENIZE(T_COMMA);
+";"             return TOKENIZE(T_SEMIC);
+"{"             return TOKENIZE(T_LCURLY);
+"}"             return TOKENIZE(T_RCURLY);
+"["             return TOKENIZE(T_LBRAC);
+"]"             return TOKENIZE(T_RBRAC);
+"="             return TOKENIZE(T_ASSIGN);
+"=="            return TOKENIZE(T_EQ);
+"!="            return TOKENIZE(T_NE);
+">"             return TOKENIZE(T_GT);
+">="            return TOKENIZE(T_GE);
+"<"             return TOKENIZE(T_LT);
+"<="            return TOKENIZE(T_LE);
+"&&"            return TOKENIZE(T_AND);
+"||"            return TOKENIZE(T_OR);
+
+{INT}           SAVE_TOKEN;   return T_INT_LIT;
+{FLOAT}         SAVE_TOKEN;   return T_FLOAT_LIT;
+{IDENT}         SAVE_TOKEN;   return T_IDENT;
+{STRING}        SAVE_TOKEN;   return T_STR_LIT;
+
+. {
+    printf("Creol: Error: line %d, Unknown token '%s'\n", yylineno, yytext);
+    /* yyterminate(); */
+}
 
 %%
