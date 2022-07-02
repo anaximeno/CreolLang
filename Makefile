@@ -4,20 +4,28 @@
 
 CC = clang++
 
-FLAGS = -std=c++17 -g -fPIC
+FLAGS = -std=c++17 -fPIC
+
+DBG_FLAGS = $(FLAGS) -g
+
+RLS_FLAGS = $(FLAGS) -O3 -finline-functions
 
 OBJS = main.o ast.o cli.o parser.o scanner.o
 
 SRCS = main.cpp \
 	   src/creol/ast.cc \
 	   src/creol/cli.cc \
-	   parser.cc scanner.cc
+	   parser.cc scanner.cc \
+	   include/external/argparse.hpp
 
-creol: $(OBJS)
-	$(CC) -o $@ $(FLAGS) $^
+creol: dbg-obj
+	$(CC) -o $@ $(DBG_FLAGS) $(OBJS)
 
-$(OBJS): $(SRCS)
-	$(CC) -c $(FLAGS) $^
+dbg-obj: $(SRCS)
+	@echo "~~ Debug build ~~"
+	$(CC) -c $(DBG_FLAGS) $^
+
+debug: creol
 
 parser.cc parser.hh:
 	bison -dt rules/parser.y -o parser.cc
@@ -28,5 +36,9 @@ scanner.cc:
 clean:
 	rm *.o parser.cc parser.hh scanner.cc parser.output creol
 
-release: $(OBJS)
-	$(CC) -o creol $(FLAGS) -O3 -finline-functions $^
+rls-obj: $(SRCS)
+	@echo "~~ Release build ~~"
+	$(CC) -c $(RLS_FLAGS) $^
+
+release: rls-obj
+	$(CC) -o creol $(RLS_FLAGS) -O3 -finline-functions $(OBJS)
