@@ -220,7 +220,6 @@ compound_statement : T_LCURLY statements T_RCURLY { $$ = $2; $$->UseBrackets(); 
                    ;
 
 selection_statement : T_SI expression compound_statement { $$ = new IfSttmt($2, $3, nullptr); }
-                    /* | T_SI expression compound_statement T_SINON compound_statement { $$ = new IfSttmt($2, $3, $5); } */
                     | T_SI expression compound_statement T_SINON else_then { $$ = new IfSttmt($2, $3, $5); }
                     ;
 
