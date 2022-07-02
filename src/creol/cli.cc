@@ -64,7 +64,8 @@ void cli::Compiler::ParseArgs(const int argc, const char* const* argv) {
     try {
         Parser->parse_args(argc, argv);
     } catch (const std::exception& e) {
-        cli::printErr(e.what(), 1);
+        std::stringstream sstrm; sstrm << *( Parser );
+        cli::printErr(std::string(e.what()) + "\n\n" + sstrm.str(), 1);
     }
 
     try {
