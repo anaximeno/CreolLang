@@ -1,129 +1,168 @@
-***(!!! TO BE UPDATED...)***
 # CreolLang Language Specification
 
 Language specifications for the CreolLang programming language.
 
-## Sections
+## General Statements
 
-### Program
+```html
+<program> ::= <statements>
 
-```
-Program ::= Statements
-```
+<statements> ::= <statements> <statement>
+               | <statement>
 
-### Variable Declaration
-
-```
-VariableDeclaration ::= SingleVariableDeclaration
-                     |  MultipleVariablesDeclaration
-
-SingleVariableDeclaration ::= Type Identifier
-                           |  Type VariableAssignment
-
-MultipleVariablesDeclaration ::= Type VariablesList
-
-VariablesList ::= VariablesList ',' Identifier
-               |  VariablesList ',' VariableAssignment
-               |  VariableAssignment
-               |  Identifier
-
-VariableAssignment ::= Identifier '=' Expression
+<statement> ::= <expression_statement>
+              | <compound_statement>
+              | <selection_statement>
+              | <iteration_statement>
+              | <jump_statement>
+              | <function_declaration>
+              | <declaration>
+              | <import_statement>
 ```
 
-### Expressions
+## Import Statements
+
+```html
+
+<import_statement> ::= T_IMPRISTAN <single_import>
+
+<single_import> ::= T_STR_LIT
 
 ```
-Expression ::= Expression AritmeticOperator Expression
-            |  Expression ComparativeOperator Expression
-            |  Expression BooleanOperator Expression
-            |  FunctionCall
-            |  Identifier
-            |  Literal
-```
+## Variable declaration
 
-### Basic Binary Operations
-```
-AritmeticOperator ::= '+'
-                   |  '-'
-                   |  '*'
-                   |  '/'
+```html
+<type_specifier> ::= T_TYPE_INT
+                   | T_TYPE_FLOAT
+                   | T_TYPE_VOID
+                   | T_TYPE_BOOL
 
-ComparativeOperator ::= '<'
-                     |  '<='
-                     |  '>'
-                     |  '>='
-                     |  '==' 
-                     |  '!='
+<constant> ::= T_INT_LIT
+             | T_FLOAT_LIT
+             | T_BOOL_LIT
+             | T_STR_LIT
 
-BooleanOperator ::= '&&'
-                 |  '||' 
-```
+<identifier> ::= T_IDENT
 
-### Function Staments
+<declarator> ::= <identifier>
+
+<declaration> ::= <type_specifier> <init_declarator>
+
+<init_declarator> ::= <declarator>
+                    | <declarator> <assignment_operator> <initializer>
+
+<initializer> ::= <expression>
 
 ```
-FunctionArguments ::= FunctionArguments ',' Expression
-                   |  Expression
 
-FunctionDeclaration ::= Type Identifier '('FunctionParameters')' Block
-                     |  Type Identifier '(' EmptyOrVoid ')' Block
+## Binary Expressions
 
-FunctionParameters ::= FunctionParameters ',' Type Identifier
-                    |  Type Identifier
+```html
+<logical_or_expressions> ::= <logical_and_expressions>
+                           | <logical_or_expressions> T_OR <logical_and_expressions>
 
-FunctionCall ::= Identifier '(' FunctionArguments ')'
-              |  Identifier '(' ')'
+<logical_and_expressions> ::= <equality_expression>
+                            | <logical_and_expressions> T_AND <equality_expression>
+
+<equality_expression> ::= <relational_expression>
+                        | <equality_expression> T_EQ <relational_expression>
+                        | <equality_expression> T_NE <relational_expression>
+
+<relational_expression> ::= <additive_expression>
+                          | <relational_expression> T_LT <additive_expression>
+                          | <relational_expression> TGT <additive_expression>
+                          | <relational_expression> T_LE <additive_expression>
+                          | <relational_expression> T_GE <additive_expression>
+
+<additive_expression> ::= <multiplicative_expression>
+                        | <additive_expression> T_PLUS <multiplicative_expression>
+                        | <additive_expression> T_MINUS <multiplicative_expression>
+
+<multiplicative_expression> ::= <unary_expression>
+                              | <multiplicative_expression> T_MUL <primary_expression>
+                              | <multiplicative_expression> T_DIV <primary_expression>
 ```
 
-### General Statements
+## Other Expressions
 
-```
-Statements ::= Statements Statement
-            |  Statement
+```html
+<expression> ::= <assignment_expression>
+               | <function_call>
 
-Statement ::= SingleLineStatement
-           |  FunctionDeclaration
-           |  InkuatuLoop
-           |  SiStatement
-           |  DiLoop
+<constant_expression> ::= <logical_or_expressions>
 
-SingleLineStatement ::= VariableDeclaration ';'
-                     |  VariableAssignment ';'
-                     |  Expression ';'
-                     |  ReturnStatement ';'
-                     | /* empty */
-                     | ';'
+<unary_expression> ::= <primary_expression>
+                     | T_MINUS <primary_expression> UMINUS
 
-ReturnStatement ::= "divolvi" Expression
-                 |  "divolvi" EmptyOrVoid
+<primary_expression> ::= <identifier>
+                       | <constant>
+                       | '(' <expression> ')'
 
-Block ::= '{' Statements '}'
+<assignment_expression> ::= <constant_expression>
+                          | <primary_expression> <assignment_operator> <assignment_expression>
 ```
 
-### Loop Statements
+## Assingment Operations
+
+```html
+<assignment_operator> ::= '='
 
 ```
-DiLoop ::= "di" DiLoopStart "inkuantu" Expression "pui" VariableAssignment Block
 
-DiLoopStart ::= SingleVariableDeclaration
-             |  VariableAssignment
+## Function Statements
 
-InkuantuLoop ::= "inkuantu" Expression Block
+```html
+<function_declaration> ::= <type_specifier> <declarator> '(' <parameter_optional_list> ')' <compound_statement>
+
+<parameter_optional_list> ::= <parameter_list>
+                            | λ
+
+<parameter_list> ::= <parameter_declaration>
+                   | <parameter_list> ',' <parameter_declaration>
+
+<parameter_declaration> ::= <type_specifier> <declarator>
+
+<argument_list> ::= <argument_list> ',' <expression> | <expression>
+
+<function_call> ::= <identifier> '(' <argument_list> ')'
+                  | <identifier> '(' ')'
+                  | <mostra_func_call>
+
+<mostra_func_call> ::= T_MOSTRA '(' <argument_list> ')'
+                     | T_MOSTRA '(' ')'
+
+<expression_statement> ::= <expression> ';'
+                         | ';'
+
+<compound_statement> ::= '{' <statements> '}'
+                       | '{' '}'
+
 ```
 
-### If Statements
+## Selection statement
 
-```
-SiStatement ::= "si" Expression Block
-             |  "si" Expression Block "sinon" Block
-             |  "si" Expression Block "sinon" SiStatement
+```html
+<selection_statement> ::= T_SI <expression> <compound_statement>
+                        | T_SI <expression> <compound_statement> T_SINON <else_then>
+
+<else_then> ::= <compound_statement>
+              | <selection_statement>
 ```
 
-### Other
+## Iteration statement
 
+```html
+<iteration_statement> ::= T_NKUANTU <expression> <compound_statement>
+                        | T_DI <expression> ';' <expression> ';' <expression>
 ```
-EmptyOrVoid ::= /* empty */
-             |  void
+
+## Jump statement
+
+```html
+<jump_statement> ::= T_PARA ';'
+                   | T_CONTINUA ';'
+                   | T_DIVOLVI <expression> ';'
+                   | T_DIVOLVI ';'
 ```
 
 # License
@@ -133,3 +172,7 @@ The specification of the CreolLang programming language is released under the [M
 # Note
 
 ***A modified version of the Backus-Naus Form language was used for describing this language.***
+
+<!--
+Contribution from Tamiris Nascimento.
+-->
