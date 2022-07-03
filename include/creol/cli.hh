@@ -15,9 +15,9 @@ namespace ap = argparse;
 
 namespace creol {
     namespace cli {
-        void printErr(std::string message);
-        void printErr(std::string message, int exitNum);
-        void executeCommand(std::string command);
+        void PrintErr(std::string message);
+        void PrintErr(std::string message, int exitNum);
+        void ExecuteCommand(std::string command);
 
         class CreolLangParserWraper {
         public:

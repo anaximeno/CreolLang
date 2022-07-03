@@ -21,19 +21,19 @@ extern FILE* yyin;
 extern int yyparse(void);
 extern ast::BlockSttmt* Program;
 
-void cli::printErr(std::string message) {
+void cli::PrintErr(std::string message) {
     std::cerr << "Creol: Err: " << message << std::endl;
 }
 
-void cli::printErr(std::string message, int exitNum) {
-    cli::printErr(message);
+void cli::PrintErr(std::string message, int exitNum) {
+    cli::PrintErr(message);
     exit(exitNum);
 }
 
-void cli::executeCommand(std::string command) {
+void cli::ExecuteCommand(std::string command) {
     int out = system(command.c_str());
     if (out != 0) {
-        cli::printErr("Could not execute the following command '" + command + "'", out);
+        cli::PrintErr("Could not execute the following command '" + command + "'", out);
     }
 }
 
@@ -65,7 +65,7 @@ void cli::Compiler::ParseArgs(const int argc, const char* const* argv) {
         Parser->parse_args(argc, argv);
     } catch (const std::exception& e) {
         std::stringstream sstrm; sstrm << *( Parser );
-        cli::printErr(std::string(e.what()) + "\n\n" + sstrm.str(), 1);
+        cli::PrintErr(std::string(e.what()) + "\n\n" + sstrm.str(), 1);
     }
 
     try {
@@ -106,7 +106,7 @@ void cli::Compiler::SaveCodeToFile(std::string Code, std::string Filename) {
     FILE* file = fopen(Filename.c_str(), "w");
 
     if (file == NULL) {
-        cli::printErr("Couldn't create file '" + Filename + "'!", 1);
+        cli::PrintErr("Couldn't create file '" + Filename + "'!", 1);
     }
 
     fputs(Code.c_str(), file);
@@ -116,13 +116,13 @@ void cli::Compiler::SaveCodeToFile(std::string Code, std::string Filename) {
 
 void cli::CreolLangParserWraper::ParseFile(std::string filename) {
     if (!fs::exists(filename)) {
-        cli::printErr("File '" + filename + "' was not found!", 1);
+        cli::PrintErr("File '" + filename + "' was not found!", 1);
     }
 
     FILE* file = fopen(filename.c_str(), "r");
 
     if (file == NULL) {
-        cli::printErr("Couldn't open the file '" + filename + "'!", 1);
+        cli::PrintErr("Couldn't open the file '" + filename + "'!", 1);
     }
 
     yyin = file;
@@ -133,7 +133,7 @@ void cli::CreolLangParserWraper::ParseFile(std::string filename) {
 
 void cli::CreolLangParserWraper::ParseText(std::string text) {
     ///TODO: Implement this
-    cli::printErr("cli::CreolLangParserWraper::ParseText is not implemented yet!\n", -1);
+    cli::PrintErr("cli::CreolLangParserWraper::ParseText is not implemented yet!\n", -1);
 }
 
 void cli::Compiler::BuildCode(std::string Code) {
@@ -154,10 +154,10 @@ void cli::Compiler::BuildCode(std::string Code) {
         SaveCodeToFile(Code, buildFile);
     }
 
-    cli::executeCommand("gcc " + buildFile);
+    cli::ExecuteCommand("gcc " + buildFile);
 
     if (Args.outfile == "" && fs::exists(buildFile)) {
-        cli::executeCommand("rm " + buildFile);
+        cli::ExecuteCommand("rm " + buildFile);
     }
 }
 
@@ -165,7 +165,7 @@ void cli::Compiler::Run(const int argc, const char* const* argv) {
     this->ParseArgs(argc, argv);
 
     if (Args.shouldFormatOutput) {
-        cli::printErr("Format option not implemented yet.");
+        cli::PrintErr("Format option not implemented yet.");
     }
 
     ast::BlockSttmt* ProgramAST = CreolLangParserWraper::ParseCode(Args.filename, true);
@@ -175,7 +175,7 @@ void cli::Compiler::Run(const int argc, const char* const* argv) {
     try {
         GeneratedCode = ProgramAST->CodeGen();
     } catch(std::exception& err) {
-        cli::printErr(err.what(), 1);
+        cli::PrintErr(err.what(), 1);
     }
 
     if (Args.outfile != "") {
