@@ -93,7 +93,7 @@ void cli::Compiler::ParseArgs(const int argc, const char* const* argv) {
     }
 }
 
-ast::BlockSttmt* cli::CreolLangParserWraper::ParseCode(std::string Content, bool isFile) {
+ast::BlockSttmt* cli::CreolLangParserWrapper::ParseCode(std::string Content, bool isFile) {
     if (isFile) {
         ParseFile(Content);
     } else {
@@ -114,7 +114,7 @@ void cli::Compiler::SaveCodeToFile(std::string Code, std::string Filename) {
     fclose(file);
 }
 
-void cli::CreolLangParserWraper::ParseFile(std::string filename) {
+void cli::CreolLangParserWrapper::ParseFile(std::string filename) {
     if (!fs::exists(filename)) {
         cli::PrintErr("File '" + filename + "' was not found!", 1);
     }
@@ -131,9 +131,9 @@ void cli::CreolLangParserWraper::ParseFile(std::string filename) {
     fclose(file);
 }
 
-void cli::CreolLangParserWraper::ParseText(std::string text) {
+void cli::CreolLangParserWrapper::ParseText(std::string text) {
     ///TODO: Implement this
-    cli::PrintErr("cli::CreolLangParserWraper::ParseText is not implemented yet!\n", -1);
+    cli::PrintErr("cli::CreolLangParserWrapper::ParseText is not implemented yet!\n", -1);
 }
 
 void cli::Compiler::BuildCode(std::string Code) {
@@ -168,7 +168,7 @@ void cli::Compiler::Run(const int argc, const char* const* argv) {
         cli::PrintErr("Format option not implemented yet.");
     }
 
-    ast::BlockSttmt* ProgramAST = CreolLangParserWraper::ParseCode(Args.filename, true);
+    ast::BlockSttmt* ProgramAST = CreolLangParserWrapper::ParseCode(Args.filename, true);
 
     std::string GeneratedCode;
 

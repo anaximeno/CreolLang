@@ -22,7 +22,7 @@ namespace creol {
         /// Exectutes a command on the terminal
         void ExecuteCommand(std::string command);
 
-        class CreolLangParserWraper {
+        class CreolLangParserWrapper {
             /// Parses a code on a file
             static void ParseFile(std::string filename);
             /// Parses as text
