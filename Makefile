@@ -1,8 +1,10 @@
-# .DEFAULT_GOAL := creol
+.DEFAULT_GOAL := creol
 
-.PHONY: creol
+.PHONY: creol debug release clean
 
 CC = clang++
+
+OUTPUT = creol
 
 FLAGS = -std=c++17 -fPIC
 
@@ -18,14 +20,23 @@ SRCS = main.cpp \
 	   parser.cc scanner.cc \
 	   include/external/argparse.hpp
 
-creol: dbg-obj
-	$(CC) -o $@ $(DBG_FLAGS) $(OBJS)
+# The default build is debug.
+# Change to release is needed.
+creol: debug
 
 dbg-obj: $(SRCS)
 	@echo "~~ Debug build ~~"
 	$(CC) -c $(DBG_FLAGS) $^
 
-debug: creol
+debug: dbg-obj
+	$(CC) -o $(OUTPUT) $(DBG_FLAGS) $(OBJS)
+
+rls-obj: $(SRCS)
+	@echo "~~ Release build ~~"
+	$(CC) -c $(RLS_FLAGS) $^
+
+release: rls-obj
+	$(CC) -o $(OUTPUT) $(RLS_FLAGS) $(OBJS)
 
 parser.cc parser.hh:
 	bison -dt rules/parser.y -o parser.cc
@@ -35,10 +46,3 @@ scanner.cc:
 
 clean:
 	rm *.o parser.cc parser.hh scanner.cc parser.output creol
-
-rls-obj: $(SRCS)
-	@echo "~~ Release build ~~"
-	$(CC) -c $(RLS_FLAGS) $^
-
-release: rls-obj
-	$(CC) -o creol $(RLS_FLAGS) -O3 -finline-functions $(OBJS)
