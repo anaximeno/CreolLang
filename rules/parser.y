@@ -9,9 +9,8 @@
     void yyerror(const char* err);
 
     using namespace creol;
-    using namespace creol::ast;
 
-    creol::ast::BlockSttmt* Program;
+    ast::BlockSttmt* Program;
 %}
 
 %union {
@@ -81,10 +80,10 @@ type_specifier : T_TYPE_INT
                | T_TYPE_BOOL { $$ = new std::string("unsigned short"); }
                ;
 
-constant : T_INT_LIT { $$ = new LiteralExpr("int", *$1); $<litexpr>$->ActivateAutoCast(); }
-         | T_FLOAT_LIT { $$ = new LiteralExpr("float", *$1); $<litexpr>$->ActivateAutoCast(); }
-         | T_BOOL_LIT { $$ = new LiteralExpr("unsigned short", *$1); $<litexpr>$->ActivateAutoCast(); }
-         | T_STR_LIT { $$ = new LiteralExpr("char*", *$1); $<litexpr>$->DeactivateAutoCast(); }
+constant : T_INT_LIT { $$ = new ast::LiteralExpr("int", *$1); $<litexpr>$->ActivateAutoCast(); }
+         | T_FLOAT_LIT { $$ = new ast::LiteralExpr("float", *$1); $<litexpr>$->ActivateAutoCast(); }
+         | T_BOOL_LIT { $$ = new ast::LiteralExpr("unsigned short", *$1); $<litexpr>$->ActivateAutoCast(); }
+         | T_STR_LIT { $$ = new ast::LiteralExpr("char*", *$1); $<litexpr>$->DeactivateAutoCast(); }
          ;
 
 identifier : T_IDENT
@@ -97,8 +96,8 @@ declarator : identifier
 declaration : type_specifier init_declarator { $2->SetType(*$1); $$ = $2; }
             ;
 
-init_declarator : declarator { $$ = new VarDeclSttmt("void", *$1, nullptr); }
-                | declarator T_ASSIGN initializer { $$ = new VarDeclSttmt("void", *$1, $3); }
+init_declarator : declarator { $$ = new ast::VarDeclSttmt("void", *$1, nullptr); }
+                | declarator T_ASSIGN initializer { $$ = new ast::VarDeclSttmt("void", *$1, $3); }
                 ;
 
 // note: may be extended later
@@ -113,82 +112,82 @@ constant_expression : logical_or_expressions
                     ;
 
 logical_or_expressions : logical_and_expressions
-                       | logical_or_expressions T_OR logical_and_expressions { $$ = new BinExpr("||", $1, $3); }
+                       | logical_or_expressions T_OR logical_and_expressions { $$ = new ast::BinExpr("||", $1, $3); }
                        ;
 
 logical_and_expressions : equality_expression
-                        | logical_and_expressions T_AND equality_expression { $$ = new BinExpr("&&", $1, $3); }
+                        | logical_and_expressions T_AND equality_expression { $$ = new ast::BinExpr("&&", $1, $3); }
                         ;
 
 equality_expression : relational_expression
-                    | equality_expression T_EQ relational_expression { $$ = new BinExpr("==", $1, $3); }
-                    | equality_expression T_NE relational_expression { $$ = new BinExpr("!=", $1, $3); }
+                    | equality_expression T_EQ relational_expression { $$ = new ast::BinExpr("==", $1, $3); }
+                    | equality_expression T_NE relational_expression { $$ = new ast::BinExpr("!=", $1, $3); }
                     ;
 
 relational_expression : additive_expression
-                      | relational_expression T_LT additive_expression { $$ = new BinExpr("<", $1, $3); }
-                      | relational_expression T_GT additive_expression { $$ = new BinExpr(">", $1, $3); }
-                      | relational_expression T_LE additive_expression { $$ = new BinExpr("<=", $1, $3); }
-                      | relational_expression T_GE additive_expression { $$ = new BinExpr(">=", $1, $3); }
+                      | relational_expression T_LT additive_expression { $$ = new ast::BinExpr("<", $1, $3); }
+                      | relational_expression T_GT additive_expression { $$ = new ast::BinExpr(">", $1, $3); }
+                      | relational_expression T_LE additive_expression { $$ = new ast::BinExpr("<=", $1, $3); }
+                      | relational_expression T_GE additive_expression { $$ = new ast::BinExpr(">=", $1, $3); }
                       ;
 
 additive_expression : multiplicative_expression
-                    | additive_expression T_PLUS multiplicative_expression { $$ = new BinExpr("+", $1, $3); }
-                    | additive_expression T_MINUS multiplicative_expression { $$ = new BinExpr("-", $1, $3); }
+                    | additive_expression T_PLUS multiplicative_expression { $$ = new ast::BinExpr("+", $1, $3); }
+                    | additive_expression T_MINUS multiplicative_expression { $$ = new ast::BinExpr("-", $1, $3); }
                     ;
 
 multiplicative_expression : unary_expression
-                          | multiplicative_expression T_MUL primary_expression { $$ = new BinExpr("*", $1, $3); }
-                          | multiplicative_expression T_DIV primary_expression { $$ = new BinExpr("/", $1, $3); }
+                          | multiplicative_expression T_MUL primary_expression { $$ = new ast::BinExpr("*", $1, $3); }
+                          | multiplicative_expression T_DIV primary_expression { $$ = new ast::BinExpr("/", $1, $3); }
                           ;
 
 unary_expression : primary_expression
                  /* | TMINUS primary_expression %prec UMINUS */
                  ;
 
-primary_expression : identifier { $$ = new IdentExpr(*$1); }
+primary_expression : identifier { $$ = new ast::IdentExpr(*$1); }
                    | constant
-                   | T_LPAR expression T_RPAR { $$ = new ParExpr($2); }
+                   | T_LPAR expression T_RPAR { $$ = new ast::ParExpr($2); }
                    ;
 
 // todo: correct anomalies using semantic analysis
 assignment_expression : constant_expression
-                      | primary_expression assignment_operator assignment_expression { $$ = new AssignExpr(*$2, $1, $3); }
+                      | primary_expression assignment_operator assignment_expression { $$ = new ast::AssignExpr(*$2, $1, $3); }
                       ;
 
 // note: this may be extended later to support op assign
 assignment_operator : T_ASSIGN { $$ = new std::string("=", 2); }
                     ;
 
-function_declaration : type_specifier declarator T_LPAR parameter_optional_list T_RPAR compound_statement { $$ = new FuncDeclSttmt(*$1, *$2, $4, $6); }
+function_declaration : type_specifier declarator T_LPAR parameter_optional_list T_RPAR compound_statement { $$ = new ast::FuncDeclSttmt(*$1, *$2, $4, $6); }
                      ;
 
 parameter_optional_list : parameter_list
-                        | %empty { $$ = new FuncArgs(); }
+                        | %empty { $$ = new ast::FuncArgs(); }
                         ;
 
-parameter_list : parameter_declaration { $$ = new FuncArgs(); $$->AddArg($1); }
+parameter_list : parameter_declaration { $$ = new ast::FuncArgs(); $$->AddArg($1); }
                | parameter_list T_COMMA parameter_declaration { { $1->AddArg($3); } }
                ;
 
-parameter_declaration : type_specifier declarator { $$ = new VarDeclSttmt(*$1, *$2, nullptr); }
+parameter_declaration : type_specifier declarator { $$ = new ast::VarDeclSttmt(*$1, *$2, nullptr); }
                       ;
 
 argument_list : argument_list T_COMMA expression { $1->AddArg($3); }
-              | expression { $$ = new FuncCallArgs(); $$->AddArg($1);  }
+              | expression { $$ = new ast::FuncCallArgs(); $$->AddArg($1);  }
               ;
 
-function_call : identifier T_LPAR argument_list T_RPAR { $$ = new FunCallExpr(*$1, $3); }
-              | identifier T_LPAR T_RPAR { $$ = new FunCallExpr(*$1, nullptr); }
+function_call : identifier T_LPAR argument_list T_RPAR { $$ = new ast::FunCallExpr(*$1, $3); }
+              | identifier T_LPAR T_RPAR { $$ = new ast::FunCallExpr(*$1, nullptr); }
               | mostra_func_call
               ;
 
-mostra_func_call : T_MOSTRA T_LPAR argument_list T_RPAR { $$ = new MostraFunCallExpr($3); }
-                 | T_MOSTRA T_LPAR T_RPAR { $$ = new MostraFunCallExpr(nullptr); }
+mostra_func_call : T_MOSTRA T_LPAR argument_list T_RPAR { $$ = new ast::MostraFunCallExpr($3); }
+                 | T_MOSTRA T_LPAR T_RPAR { $$ = new ast::MostraFunCallExpr(nullptr); }
                  ;
 
 statements : statements statement { $1->AddSttmt($2); }
-           | statement { $$ = new BlockSttmt(); $$->AddSttmt($1); }
+           | statement { $$ = new ast::BlockSttmt(); $$->AddSttmt($1); }
            ;
 
 // todo: analyze the situation of
@@ -205,36 +204,36 @@ statement : expression_statement
           | import_statement { $$ = $1; }
           ;
 
-import_statement : T_IMPRISTAN single_import { $$ = new ImportSttmt(*$2); }
+import_statement : T_IMPRISTAN single_import { $$ = new ast::ImportSttmt(*$2); }
                  ;
 
 single_import : T_STR_LIT
               ;
 
-expression_statement : expression T_SEMIC { $$ = new ExprSttmt($1); }
-                     | T_SEMIC { $$ = new ExprSttmt(nullptr); }
+expression_statement : expression T_SEMIC { $$ = new ast::ExprSttmt($1); }
+                     | T_SEMIC { $$ = new ast::ExprSttmt(nullptr); }
                      ;
 
 compound_statement : T_LCURLY statements T_RCURLY { $$ = $2; $$->UseBrackets(); }
-                   | T_LCURLY T_RCURLY { $$ = new BlockSttmt(); $$->UseBrackets(); }
+                   | T_LCURLY T_RCURLY { $$ = new ast::BlockSttmt(); $$->UseBrackets(); }
                    ;
 
-selection_statement : T_SI expression compound_statement { $$ = new IfSttmt($2, $3, nullptr); }
-                    | T_SI expression compound_statement T_SINON else_then { $$ = new IfSttmt($2, $3, $5); }
+selection_statement : T_SI expression compound_statement { $$ = new ast::IfSttmt($2, $3, nullptr); }
+                    | T_SI expression compound_statement T_SINON else_then { $$ = new ast::IfSttmt($2, $3, $5); }
                     ;
 
 else_then : compound_statement
-          | selection_statement { $$ = new BlockSttmt(); $$->AddSttmt($1); }
+          | selection_statement { $$ = new ast::BlockSttmt(); $$->AddSttmt($1); }
           ;
 
-iteration_statement : T_NKUANTU expression compound_statement { $$ = new WhileSttmt($2, $3); }
-                    | T_DI expression T_SEMIC expression T_SEMIC expression compound_statement { $$ = new ForSttmt($2, $4, $6, $7); }
+iteration_statement : T_NKUANTU expression compound_statement { $$ = new ast::WhileSttmt($2, $3); }
+                    | T_DI expression T_SEMIC expression T_SEMIC expression compound_statement { $$ = new ast::ForSttmt($2, $4, $6, $7); }
                     ;
 
-jump_statement : T_PARA T_SEMIC { $$ = new JumpSttmt("break"); }
-               | T_CONTINUA T_SEMIC { $$ = new JumpSttmt("continue"); }
-               | T_DIVOLVI expression T_SEMIC { $$ = new ReturnSttmt($2); }
-               | T_DIVOLVI T_SEMIC { $$ = new ReturnSttmt(nullptr); }
+jump_statement : T_PARA T_SEMIC { $$ = new ast::JumpSttmt("break"); }
+               | T_CONTINUA T_SEMIC { $$ = new ast::JumpSttmt("continue"); }
+               | T_DIVOLVI expression T_SEMIC { $$ = new ast::ReturnSttmt($2); }
+               | T_DIVOLVI T_SEMIC { $$ = new ast::ReturnSttmt(nullptr); }
                ;
 %%
 
