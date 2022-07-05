@@ -8,7 +8,7 @@ OUTPUT = creol
 
 FLAGS = -std=c++17 -fPIC
 
-DBG_FLAGS = $(FLAGS) -g
+DBG_FLAGS = $(FLAGS) -g -Wall
 
 RLS_FLAGS = $(FLAGS) -O3 -finline-functions
 
