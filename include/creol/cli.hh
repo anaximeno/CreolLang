@@ -21,6 +21,8 @@ namespace creol {
         void PrintErr(std::string message, int exitNum);
         /// Exectutes a command on the terminal
         void ExecuteCommand(std::string command);
+        /// Encodes a string to hexadecimal string
+        std::string ConvertToHex(std::string str);
 
         class CreolLangParserWrapper {
             /// Parses a code on a file
