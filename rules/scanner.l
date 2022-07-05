@@ -2,6 +2,7 @@
 
 %{
     #include "include/creol/ast.hh"
+    #include "include/creol/cli.hh"
 
     #include <string>
     #include <cstdio>
@@ -74,8 +75,10 @@ STRING ["]([^"\\\n]|\\.|\\\n)*["]
 {STRING}        SAVE_TOKEN;   return T_STR_LIT;
 
 . {
-    printf("Creol: Error: line %d, Unknown token '%s'\n", yylineno, yytext);
-    /* yyterminate(); */
+    creol::cli::PrintErr(
+        "Unknown token " + std::string(yytext) +
+        " at line " + std::to_string(yylineno)
+    );
 }
 
 %%
