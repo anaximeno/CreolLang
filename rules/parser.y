@@ -1,5 +1,6 @@
 %{
     #include "include/creol/ast.hh"
+    #include "include/creol/cli.hh"
 
     #include <cstdio>
     #include <cstdlib>
@@ -238,7 +239,6 @@ jump_statement : T_PARA T_SEMIC { $$ = new ast::JumpSttmt("break"); }
 %%
 
 void yyerror(const char* err) {
-    fprintf(stderr, "Creol: Error: %s\n", err);
-    std::exit(1);
+    creol::cli::PrintErr(err, 1);
 }
 
