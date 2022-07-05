@@ -37,6 +37,16 @@ void cli::ExecuteCommand(std::string command) {
     }
 }
 
+std::string cli::ConvertToHex(std::string str) {
+    std::stringstream sstrm;
+
+    for (const auto& ch : str) {
+        sstrm << std::hex << int(ch);
+    }
+
+    return sstrm.str();
+}
+
 void cli::Compiler::DefineArgs(void) {
     Parser->add_argument("file")
           .help("Name of the target compilation file.")
@@ -142,15 +152,8 @@ void cli::Compiler::BuildCode(std::string Code) {
     if (fs::exists(Args.outfile)) {
         buildFile = Args.outfile;
     } else {
-        std::stringstream sstrm;
-
-        for (const auto& ch : Args.filename) {
-            sstrm << std::hex << int(ch);
-        }
-
-        std::string encoded = ".creolbuild-" + sstrm.str();
-        buildFile = encoded + ".tmp.c";
-
+        std::string encoded = cli::ConvertToHex(Args.filename);
+        buildFile = ".creolbuild-" + encoded + ".tmp.c";
         SaveCodeToFile(Code, buildFile);
     }
 
