@@ -21,7 +21,7 @@ SRCS = main.cpp \
 	   include/external/argparse.hpp
 
 # The default build is debug.
-# Change to release is needed.
+# Change to release if wanted.
 creol: debug
 
 dbg-obj: $(SRCS)
