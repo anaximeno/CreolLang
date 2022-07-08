@@ -1,25 +1,56 @@
-#ifndef _CREOL_AST_TRANSPILER_HEADER
-#define _CREOL_AST_TRANSPILER_HEADER
+#ifndef _CREOL_AST_COMPILER_HEADER
+#define _CREOL_AST_COMPILER_HEADER
 
+// Standard libs
 #include <string>
 #include <vector>
 #include <memory>
 #include <algorithm>
 
+// LLVM libs
+#include <llvm/IR/Value.h>
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/Function.h>
+#include <llvm/IR/Type.h>
+#include <llvm/IR/Verifier.h>
+#include <llvm/IR/Constants.h>
+#include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Instruction.h>
+#include <llvm/ADT/APFloat.h>
+#include <llvm/ADT/APSInt.h>
+#include <llvm/IR/Constants.h>
+
 namespace creol {
     namespace ast {
+        /// Represents a local context, which may be used
+        /// inside a function, statement or module.
+        class LocalContext {
+        public:
+            std::unique_ptr<llvm::Module> TheModule;
+            std::unique_ptr<llvm::LLVMContext> TheContext;
+            std::map<std::string, llvm::Value*> NamedValues;
+            std::unique_ptr<llvm::IRBuilder<>> TheBuilder;
+            /// Returns a new instance of the LocalContext class with name
+            /// Module Name.
+            static std::shared_ptr<LocalContext>New(std::string ModuleName);
+        private:
+            void Initialize(std::string ModuleName);
+        };
+
         /// Represents a statement
         class Sttmt {
         public:
-            virtual std::string CodeGen() = 0;
+            virtual llvm::Value* CodeGen(LocalContext LC) = 0;
         };
 
         /// Represents an expression
         class Expr : public Sttmt {
         public:
-            virtual std::string CodeGen() override;
+            virtual llvm::Value* CodeGen(LocalContext LC) override;
         };
 
+        /// TODO: Implement in LLVM
         /// Represents the declaration of a variable
         class VarDeclSttmt : public Sttmt {
         protected:
@@ -33,6 +64,7 @@ namespace creol {
             void SetType(std::string Type);
         };
 
+        /// TODO: Implement in LLVM
         /// Represents a blockSttmt of code
         class BlockSttmt : public Sttmt {
         protected:
@@ -45,6 +77,8 @@ namespace creol {
             virtual std::string CodeGen() override;
         };
 
+        /// TODO: Implement in LLVM
+        /// Represents the arguments of the function
         class FuncArgs {
         protected:
             std::vector<VarDeclSttmt*> Args;
@@ -53,6 +87,7 @@ namespace creol {
             virtual std::string CodeGen();
         };
 
+        /// TODO: Implement in LLVM
         /// Represents the declaration of a function
         class FuncDeclSttmt : public Sttmt {
         protected:
@@ -67,6 +102,7 @@ namespace creol {
             virtual std::string CodeGen() override;
         };
 
+        /// TODO: Implement in LLVM
         /// Represents an if statement
         class IfSttmt : public Sttmt {
         protected:
@@ -79,6 +115,7 @@ namespace creol {
             virtual std::string CodeGen() override;
         };
 
+        /// TODO: Implement in LLVM
         /// Represents a while loop
         class WhileSttmt : public Sttmt {
         protected:
@@ -90,6 +127,7 @@ namespace creol {
             virtual std::string CodeGen() override;
         };
 
+        /// TODO: Implement in LLVM
         /// Represents a jump statement
         class JumpSttmt : public Sttmt {
         protected:
@@ -100,6 +138,7 @@ namespace creol {
             virtual std::string CodeGen() override;
         };
 
+        /// TODO: Implement in LLVM
         /// Represents a return statement
         class ReturnSttmt : public JumpSttmt {
         protected:
@@ -110,6 +149,7 @@ namespace creol {
             virtual std::string CodeGen() override;
         };
 
+        /// TODO: Implement in LLVM
         class FuncCallArgs {
         protected:
             std::vector<Expr*> Args;
@@ -118,6 +158,7 @@ namespace creol {
             virtual std::string CodeGen();
         };
 
+        /// TODO: Implement in LLVM
         /// Represents the function call
         class FunCallExpr : public Expr {
         protected:
@@ -129,6 +170,7 @@ namespace creol {
             virtual std::string CodeGen() override;
         };
 
+        /// TODO: Implement in LLVM
         /// Represents a binary expression
         class BinExpr : public Expr {
         protected:
@@ -141,6 +183,7 @@ namespace creol {
             virtual std::string CodeGen() override;
         };
 
+        /// TODO: Implement in LLVM
         /// Represents a literal (nt) expression
         class LiteralExpr : public Expr {
         protected:
@@ -155,6 +198,7 @@ namespace creol {
             void ActivateAutoCast(void);
         };
 
+        /// TODO: Implement in LLVM
         /// An expression statement is an expression ending by a semicolon
         class ExprSttmt : public Expr {
         protected:
@@ -165,6 +209,7 @@ namespace creol {
             virtual std::string CodeGen() override;
         };
 
+        /// TODO: Implement in LLVM
         /// Represents a identifier
         class IdentExpr : public Expr {
         protected:
@@ -175,6 +220,7 @@ namespace creol {
             virtual std::string CodeGen() override;
         };
 
+        /// TODO: Implement in LLVM
         /// Represents an expression sorrounded by parentheses
         class ParExpr : public Expr {
         protected:
@@ -185,6 +231,7 @@ namespace creol {
             virtual std::string CodeGen() override;
         };
 
+        /// TODO: Implement in LLVM
         /// Represents an assignment to a variable
         class AssignExpr : public Expr {
         protected:
@@ -197,6 +244,7 @@ namespace creol {
             virtual std::string CodeGen() override;
         };
 
+        /// TODO: Implement in LLVM
         /// Represents the for statement
         class ForSttmt : public Sttmt {
         protected:
@@ -210,6 +258,7 @@ namespace creol {
             virtual std::string CodeGen() override;
         };
 
+        /// TODO: Implement in LLVM
         /// Maps the 'mostra' keyword to printf in C
         class MostraFunCallExpr : public FunCallExpr {
         public:
@@ -217,6 +266,7 @@ namespace creol {
             : FunCallExpr("printf", Args) {}
         };
 
+        /// TODO: Implement in LLVM
         /// Represents a library importation
         class ImportSttmt : public Sttmt {
         protected:
@@ -229,4 +279,4 @@ namespace creol {
     };
 };
 
-#endif // _CREOL_AST_TRANSPILER_HEADER
+#endif // _CREOL_AST_COMPILER_HEADER
