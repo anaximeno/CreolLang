@@ -1,4 +1,5 @@
 #include "../../include/creol/ast.hh"
+#include "../../include/creol/cli.hh"
 
 using namespace creol;
 
@@ -130,11 +131,43 @@ std::string ast::FunCallExpr::CodeGen() {
     return Name + "( " + A + " )";
 }
 
-/// TODO: Implement in LLVM
-std::string ast::BinExpr::CodeGen() {
-    auto L = LHS ? LHS->CodeGen() : "";
-    auto R = RHS ? RHS->CodeGen() : "";
-    return L + " " + Op + " " + R;
+std::string ast::BinExpr::CodeGen(std::shared_ptr<ast::LocalContext> LC) {
+    llvm::Value* L = LHS->CodeGen(LC);
+    llvm::Value* R = RHS->CodeGen(LC);
+
+    if (!L || !R) {
+        cli::PrintErr("Error generating binary expr node.");
+        return nullptr;
+    }
+
+    if (Op == "+") {
+        return LC->TheBuilder->CreateAdd(L, R, "addtmp");
+    } else if (Op == "-") {
+        return LC->TheBuilder->CreateSub(L, R, "subtmp");
+    } else if (Op == "*") {
+        return LC->TheBuilder->CreateMul(L, R, "multmp");
+    } else if (Op == "/") {
+        return LC->TheBuilder->CreateFDiv(L, R, "divtmp");
+    } else if (Op == "<") {
+        return LC->TheBuilder->CreateICmpULT(L, R, "lttmp");
+    } else if (Op == "<=") {
+        return LC->TheBuilder->CreateICmpULE(L, R, "letmp");
+    } else if (Op == ">") {
+        return LC->TheBuilder->CreateICmpUGT(L, R, "gttmp");
+    } else if (Op == ">=") {
+        return LC->TheBuilder->CreateICmpUGE(L, R, "getmp");
+    } else if (Op == "!=") {
+        return LC->TheBuilder->CreateICmpNE(L, R, "netmp");
+    } else if (Op == "==") {
+        return LC->TheBuilder->CreateICmpEQ(L, R, "eqtmp");
+    } else if (Op == "&&") {
+        return LC->TheBuilder->CreateAnd(L, R, "andtmp");
+    } else if (Op == "||") {
+        return LC->TheBuilder->CreateOr(L, R, "ortmp");
+    } else {
+        cli::PrintErr("Operation " + Op + " is not yet supported as a binary operation!");
+        return nullptr;
+    }
 }
 
 /// TODO: Implement in LLVM

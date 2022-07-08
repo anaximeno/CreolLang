@@ -41,13 +41,13 @@ namespace creol {
         /// Represents a statement
         class Sttmt {
         public:
-            virtual llvm::Value* CodeGen(LocalContext LC) = 0;
+            virtual llvm::Value* CodeGen(std::shared_ptr<ast::LocalContext> LC) = 0;
         };
 
         /// Represents an expression
         class Expr : public Sttmt {
         public:
-            virtual llvm::Value* CodeGen(LocalContext LC) override;
+            virtual llvm::Value* CodeGen(std::shared_ptr<ast::LocalContext> LC) override;
         };
 
         /// TODO: Implement in LLVM
@@ -170,17 +170,17 @@ namespace creol {
             virtual std::string CodeGen() override;
         };
 
-        /// TODO: Implement in LLVM
         /// Represents a binary expression
         class BinExpr : public Expr {
         protected:
             std::string Op;
-            Expr* LHS;
-            Expr* RHS;
+            std::unique_ptr<Expr> LHS;
+            std::unique_ptr<Expr> RHS;
         public:
             BinExpr(std::string Op, Expr* LHS, Expr* RHS)
-            : Op(Op), LHS(LHS), RHS(RHS) {  }
-            virtual std::string CodeGen() override;
+            : Op(Op), LHS(std::unique_ptr<Expr>(LHS)),
+              RHS(std::unique_ptr<Expr>(RHS)) {  }
+            virtual llvm::Value* CodeGen(std::shared_ptr<ast::LocalContext> LC) override;
         };
 
         /// TODO: Implement in LLVM
