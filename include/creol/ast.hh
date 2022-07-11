@@ -176,22 +176,27 @@ namespace creol {
             BinExpr(std::string Op, Expr* LHS, Expr* RHS)
             : Op(Op), LHS(std::unique_ptr<Expr>(LHS)),
               RHS(std::unique_ptr<Expr>(RHS)) {  }
-            virtual llvm::Value* CodeGen(std::shared_ptr<ast::LocalContext> LC) override;
+            llvm::Value* CodeGen(std::shared_ptr<ast::LocalContext> LC) override;
         };
 
-        /// TODO: Implement in LLVM
-        /// Represents a literal (nt) expression
-        class LiteralExpr : public Expr {
-        protected:
-            std::string Type;
-            std::string Value;
-            bool AutoCast = true;
+        class IntLiteralExpr : public Expr {
         public:
-            LiteralExpr(std::string Type, std::string Value)
-            : Type(Type), Value(Value) {}
-            virtual std::string CodeGen() override;
-            void DeactivateAutoCast(void);
-            void ActivateAutoCast(void);
+            int Val;
+            IntLiteralExpr(int Val) : Val(Val) {}
+            llvm::Value* CodeGen(std::shared_ptr<ast::LocalContext> LC) override;
+        };
+
+        class FloatLiteralExpr : public Expr {
+        public:
+            float Val;
+            IntLiteralExpr(float Val) : Val(Val) {}
+            llvm::Value* CodeGen(std::shared_ptr<ast::LocalContext> LC) override;
+        };
+
+        /// Boolean values will be converted to int 1 or 0
+        class BoolLiteralExpr : public IntLiteralExpr {
+        public:
+            BoolLiteralExpr(int Val) : IntLiteralExpr(Val) {}
         };
 
         /// TODO: Implement in LLVM
