@@ -64,17 +64,13 @@ namespace creol {
             void SetType(std::string Type);
         };
 
-        /// TODO: Implement in LLVM
         /// Represents a blockSttmt of code
         class BlockSttmt : public Sttmt {
         protected:
             std::vector<Sttmt*> SttmtList;
-            bool BracketsOn = false;
         public:
             void AddSttmt(Sttmt* sttmt);
-            void UseBrackets();
-            void DontUseBrackets();
-            virtual std::string CodeGen() override;
+            virtual llvm::Value* CodeGen(std::shared_ptr<ast::LocalContext> LC) override;
         };
 
         /// TODO: Implement in LLVM

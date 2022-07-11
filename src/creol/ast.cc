@@ -16,11 +16,6 @@ static std::shared_ptr<ast::LocalContext> ast::LocalContext::New(std::string Mod
 }
 
 /// TODO: Implement in LLVM
-std::string ast::Expr::CodeGen() {
-    return "";
-}
-
-/// TODO: Implement in LLVM
 std::string ast::VarDeclSttmt::CodeGen() {
     std::string VarVal = Value ? " = " + Value->CodeGen() : "";
     return Type + ' ' + Name + VarVal;
@@ -31,33 +26,18 @@ void ast::VarDeclSttmt::SetType(std::string Type) {
     this->Type = Type;
 }
 
-/// TODO: Implement in LLVM
 void ast::BlockSttmt::AddSttmt(ast::Sttmt* sttmt) {
     SttmtList.push_back(sttmt);
 }
 
-/// TODO: Implement in LLVM
-std::string ast::BlockSttmt::CodeGen() {
-    std::string block = "";
+llvm::Value* ast::BlockSttmt::CodeGen(std::shared_ptr<ast::LocalContext> LC) {
+    llvm::Value* last = nullptr;
 
-    for (auto& S : SttmtList) {
-        block += S ? S->CodeGen() : "";
-    };
+    for (auto& Sttmt : SttmtList) {
+        last = Sttmt->CodeGen(LC);
+    }
 
-    if (BracketsOn)
-        block = "{" + block + "}";
-
-    return block;
-}
-
-/// TODO: Implement in LLVM
-void ast::BlockSttmt::UseBrackets() {
-    BracketsOn = true;
-}
-
-/// TODO: Implement in LLVM
-void ast::BlockSttmt::DontUseBrackets() {
-    BracketsOn = false;
+    return last;
 }
 
 /// TODO: Implement in LLVM
