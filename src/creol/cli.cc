@@ -12,6 +12,8 @@
 #include <cstdio>
 #include <sstream>
 
+#define FILE_EXTENSION ".crl"
+
 namespace fs = std::filesystem;
 namespace ap = argparse;
 
@@ -66,6 +68,14 @@ void cli::Compiler::DefineArgs(void) {
          .help("With this option the code gets formatted before being returned or saved.")
          .default_value(false)
          .implicit_value(true);
+
+    std::string helpMessage = "Without this flag, only files with extension " +
+              std::string(FILE_EXTENSION) + " will be allowed by the compiler.";
+
+    Parser->add_argument("-T", "--ignore-extension")
+         .help(helpMessage)
+         .default_value(false)
+         .implicit_value(true);
 }
 
 void cli::Compiler::ParseArgs(const int argc, const char* const* argv) {
@@ -90,17 +100,9 @@ void cli::Compiler::ParseArgs(const int argc, const char* const* argv) {
         Args.outfile = "";
     }
 
-    try {
-        Args.shouldBuildOutput = Parser->get<bool>("--build");
-    } catch(const std::exception& err) {
-        Args.shouldBuildOutput = false;
-    }
-
-    try {
-        Args.shouldFormatOutput = Parser->get<bool>("--format");
-    } catch(const std::exception& err) {
-        Args.shouldFormatOutput = false;
-    }
+    Args.shouldBuildOutput = Parser->get<bool>("--build");
+    Args.shouldFormatOutput = Parser->get<bool>("--format");
+    Args.shouldCheckExtension = !Parser->get<bool>("--ignore-extension");
 }
 
 ast::BlockSttmt* cli::CreolLangParserWrapper::ParseCode(std::string Content, bool isFile) {
@@ -169,6 +171,17 @@ void cli::Compiler::Run(const int argc, const char* const* argv) {
 
     if (Args.shouldFormatOutput) {
         cli::PrintErr("Format option not implemented yet.");
+    }
+
+    // Checks if there's a matching extension at the end of the filename
+    auto matchAtEndOfFilename = [name = Args.filename](std::string endstr) {
+        return name.find(endstr, name.size() - endstr.size());
+    };
+
+    if (Args.shouldCheckExtension && matchAtEndOfFilename(FILE_EXTENSION) == std::string::npos) {
+        // If the extension was not found on the filename, then exit with an error message
+        cli::PrintErr("File format not recognized. Filename should end with a '"
+            + std::string(FILE_EXTENSION) + "' file extention.", 1);
     }
 
     ast::BlockSttmt* ProgramAST = CreolLangParserWrapper::ParseCode(Args.filename, true);

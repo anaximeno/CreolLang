@@ -44,6 +44,7 @@ namespace creol {
                 std::string outfile;
                 bool shouldBuildOutput;
                 bool shouldFormatOutput;
+                bool shouldCheckExtension;
             } Args;
 
         public:
