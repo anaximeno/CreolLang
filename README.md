@@ -2,13 +2,15 @@
 
 **CreolLang** or **Creol** is a programming language based on the **Cape Verdian Creole**. It was made to be easy for anyone who understands Cape Verdean Creole while keeping the same versatility as some other languages, such as C, Go, and Rust.
 
-## Description
+### Project status
+
+Under development.
+
+### Description
 
 The syntax of this programming language was initially based on C, Go and Rust, but other programming languages such as Liquid played a good role in the initial design.
 
 For more concrete specifications about the language, you are recommended to read the [CreolLang Language Specification](./docs/creol-lang-spec.md).
-
-### More:
 
 The file extension of the CreolLang programming language is **.crl** and the compiler's name is **creol**.
 
@@ -22,7 +24,9 @@ If you are on a Debian (or Ubuntu) based linux operating system you can install 
 apt install make flex bison g++ clang
 ```
 
-And then compile the compiler using:
+NOTE: now pre-generated parser and scanner codes are provided in the repository, so, **flex** and **bison** can be omitted from the installation above, but if you are planning to make changes to the parser or scanner rules, they will still be necessary.
+
+After installing the dependencies, compile the compiler using:
 
 ```
 make
@@ -58,7 +62,7 @@ An example of how it could be used is to compile one of the examples files on th
 
 You may see the code on example03.crl converted to the C language code on the terminal.
 
-For building the code you could use the **-b** or **--build** flag:
+To build the code you should use the **-b** or **--build** flag:
 
 ```
 ./creol examples/example03.crl -b
@@ -84,7 +88,3 @@ TODO...
 ## License
 
 All the code and specifications of the CreolLang programming language are currently under the [MIT License](./LICENSE).
-
-## Project status
-
-Under development.
