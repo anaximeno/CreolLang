@@ -1,9 +1,6 @@
 # parser files
 *.yy.*
 *.tab.*
-parser.hh
-parser.cc
-scanner.cc
 
 # C/C++ object files
 *.o
