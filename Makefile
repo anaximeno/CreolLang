@@ -23,6 +23,8 @@ SRCS = main.cpp \
 # The default build is debug.
 # Change to release if wanted.
 creol: debug
+	@echo "\n\nRun the compiler with:"
+	@echo "\n  ./creol --help\n"
 
 dbg-obj: $(SRCS)
 	@echo "~~ Debug build ~~"
