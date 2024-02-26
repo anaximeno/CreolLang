@@ -20,7 +20,7 @@ It isn't installable on any OS yet, but it still can be tested using an Unix bas
 
 If you are on a Debian (or Ubuntu) based linux operating system you can install the dependencies using the following command:
 
-```
+```bash
 apt install make flex bison g++ clang
 ```
 
@@ -28,19 +28,19 @@ NOTE: now pre-generated parser and scanner codes are provided in the repository,
 
 After installing the dependencies, compile the compiler using:
 
-```
+```bash
 make
 ```
 
 For a release build use:
 
-```
+```bash
 make release
 ```
 
 The result of the compilation will be an executable named **creol** which you can execute using:
 
-```
+```bash
 ./creol
 ```
 
@@ -48,7 +48,7 @@ The result of the compilation will be an executable named **creol** which you ca
 
 The first thing to do after compiling the compiler is to execute the help command:
 
-```
+```bash
 ./creol --help
 ```
 
@@ -56,7 +56,7 @@ After executing that command you may see the usage section and some of its optio
 
 An example of how it could be used is to compile one of the examples files on the examples folder:
 
-```
+```bash
 ./creol examples/example03.crl
 ```
 
@@ -64,12 +64,13 @@ You may see the code on example03.crl converted to the C language code on the te
 
 To build the code you should use the **-b** or **--build** flag:
 
-```
+```bash
 ./creol examples/example03.crl -b
 ```
+
 Then execute the compiled code with:
 
-```
+```bash
 ./a.out
 ```
 
