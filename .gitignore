@@ -20,3 +20,7 @@ rules/parser
 
 # Compiler binary
 creol
+
+# Added by cargo
+
+/target
