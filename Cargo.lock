@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "CreolLang"
+name = "creol"
 version = "0.1.0"
