@@ -19,7 +19,7 @@ rules/parser
 *.gch
 
 # Compiler binary
-creol
+./creol
 
 # Added by cargo
 
