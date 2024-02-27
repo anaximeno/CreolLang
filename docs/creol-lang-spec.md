@@ -3,7 +3,8 @@
 Language specifications for the CreolLang programming language.
 
 *A modified version of the **Backus-Naus Form** language was used for describing this language.*
-## General Statements
+
+### General Statements
 
 ```xml
 <program> ::= <statements>
@@ -21,7 +22,7 @@ Language specifications for the CreolLang programming language.
               | <import_statement>
 ```
 
-## Import Statements
+### Import Statements
 
 ```xml
 
@@ -31,7 +32,7 @@ Language specifications for the CreolLang programming language.
 
 ```
 
-## Variable declaration
+### Variable declaration
 
 ```xml
 <type_specifier> ::= T_TYPE_INT
@@ -57,7 +58,7 @@ Language specifications for the CreolLang programming language.
 
 ```
 
-## Binary Expressions
+### Binary Expressions
 
 ```xml
 <logical_or_expressions> ::= <logical_and_expressions>
@@ -85,7 +86,7 @@ Language specifications for the CreolLang programming language.
                               | <multiplicative_expression> T_DIV <primary_expression>
 ```
 
-## Other Expressions
+### Other Expressions
 
 ```xml
 <expression> ::= <assignment_expression>
@@ -104,14 +105,14 @@ Language specifications for the CreolLang programming language.
                           | <primary_expression> <assignment_operator> <assignment_expression>
 ```
 
-## Assingment Operations
+### Assingment Operations
 
 ```xml
 <assignment_operator> ::= '='
 
 ```
 
-## Function Statements
+### Function Statements
 
 ```xml
 <function_declaration> ::= <type_specifier> <declarator> '(' <parameter_optional_list> ')' <compound_statement>
@@ -141,7 +142,7 @@ Language specifications for the CreolLang programming language.
 
 ```
 
-## Selection statement
+### Selection statement
 
 ```xml
 <selection_statement> ::= T_SI <expression> <compound_statement>
@@ -151,14 +152,14 @@ Language specifications for the CreolLang programming language.
               | <selection_statement>
 ```
 
-## Iteration statement
+### Iteration statement
 
 ```xml
 <iteration_statement> ::= T_NKUANTU <expression> <compound_statement>
                         | T_DI <expression> ';' <expression> ';' <expression>
 ```
 
-## Jump statement
+### Jump statement
 
 ```xml
 <jump_statement> ::= T_PARA ';'
@@ -167,6 +168,6 @@ Language specifications for the CreolLang programming language.
                    | T_DIVOLVI ';'
 ```
 
-# License
+## License
 
 The specification of the CreolLang programming language is released under the [MIT License](LICENSE).
