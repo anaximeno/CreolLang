@@ -2,9 +2,10 @@
 
 Language specifications for the CreolLang programming language.
 
+*A modified version of the **Backus-Naus Form** language was used for describing this language.*
 ## General Statements
 
-```html
+```xml
 <program> ::= <statements>
 
 <statements> ::= <statements> <statement>
@@ -22,16 +23,17 @@ Language specifications for the CreolLang programming language.
 
 ## Import Statements
 
-```html
+```xml
 
 <import_statement> ::= T_IMPRISTAN <single_import>
 
 <single_import> ::= T_STR_LIT
 
 ```
+
 ## Variable declaration
 
-```html
+```xml
 <type_specifier> ::= T_TYPE_INT
                    | T_TYPE_FLOAT
                    | T_TYPE_VOID
@@ -57,7 +59,7 @@ Language specifications for the CreolLang programming language.
 
 ## Binary Expressions
 
-```html
+```xml
 <logical_or_expressions> ::= <logical_and_expressions>
                            | <logical_or_expressions> T_OR <logical_and_expressions>
 
@@ -85,7 +87,7 @@ Language specifications for the CreolLang programming language.
 
 ## Other Expressions
 
-```html
+```xml
 <expression> ::= <assignment_expression>
                | <function_call>
 
@@ -104,14 +106,14 @@ Language specifications for the CreolLang programming language.
 
 ## Assingment Operations
 
-```html
+```xml
 <assignment_operator> ::= '='
 
 ```
 
 ## Function Statements
 
-```html
+```xml
 <function_declaration> ::= <type_specifier> <declarator> '(' <parameter_optional_list> ')' <compound_statement>
 
 <parameter_optional_list> ::= <parameter_list>
@@ -141,7 +143,7 @@ Language specifications for the CreolLang programming language.
 
 ## Selection statement
 
-```html
+```xml
 <selection_statement> ::= T_SI <expression> <compound_statement>
                         | T_SI <expression> <compound_statement> T_SINON <else_then>
 
@@ -151,14 +153,14 @@ Language specifications for the CreolLang programming language.
 
 ## Iteration statement
 
-```html
+```xml
 <iteration_statement> ::= T_NKUANTU <expression> <compound_statement>
                         | T_DI <expression> ';' <expression> ';' <expression>
 ```
 
 ## Jump statement
 
-```html
+```xml
 <jump_statement> ::= T_PARA ';'
                    | T_CONTINUA ';'
                    | T_DIVOLVI <expression> ';'
@@ -168,11 +170,3 @@ Language specifications for the CreolLang programming language.
 # License
 
 The specification of the CreolLang programming language is released under the [MIT License](LICENSE).
-
-# Note
-
-***A modified version of the Backus-Naus Form language was used for describing this language.***
-
-<!--
-Contribution from Tamiris Nascimento.
--->
