@@ -57,7 +57,7 @@ After executing that command you may see the usage section and some of its optio
 An example of how it could be used is to compile one of the examples files in the examples folder:
 
 ```bash
-./creol examples/example03.crl
+./creol examples/example03.kl
 ```
 
 You may see the code in example03.crl converted to the C language code on the terminal.
@@ -65,7 +65,7 @@ You may see the code in example03.crl converted to the C language code on the te
 To build the code you should use the **-b** or **--build** flag:
 
 ```bash
-./creol examples/example03.crl -b
+./creol examples/example03.kl -b
 ```
 
 Then execute the compiled code with:
