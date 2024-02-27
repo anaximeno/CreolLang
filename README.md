@@ -8,17 +8,17 @@ Under development.
 
 ### Description
 
-The syntax of this programming language was initially based on C, Go and Rust, but other programming languages such as Liquid played a good role in the initial design.
+The syntax of this programming language was initially based on C, Go, and Rust, but other programming languages such as Liquid played a good role in the initial design.
 
 For more concrete specifications about the language, you are recommended to read the [CreolLang Language Specification](./docs/creol-lang-spec.md).
 
-The file extension of the CreolLang programming language is **.kl** (representing the word **Kriol** or **Kriolo** which is how Creol or Creole is pronounced in Creole) and the compiler's name is **creol**.
+The file extension of the CreolLang programming language is **.kl** (representing the word **Kriol** or **Kriolu** which is how Creol or Creole is pronounced in Creole) and the compiler's name is **creol**.
 
 ## Installation
 
-It isn't installable on any OS yet, but it still can be tested using an Unix based operating system. It basically depends on **clang++** or **g++** to compile the source code, and **bison** and **flex** to compile the language rules.
+It isn't installable on any OS yet, but it still can be tested using a Unix-based operating system. It depends on **clang++** or **g++** to compile the source code, and **bison** and **flex** to compile the language rules.
 
-If you are on a Debian (or Ubuntu) based linux operating system you can install the dependencies using the following command:
+If you are on a Debian (or Ubuntu) based Linux operating system you can install the dependencies using the following command:
 
 ```bash
 apt install make flex bison g++ clang
@@ -54,13 +54,13 @@ The first thing to do after compiling the compiler is to execute the help comman
 
 After executing that command you may see the usage section and some of its options.
 
-An example of how it could be used is to compile one of the examples files on the examples folder:
+An example of how it could be used is to compile one of the examples files in the examples folder:
 
 ```bash
 ./creol examples/example03.crl
 ```
 
-You may see the code on example03.crl converted to the C language code on the terminal.
+You may see the code in example03.crl converted to the C language code on the terminal.
 
 To build the code you should use the **-b** or **--build** flag:
 
@@ -74,7 +74,7 @@ Then execute the compiled code with:
 ./a.out
 ```
 
-The CreolLang compiler currently has only a few usage options and may be extended to additional tooling and improvements on future releases.
+Currently, the compiler has only a few usage options and may be extended to additional tooling and improvements in future releases.
 <!--
 ## Visuals
 
