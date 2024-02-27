@@ -114,7 +114,7 @@ ast::BlockSttmt* cli::CreolLangParserWrapper::ParseCode(std::string Content, boo
     return Program;
 }
 
-void cli::Compiler::SaveCodeToFile(std::string Code, std::string Filename) {
+void cli::Compiler::SaveCodeToFile(std::string Code, std::string Filename) { // XXX
     FILE* file = fopen(Filename.c_str(), "w");
 
     if (file == NULL) {
