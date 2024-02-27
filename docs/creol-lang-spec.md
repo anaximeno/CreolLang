@@ -4,6 +4,8 @@ Language specifications for the CreolLang programming language.
 
 *A modified version of the **Backus-Naus Form** language was used for describing this language.*
 
+## Specifications
+
 ### General Statements
 
 ```xml
