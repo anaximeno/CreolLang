@@ -12,7 +12,7 @@ The syntax of this programming language was initially based on C, Go, and Rust, 
 
 For more concrete specifications about the language, you are recommended to read the [CreolLang Language Specification](./docs/creol-lang-spec.md).
 
-The file extension of the CreolLang programming language is **.kl** (representing the word **Kriol** or **Kriolu** which is how Creol or Creole is pronounced in Creole) and the compiler's name is **creol**.
+The file extension of the CreolLang programming language is **.kl** (representing the word **Kriol** or **Kriolu** which is how Creol or Creole is pronounced in Cape Verdian's Creole) and the compiler's name is **creol**.
 
 ## Installation
 
