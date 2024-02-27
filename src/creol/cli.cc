@@ -12,7 +12,7 @@
 #include <cstdio>
 #include <sstream>
 
-#define FILE_EXTENSION ".crl"
+#define FILE_EXTENSION ".kl"
 
 namespace fs = std::filesystem;
 namespace ap = argparse;
