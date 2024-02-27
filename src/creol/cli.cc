@@ -21,7 +21,7 @@ using namespace creol;
 
 extern FILE* yyin;
 extern int yyparse(void);
-extern ast::BlockSttmt* Program;
+extern ast::BlockSttmt* Program; // XXX
 
 void cli::PrintErr(std::string message) {
     std::cerr << "Creol: Err: " << message << std::endl;

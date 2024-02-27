@@ -1,7 +1,6 @@
-#pragma once
-
 #include <iostream>
-#include "creol/include/interop.hh"
+
+#include "creol/include/creol/interop.hh"
 
 
 void hello_world() {
