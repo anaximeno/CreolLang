@@ -4,6 +4,6 @@ fn main() {
         .compile("creol");
 
     print!("cargo:rerun-if-changed=src/main.rs");
-    print!("cargo:rerun-if-changed=src/creol/rs-interop.cc");
+    print!("cargo:rerun-if-changed=src/creol/interop.cc");
     print!("cargo:rerun-if-changed=include/creol/rs-interop.cc");
 }
