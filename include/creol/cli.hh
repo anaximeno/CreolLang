@@ -13,8 +13,10 @@
 
 namespace ap = argparse;
 
-namespace creol {
-    namespace cli {
+namespace creol
+{
+    namespace cli
+    {
         /// Prints an error message to the stderr
         void PrintErr(std::string message);
         /// Prints an error message to the stderr and exits returning the `exitNum`
@@ -24,22 +26,26 @@ namespace creol {
         /// Encodes a string to hexadecimal string
         std::string ConvertToHex(std::string str);
 
-        class CreolLangParserWrapper {
+        class CreolLangParserWrapper
+        {
             /// Parses a code on a file
             static void ParseFile(std::string filename);
             /// Parses as text
             static void ParseText(std::string text);
+
         public:
             /// Used to parse the code
-            static ast::BlockSttmt* ParseCode(std::string Content, bool isFile);
+            static ast::BlockSttmt *ParseCode(std::string Content, bool isFile);
         };
 
-        class Compiler {
+        class Compiler
+        {
             std::string Name;
             std::string Version;
             std::unique_ptr<ap::ArgumentParser> Parser;
 
-            struct {
+            struct
+            {
                 std::string filename;
                 std::string outfile;
                 bool shouldBuildOutput;
@@ -49,12 +55,13 @@ namespace creol {
 
         public:
             Compiler(std::string Name, std::string Ver)
-            : Name(Name), Version(Ver), Parser(std::make_unique<ap::ArgumentParser>(Name, Ver)) {  }
+                : Name(Name), Version(Ver), Parser(std::make_unique<ap::ArgumentParser>(Name, Ver)) {}
             /// Used to run the compiler
-            void Run(const int argc, const char* const* argv);
+            void Run(const int argc, const char *const *argv);
+
         private:
             /// Used to parse the command-line args
-            void ParseArgs(const int argc, const char* const* argv);
+            void ParseArgs(const int argc, const char *const *argv);
             /// Used to define the arguments
             void DefineArgs(void);
             /// Save the transpiled code into a file
