@@ -1,26 +1,33 @@
-#include "../../include/creol/ast.hh"
+#include "creol/include/ast.hh"
 
 using namespace creol;
 
-std::string ast::Expr::CodeGen() {
+extern FILE* yyin;
+
+extern int yyparse(void);
+
+extern BlockSttmt* __KL_Program__BLOCK;
+
+
+std::string Expr::CodeGen() {
     return "";
 }
 
-std::string ast::VarDeclSttmt::CodeGen() {
+std::string VarDeclSttmt::CodeGen() {
     std::string VarVal = Value ? " = " + Value->CodeGen() : "";
     return Type + ' ' + Name + VarVal;
 }
 
-void ast::VarDeclSttmt::SetType(std::string Type) {
+void VarDeclSttmt::SetType(std::string Type) {
     this->Type = Type;
 }
 
 
-void ast::BlockSttmt::AddSttmt(ast::Sttmt* sttmt) {
+void BlockSttmt::AddSttmt(Sttmt* sttmt) {
     SttmtList.push_back(sttmt);
 }
 
-std::string ast::BlockSttmt::CodeGen() {
+std::string BlockSttmt::CodeGen() {
     std::string block = "";
 
     for (auto& S : SttmtList) {
@@ -33,19 +40,19 @@ std::string ast::BlockSttmt::CodeGen() {
     return block;
 }
 
-void ast::BlockSttmt::UseBrackets() {
+void BlockSttmt::UseBrackets() {
     BracketsOn = true;
 }
 
-void ast::BlockSttmt::DontUseBrackets() {
+void BlockSttmt::DontUseBrackets() {
     BracketsOn = false;
 }
 
-void ast::FuncArgs::AddArg(ast::VarDeclSttmt* Arg) {
+void FuncArgs::AddArg(VarDeclSttmt* Arg) {
     Args.push_back(Arg);
 }
 
-std::string ast::FuncArgs::CodeGen() {
+std::string FuncArgs::CodeGen() {
     std::string Arguments = "";
 
     for (int i = 0 ; i < (int) Args.size() ; ++i) {
@@ -58,33 +65,33 @@ std::string ast::FuncArgs::CodeGen() {
     return Arguments;
 }
 
-std::string ast::FuncDeclSttmt::CodeGen() {
+std::string FuncDeclSttmt::CodeGen() {
     return Type + " " + Name + " ( " + Args->CodeGen() + " ) " + Body->CodeGen();
 }
 
-std::string ast::IfSttmt::CodeGen() {
+std::string IfSttmt::CodeGen() {
     auto E = Else ? " else " + Else->CodeGen() : "";
     return "if ( " + Cond->CodeGen() + " ) " + Then->CodeGen() + E;
 }
 
-std::string ast::WhileSttmt::CodeGen() {
+std::string WhileSttmt::CodeGen() {
     return "while ( " + Cond->CodeGen() + " )" + Do->CodeGen();
 }
 
-std::string ast::JumpSttmt::CodeGen() {
+std::string JumpSttmt::CodeGen() {
     return Name + ";";
 }
 
-std::string ast::ReturnSttmt::CodeGen() {
+std::string ReturnSttmt::CodeGen() {
     auto R = ReturnValue ? ReturnValue->CodeGen() : "";
     return "return " + R + ";";
 }
 
-void ast::FuncCallArgs::AddArg(Expr* Arg) {
+void FuncCallArgs::AddArg(Expr* Arg) {
     Args.push_back(Arg);
 }
 
-std::string ast::FuncCallArgs::CodeGen() {
+std::string FuncCallArgs::CodeGen() {
     std::string Arguments = "";
 
     for (int i = 0 ; i < (int) Args.size() ; ++i) {
@@ -97,48 +104,48 @@ std::string ast::FuncCallArgs::CodeGen() {
     return Arguments;
 }
 
-std::string ast::FunCallExpr::CodeGen() {
+std::string FunCallExpr::CodeGen() {
     auto A = Args ? Args->CodeGen() : "";
     return Name + "( " + A + " )";
 }
 
-std::string ast::BinExpr::CodeGen() {
+std::string BinExpr::CodeGen() {
     auto L = LHS ? LHS->CodeGen() : "";
     auto R = RHS ? RHS->CodeGen() : "";
     return L + " " + Op + " " + R;
 }
 
-std::string ast::LiteralExpr::CodeGen() {
+std::string LiteralExpr::CodeGen() {
     auto Prefix = AutoCast ? "(" + Type + ") " : "";
     return Prefix + Value;
 }
 
-void ast::LiteralExpr::ActivateAutoCast() {
+void LiteralExpr::ActivateAutoCast() {
     AutoCast = true;
 }
 
-void ast::LiteralExpr::DeactivateAutoCast() {
+void LiteralExpr::DeactivateAutoCast() {
     AutoCast = false;
 }
 
-std::string ast::ExprSttmt::CodeGen() {
+std::string ExprSttmt::CodeGen() {
     return Expression ? Expression->CodeGen() + ";" : ";";
 }
 
-std::string ast::IdentExpr::CodeGen() {
+std::string IdentExpr::CodeGen() {
     return Name;
 }
 
-std::string ast::ParExpr::CodeGen() {
+std::string ParExpr::CodeGen() {
     auto C = Content ? Content->CodeGen() : "";
     return "( " + C + " )";
 }
 
-std::string ast::AssignExpr::CodeGen() {
+std::string AssignExpr::CodeGen() {
     return Assignee->CodeGen() + " = " + Assigned->CodeGen();
 }
 
-std::string ast::ForSttmt::CodeGen() {
+std::string ForSttmt::CodeGen() {
     auto S = Start ? Start->CodeGen() : "";
     auto C = Cond ? Cond->CodeGen() : "";
     auto A = After ? After->CodeGen() : "";
@@ -146,6 +153,25 @@ std::string ast::ForSttmt::CodeGen() {
     return "for (" + S + " ; " + C + " ; " + A + " ) " + T;
 }
 
-std::string ast::ImportSttmt::CodeGen() {
+std::string ImportSttmt::CodeGen() {
     return "#include " + Import + "\n";
+}
+
+BlockSttmt* ParseFile(std::unique_ptr<std::string> filename) {
+    FILE* file = fopen(filename.c_str(), "rt");
+
+    // TODO: handle NULL pointer case maybe with better
+    //       error reporting.
+
+    // define the input file
+    yyin = file;
+
+    // parse the file
+    yyparse();
+
+    // close the file after the parsing
+    fclose(file);
+
+    // return the parsed program block
+    return __KL_Program__BLOCK;
 }

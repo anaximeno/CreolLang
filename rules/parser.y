@@ -1,6 +1,6 @@
 %{
-    #include "include/creol/ast.hh"
-    #include "include/creol/cli.hh"
+    #include "include/ast.hh"
+    // #include "include/cli.hh"
 
     #include <cstdio>
     #include <cstdlib>
@@ -11,7 +11,7 @@
 
     using namespace creol;
 
-    ast::BlockSttmt* Program;
+    BlockSttmt* __KL_Program__BLOCK;
 %}
 
 %union {
@@ -20,13 +20,13 @@
     std::string* floatingpoint;
     std::string* boolean;
     std::string* string;
-    creol::ast::Expr* expr;
-    creol::ast::Sttmt* sttmt;
-    creol::ast::BlockSttmt* block;
-    creol::ast::VarDeclSttmt* vardecl;
-    creol::ast::FuncArgs* params;
-    creol::ast::FuncCallArgs* args;
-    creol::ast::LiteralExpr* litexpr;
+    creol::Expr* expr;
+    creol::Sttmt* sttmt;
+    creol::BlockSttmt* block;
+    creol::VarDeclSttmt* vardecl;
+    creol::FuncArgs* params;
+    creol::FuncCallArgs* args;
+    creol::LiteralExpr* litexpr;
 }
 
 /* terminal symbols */
@@ -72,7 +72,7 @@
 
 /* non terminals */
 
-program : statements { Program = $1; }
+program : statements { __KL_Program__BLOCK = $1; }
         ;
 
 type_specifier : TYPE_INT
@@ -81,10 +81,10 @@ type_specifier : TYPE_INT
                | TYPE_BOOL { $$ = new std::string("unsigned short"); }
                ;
 
-constant : INT_LIT { $$ = new ast::LiteralExpr("int", *$1); $<litexpr>$->ActivateAutoCast(); }
-         | FLOAT_LIT { $$ = new ast::LiteralExpr("float", *$1); $<litexpr>$->ActivateAutoCast(); }
-         | BOOL_LIT { $$ = new ast::LiteralExpr("unsigned short", *$1); $<litexpr>$->ActivateAutoCast(); }
-         | STR_LIT { $$ = new ast::LiteralExpr("char*", *$1); $<litexpr>$->DeactivateAutoCast(); }
+constant : INT_LIT { $$ = new LiteralExpr("int", *$1); $<litexpr>$->ActivateAutoCast(); }
+         | FLOAT_LIT { $$ = new LiteralExpr("float", *$1); $<litexpr>$->ActivateAutoCast(); }
+         | BOOL_LIT { $$ = new LiteralExpr("unsigned short", *$1); $<litexpr>$->ActivateAutoCast(); }
+         | STR_LIT { $$ = new LiteralExpr("char*", *$1); $<litexpr>$->DeactivateAutoCast(); }
          ;
 
 identifier : IDENT
@@ -97,8 +97,8 @@ declarator : identifier
 declaration : type_specifier init_declarator { $2->SetType(*$1); $$ = $2; }
             ;
 
-init_declarator : declarator { $$ = new ast::VarDeclSttmt("void", *$1, nullptr); }
-                | declarator ASSIGN initializer { $$ = new ast::VarDeclSttmt("void", *$1, $3); }
+init_declarator : declarator { $$ = new VarDeclSttmt("void", *$1, nullptr); }
+                | declarator ASSIGN initializer { $$ = new VarDeclSttmt("void", *$1, $3); }
                 ;
 
 // note: may be extended later
@@ -113,82 +113,82 @@ constant_expression : logical_or_expressions
                     ;
 
 logical_or_expressions : logical_and_expressions
-                       | logical_or_expressions OR logical_and_expressions { $$ = new ast::BinExpr("||", $1, $3); }
+                       | logical_or_expressions OR logical_and_expressions { $$ = new BinExpr("||", $1, $3); }
                        ;
 
 logical_and_expressions : equality_expression
-                        | logical_and_expressions AND equality_expression { $$ = new ast::BinExpr("&&", $1, $3); }
+                        | logical_and_expressions AND equality_expression { $$ = new BinExpr("&&", $1, $3); }
                         ;
 
 equality_expression : relational_expression
-                    | equality_expression EQ relational_expression { $$ = new ast::BinExpr("==", $1, $3); }
-                    | equality_expression NE relational_expression { $$ = new ast::BinExpr("!=", $1, $3); }
+                    | equality_expression EQ relational_expression { $$ = new BinExpr("==", $1, $3); }
+                    | equality_expression NE relational_expression { $$ = new BinExpr("!=", $1, $3); }
                     ;
 
 relational_expression : additive_expression
-                      | relational_expression LT additive_expression { $$ = new ast::BinExpr("<", $1, $3); }
-                      | relational_expression GT additive_expression { $$ = new ast::BinExpr(">", $1, $3); }
-                      | relational_expression LE additive_expression { $$ = new ast::BinExpr("<=", $1, $3); }
-                      | relational_expression GE additive_expression { $$ = new ast::BinExpr(">=", $1, $3); }
+                      | relational_expression LT additive_expression { $$ = new BinExpr("<", $1, $3); }
+                      | relational_expression GT additive_expression { $$ = new BinExpr(">", $1, $3); }
+                      | relational_expression LE additive_expression { $$ = new BinExpr("<=", $1, $3); }
+                      | relational_expression GE additive_expression { $$ = new BinExpr(">=", $1, $3); }
                       ;
 
 additive_expression : multiplicative_expression
-                    | additive_expression PLUS multiplicative_expression { $$ = new ast::BinExpr("+", $1, $3); }
-                    | additive_expression MINUS multiplicative_expression { $$ = new ast::BinExpr("-", $1, $3); }
+                    | additive_expression PLUS multiplicative_expression { $$ = new BinExpr("+", $1, $3); }
+                    | additive_expression MINUS multiplicative_expression { $$ = new BinExpr("-", $1, $3); }
                     ;
 
 multiplicative_expression : unary_expression
-                          | multiplicative_expression MUL primary_expression { $$ = new ast::BinExpr("*", $1, $3); }
-                          | multiplicative_expression DIV primary_expression { $$ = new ast::BinExpr("/", $1, $3); }
+                          | multiplicative_expression MUL primary_expression { $$ = new BinExpr("*", $1, $3); }
+                          | multiplicative_expression DIV primary_expression { $$ = new BinExpr("/", $1, $3); }
                           ;
 
 unary_expression : primary_expression
                  /* | TMINUS primary_expression %prec UMINUS */
                  ;
 
-primary_expression : identifier { $$ = new ast::IdentExpr(*$1); }
+primary_expression : identifier { $$ = new IdentExpr(*$1); }
                    | constant
-                   | LPAR expression RPAR { $$ = new ast::ParExpr($2); }
+                   | LPAR expression RPAR { $$ = new ParExpr($2); }
                    ;
 
 // todo: correct anomalies using semantic analysis
 assignment_expression : constant_expression
-                      | primary_expression assignment_operator assignment_expression { $$ = new ast::AssignExpr(*$2, $1, $3); }
+                      | primary_expression assignment_operator assignment_expression { $$ = new AssignExpr(*$2, $1, $3); }
                       ;
 
 // note: this may be extended later to support op assign
 assignment_operator : ASSIGN { $$ = new std::string("=", 2); }
                     ;
 
-function_declaration : type_specifier declarator LPAR parameter_optional_list RPAR compound_statement { $$ = new ast::FuncDeclSttmt(*$1, *$2, $4, $6); }
+function_declaration : type_specifier declarator LPAR parameter_optional_list RPAR compound_statement { $$ = new FuncDeclSttmt(*$1, *$2, $4, $6); }
                      ;
 
 parameter_optional_list : parameter_list
-                        | %empty { $$ = new ast::FuncArgs(); }
+                        | %empty { $$ = new FuncArgs(); }
                         ;
 
-parameter_list : parameter_declaration { $$ = new ast::FuncArgs(); $$->AddArg($1); }
+parameter_list : parameter_declaration { $$ = new FuncArgs(); $$->AddArg($1); }
                | parameter_list COMMA parameter_declaration { { $1->AddArg($3); } }
                ;
 
-parameter_declaration : type_specifier declarator { $$ = new ast::VarDeclSttmt(*$1, *$2, nullptr); }
+parameter_declaration : type_specifier declarator { $$ = new VarDeclSttmt(*$1, *$2, nullptr); }
                       ;
 
 argument_list : argument_list COMMA expression { $1->AddArg($3); }
-              | expression { $$ = new ast::FuncCallArgs(); $$->AddArg($1);  }
+              | expression { $$ = new FuncCallArgs(); $$->AddArg($1);  }
               ;
 
-function_call : identifier LPAR argument_list RPAR { $$ = new ast::FunCallExpr(*$1, $3); }
-              | identifier LPAR RPAR { $$ = new ast::FunCallExpr(*$1, nullptr); }
+function_call : identifier LPAR argument_list RPAR { $$ = new FunCallExpr(*$1, $3); }
+              | identifier LPAR RPAR { $$ = new FunCallExpr(*$1, nullptr); }
               | mostra_func_call
               ;
 
-mostra_func_call : MOSTRA LPAR argument_list RPAR { $$ = new ast::MostraFunCallExpr($3); }
-                 | MOSTRA LPAR RPAR { $$ = new ast::MostraFunCallExpr(nullptr); }
+mostra_func_call : MOSTRA LPAR argument_list RPAR { $$ = new MostraFunCallExpr($3); }
+                 | MOSTRA LPAR RPAR { $$ = new MostraFunCallExpr(nullptr); }
                  ;
 
 statements : statements statement { $1->AddSttmt($2); }
-           | statement { $$ = new ast::BlockSttmt(); $$->AddSttmt($1); }
+           | statement { $$ = new BlockSttmt(); $$->AddSttmt($1); }
            ;
 
 // todo: analyze the situation of
@@ -205,40 +205,40 @@ statement : expression_statement
           | import_statement { $$ = $1; }
           ;
 
-import_statement : IMPRISTAN single_import { $$ = new ast::ImportSttmt(*$2); }
+import_statement : IMPRISTAN single_import { $$ = new ImportSttmt(*$2); }
                  ;
 
 single_import : STR_LIT
               ;
 
-expression_statement : expression SEMIC { $$ = new ast::ExprSttmt($1); }
-                     | SEMIC { $$ = new ast::ExprSttmt(nullptr); }
+expression_statement : expression SEMIC { $$ = new ExprSttmt($1); }
+                     | SEMIC { $$ = new ExprSttmt(nullptr); }
                      ;
 
 compound_statement : LCURLY statements RCURLY { $$ = $2; $$->UseBrackets(); }
-                   | LCURLY RCURLY { $$ = new ast::BlockSttmt(); $$->UseBrackets(); }
+                   | LCURLY RCURLY { $$ = new BlockSttmt(); $$->UseBrackets(); }
                    ;
 
-selection_statement : SI expression compound_statement { $$ = new ast::IfSttmt($2, $3, nullptr); }
-                    | SI expression compound_statement SINON else_then { $$ = new ast::IfSttmt($2, $3, $5); }
+selection_statement : SI expression compound_statement { $$ = new IfSttmt($2, $3, nullptr); }
+                    | SI expression compound_statement SINON else_then { $$ = new IfSttmt($2, $3, $5); }
                     ;
 
 else_then : compound_statement
-          | selection_statement { $$ = new ast::BlockSttmt(); $$->AddSttmt($1); }
+          | selection_statement { $$ = new BlockSttmt(); $$->AddSttmt($1); }
           ;
 
-iteration_statement : NKUANTU expression compound_statement { $$ = new ast::WhileSttmt($2, $3); }
-                    | DI expression SEMIC expression SEMIC expression compound_statement { $$ = new ast::ForSttmt($2, $4, $6, $7); }
+iteration_statement : NKUANTU expression compound_statement { $$ = new WhileSttmt($2, $3); }
+                    | DI expression SEMIC expression SEMIC expression compound_statement { $$ = new ForSttmt($2, $4, $6, $7); }
                     ;
 
-jump_statement : PARA SEMIC { $$ = new ast::JumpSttmt("break"); }
-               | CONTINUA SEMIC { $$ = new ast::JumpSttmt("continue"); }
-               | DIVOLVI expression SEMIC { $$ = new ast::ReturnSttmt($2); }
-               | DIVOLVI SEMIC { $$ = new ast::ReturnSttmt(nullptr); }
+jump_statement : PARA SEMIC { $$ = new JumpSttmt("break"); }
+               | CONTINUA SEMIC { $$ = new JumpSttmt("continue"); }
+               | DIVOLVI expression SEMIC { $$ = new ReturnSttmt($2); }
+               | DIVOLVI SEMIC { $$ = new ReturnSttmt(nullptr); }
                ;
 %%
 
 void yyerror(const char* err) {
-    creol::cli::PrintErr(err, 1);
+    /* creol::cli::PrintErr(err, 1); */
 }
 

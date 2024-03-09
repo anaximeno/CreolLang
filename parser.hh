@@ -111,13 +111,13 @@ union YYSTYPE
     std::string* floatingpoint;
     std::string* boolean;
     std::string* string;
-    creol::ast::Expr* expr;
-    creol::ast::Sttmt* sttmt;
-    creol::ast::BlockSttmt* block;
-    creol::ast::VarDeclSttmt* vardecl;
-    creol::ast::FuncArgs* params;
-    creol::ast::FuncCallArgs* args;
-    creol::ast::LiteralExpr* litexpr;
+    creol::Expr* expr;
+    creol::Sttmt* sttmt;
+    creol::BlockSttmt* block;
+    creol::VarDeclSttmt* vardecl;
+    creol::FuncArgs* params;
+    creol::FuncCallArgs* args;
+    creol::LiteralExpr* litexpr;
 
 #line 123 "parser.hh"
 

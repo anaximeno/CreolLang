@@ -539,8 +539,8 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "rules/scanner.l"
 #line 4 "rules/scanner.l"
-    #include "include/creol/ast.hh"
-    #include "include/creol/cli.hh"
+    #include "creol/include/ast.hh"
+    // #include "include/cli.hh"
 
     #include <string>
     #include <cstdio>
@@ -1059,10 +1059,10 @@ case 43:
 YY_RULE_SETUP
 #line 77 "rules/scanner.l"
 {
-    creol::cli::PrintErr(
-        "Unknown token " + std::string(yytext) +
-        " at line " + std::to_string(yylineno)
-    );
+    // creol::cli::PrintErr(
+    //     "Unknown token " + std::string(yytext) +
+    //     " at line " + std::to_string(yylineno)
+    // );
 }
 	YY_BREAK
 case 44:
