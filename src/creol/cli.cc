@@ -1,5 +1,6 @@
 #include "../../include/creol/cli.hh"
 #include "../../include/creol/ast.hh"
+#include "../../include/creol/cnst.hh"
 
 #include "../../include/external/argparse.hpp"
 
@@ -12,15 +13,15 @@
 #include <cstdio>
 #include <sstream>
 
-#define FILE_EXTENSION ".kl"
-
 namespace fs = std::filesystem;
 namespace ap = argparse;
 
 using namespace creol;
 
 extern FILE *yyin;
+
 extern int yyparse(void);
+
 extern ast::BlockSttmt *Program;
 
 void cli::PrintErr(std::string message)
@@ -76,11 +77,8 @@ void cli::Compiler::DefineArgs(void)
         .default_value(false)
         .implicit_value(true);
 
-    std::string helpMessage = "Without this flag, only files with extension " +
-                              std::string(FILE_EXTENSION) + " will be allowed by the compiler.";
-
     Parser->add_argument("-T", "--ignore-extension")
-        .help(helpMessage)
+        .help("Without this flag, only files with extension '" + std::string(KL_STANDARD_FILE_EXTENSION) + "' will be allowed by the compiler.")
         .default_value(false)
         .implicit_value(true);
 }
@@ -96,7 +94,9 @@ void cli::Compiler::ParseArgs(const int argc, const char *const *argv)
     catch (const std::exception &e)
     {
         std::stringstream sstrm;
+
         sstrm << *(Parser);
+
         cli::PrintErr(std::string(e.what()) + "\n\n" + sstrm.str(), 1);
     }
 
@@ -214,10 +214,9 @@ void cli::Compiler::Run(const int argc, const char *const *argv)
         return name.find(endstr, name.size() - endstr.size());
     };
 
-    if (Args.shouldCheckExtension && matchAtEndOfFilename(FILE_EXTENSION) == std::string::npos)
+    if (Args.shouldCheckExtension && (matchAtEndOfFilename(KL_STANDARD_FILE_EXTENSION) == std::string::npos))
     {
-        // If the extension was not found on the filename, then exit with an error message
-        cli::PrintErr("File format not recognized. Filename should end with a '" + std::string(FILE_EXTENSION) + "' file extention.", 1);
+        cli::PrintErr("File format not recognized. Filename should end with a '" + std::string(KL_STANDARD_FILE_EXTENSION) + "' file extension.", 1);
     }
 
     ast::BlockSttmt *ProgramAST = CreolLangParserWrapper::ParseCode(Args.filename, true);
