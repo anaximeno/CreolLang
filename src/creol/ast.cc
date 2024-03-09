@@ -1,4 +1,5 @@
 #include "../../include/creol/ast.hh"
+#include "../../include/creol/cbinds.hh"
 
 using namespace creol;
 
@@ -9,8 +10,14 @@ std::string ast::Expr::CodeGen()
 
 std::string ast::VarDeclSttmt::CodeGen()
 {
-    std::string VarVal = Value ? " = " + Value->CodeGen() : "";
-    return Type + ' ' + Name + VarVal;
+    std::string Decl = Type + ' ' + Name;
+
+    if (Value)
+    {
+        Decl = Decl + C_EQ + Value->CodeGen();
+    }
+
+    return Decl;
 }
 
 void ast::VarDeclSttmt::SetType(std::string Type)
@@ -33,7 +40,9 @@ std::string ast::BlockSttmt::CodeGen()
     };
 
     if (BracketsOn)
-        block = "{" + block + "}";
+    {
+        block = C_OPEN_CURLY + block + C_CLOSE_CURLY;
+    }
 
     return block;
 }
@@ -60,9 +69,10 @@ std::string ast::FuncArgs::CodeGen()
     for (int i = 0; i < (int)Args.size(); ++i)
     {
         Arguments += Args[i] ? Args[i]->CodeGen() : "";
+
         if (Args[i] && i < (int)Args.size() - 1)
         {
-            Arguments += " , ";
+            Arguments += C_COMMA;
         }
     }
 
@@ -71,29 +81,41 @@ std::string ast::FuncArgs::CodeGen()
 
 std::string ast::FuncDeclSttmt::CodeGen()
 {
-    return Type + " " + Name + " ( " + Args->CodeGen() + " ) " + Body->CodeGen();
+    return Type + " " + Name + C_OPEN_PAR + Args->CodeGen() + C_CLOSE_PAR + Body->CodeGen();
 }
 
 std::string ast::IfSttmt::CodeGen()
 {
-    auto E = Else ? " else " + Else->CodeGen() : "";
-    return "if ( " + Cond->CodeGen() + " ) " + Then->CodeGen() + E;
+    std::string If_Code = C_IF + C_OPEN_PAR + Cond->CodeGen() + C_CLOSE_PAR + Then->CodeGen();
+
+    if (Else)
+    {
+        If_Code = If_Code + " " + C_ELSE + " " + Else->CodeGen();
+    }
+
+    return If_Code;
 }
 
 std::string ast::WhileSttmt::CodeGen()
 {
-    return "while ( " + Cond->CodeGen() + " )" + Do->CodeGen();
+    return C_WHILE + C_OPEN_PAR + Cond->CodeGen() + C_CLOSE_PAR + Do->CodeGen();
 }
 
 std::string ast::JumpSttmt::CodeGen()
 {
-    return Name + ";";
+    return Name + C_SEMICOLON;
 }
 
 std::string ast::ReturnSttmt::CodeGen()
 {
-    auto R = ReturnValue ? ReturnValue->CodeGen() : "";
-    return "return " + R + ";";
+    std::string Value = "";
+
+    if (ReturnValue)
+    {
+        Value = " " + ReturnValue->CodeGen();
+    }
+
+    return C_RETURN + Value + C_SEMICOLON;
 }
 
 void ast::FuncCallArgs::AddArg(Expr *Arg)
@@ -110,7 +132,7 @@ std::string ast::FuncCallArgs::CodeGen()
         Arguments += Args[i] ? Args[i]->CodeGen() : "";
         if (Args[i] && i < (int)Args.size() - 1)
         {
-            Arguments += " , ";
+            Arguments += C_COMMA;
         }
     }
 
@@ -119,8 +141,14 @@ std::string ast::FuncCallArgs::CodeGen()
 
 std::string ast::FunCallExpr::CodeGen()
 {
-    auto A = Args ? Args->CodeGen() : "";
-    return Name + "( " + A + " )";
+    std::string Arguments = "";
+
+    if (Args)
+    {
+        Arguments = Args->CodeGen();
+    }
+
+    return Name + C_OPEN_PAR + Arguments + C_CLOSE_PAR;
 }
 
 std::string ast::BinExpr::CodeGen()
@@ -132,7 +160,13 @@ std::string ast::BinExpr::CodeGen()
 
 std::string ast::LiteralExpr::CodeGen()
 {
-    auto Prefix = AutoCast ? "(" + Type + ") " : "";
+    std::string Prefix = "";
+
+    if (AutoCast)
+    {
+        Prefix = C_OPEN_PAR + Type + C_CLOSE_PAR;
+    }
+
     return Prefix + Value;
 }
 
@@ -148,7 +182,7 @@ void ast::LiteralExpr::DeactivateAutoCast()
 
 std::string ast::ExprSttmt::CodeGen()
 {
-    return Expression ? Expression->CodeGen() + ";" : ";";
+    return Expression ? Expression->CodeGen() + C_SEMICOLON : C_SEMICOLON;
 }
 
 std::string ast::IdentExpr::CodeGen()
@@ -159,12 +193,12 @@ std::string ast::IdentExpr::CodeGen()
 std::string ast::ParExpr::CodeGen()
 {
     auto C = Content ? Content->CodeGen() : "";
-    return "( " + C + " )";
+    return C_OPEN_PAR + C + C_CLOSE_PAR;
 }
 
 std::string ast::AssignExpr::CodeGen()
 {
-    return Assignee->CodeGen() + " = " + Assigned->CodeGen();
+    return Assignee->CodeGen() + C_EQ + Assigned->CodeGen();
 }
 
 std::string ast::ForSttmt::CodeGen()
@@ -173,10 +207,10 @@ std::string ast::ForSttmt::CodeGen()
     auto C = Cond ? Cond->CodeGen() : "";
     auto A = After ? After->CodeGen() : "";
     auto T = Then ? Then->CodeGen() : "";
-    return "for (" + S + " ; " + C + " ; " + A + " ) " + T;
+    return C_FOR + C_OPEN_PAR + S + C_SEMICOLON + C + C_SEMICOLON + A + C_CLOSE_PAR + T;
 }
 
 std::string ast::ImportSttmt::CodeGen()
 {
-    return "#include " + Import + "\n";
+    return C_IMPORT + " " + Import + "\n";
 }

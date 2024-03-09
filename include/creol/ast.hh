@@ -6,6 +6,8 @@
 #include <memory>
 #include <algorithm>
 
+#include "./cbinds.hh"
+
 namespace creol
 {
     namespace ast
@@ -126,7 +128,7 @@ namespace creol
 
         public:
             ReturnSttmt(Expr *ReturnValue)
-                : JumpSttmt("return"), ReturnValue(ReturnValue) {}
+                : JumpSttmt(C_RETURN), ReturnValue(ReturnValue) {}
             virtual std::string CodeGen() override;
         };
 
@@ -253,7 +255,7 @@ namespace creol
         {
         public:
             MostraFunCallExpr(FuncCallArgs *Args)
-                : FunCallExpr("printf", Args) {}
+                : FunCallExpr(C_PRINTF, Args) {}
         };
 
         /// Represents a library importation
